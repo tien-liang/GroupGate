@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
-import '../css/MainPanel.css'
+import '../styles/MainPanel.css'
+import PersonList from './PersonList'
 
 class MainPanel extends Component {
   render() {
@@ -11,14 +12,19 @@ class MainPanel extends Component {
 
         <body className="MainPanel-body">
 
-        
+
             <p className="MainPanel-intro">
                 Body goes here, edit <code>src/comonents/MainPanel.js</code> and save to reload.
             </p>
+
+            <p> Here is some data example pulled from the original simple graphql API: </p>
+
+            <PersonList />
+
         </body>
 
         <footer className="MainPanel-footer">
-            <p> Footer goes here</p>
+            <br/><p> FOOTER goes here</p>
         </footer>
 
       </div>
