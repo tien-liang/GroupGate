@@ -5,8 +5,8 @@ Project documentation: https://drive.google.com/drive/folders/1SkIZ5Da5ywvV8VK8l
 
 1) git clone
 
-2) go to server folder, run: npm run jason       // or use yarn instead of npm
+2) cd to the project directory
 
-3) open new command window, run: npm start dev
+3) npm install                          // can also use yarn
 
-4) go to root folder, run npm start
+4) npm start
