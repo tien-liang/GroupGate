@@ -27,5 +27,8 @@
     "eject": "react-scripts eject",
     "dev": "nodemon server/index.js",
     "json": "json-server --watch server/data.json"
+  },
+  "devDependencies": {
+    "react-router-dom": "^4.2.2"
   }
 }

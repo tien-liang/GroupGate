@@ -9,26 +9,57 @@ const {
   GraphQLNonNull
 } = require('graphql');
 
-// Establish a person object
-const PersonType = new GraphQLObjectType({
-  name:'Person',
+// ========== TYPES ==========
+
+// Establish a User object
+const UserType = new GraphQLObjectType({
+  name:'User',
   fields:() => ({
-    id: {type:GraphQLString},
-    first_name: {type: GraphQLString},
-    last_name: {type: GraphQLString},
+    id: {type:GraphQLID},
     email: {type: GraphQLString},
-    friends: {
-      type: new GraphQLList(PersonType),
+    display_name: {type: GraphQLString},
+    about_me: {type: GraphQLString},
+    password: {type:GraphQLString},                 // secure enough ??
+    total_r_skills: {type:GraphQLFloat},
+    total_r_comm: {type:GraphQLFloat},
+    total_r_psolving: {type:GraphQLFloat},
+    total_r_timemngmt: {type:GraphQLFloat},
+    total_r_activity: {type:GraphQLFloat},
+    num_of_rating: {type:GraphQLInt},
+    classes: {
+      type: new GraphQLList(ClassType),
       resolve(person) {
         var friends = Object.assign([], person.friends);
         for (i=0; i<person.friends.length; i++){
           person.friends[i] = axios.get('http://localhost:3000/persons/' + friends[i]).then(friend => friend.data);
         }
-        return person.friends   
+        return person.friends
       }
+    },
+    referenceLinks{
+
     }
   })
 });
+
+
+// Establish Class object
+const ClassType = new GraphQLObjectType({
+  name: 'Class',
+  fields:() => ({
+    id: {type:GraphQLID},
+    class_number: {type: GraphQLString},
+    term_year: {type: GraphQLInt},
+    term_semester: {type: GraphQLString},
+
+
+
+    })
+});
+
+
+
+// ========== QUERIES ==========
 
 // This is the root query needed for any GraphQL implementations
 const RootQuery = new GraphQLObjectType({
@@ -42,13 +73,14 @@ const RootQuery = new GraphQLObjectType({
       },
       resolve(parentValue, args){
         return axios.get('http://localhost:3000/persons/' + args.id)
-          .then(res => 
+          .then(res =>
             res.data
           );
       }
     },
-    // Return all people
-    persons:{
+
+    // Return all Users
+    users:{
       type: new GraphQLList(PersonType),
       resolve(parentValue, args){
         return axios.get('http://localhost:3000/persons/')
@@ -59,7 +91,7 @@ const RootQuery = new GraphQLObjectType({
               for (i=0; i<friends.length; i++) {
                 people[h].friends[i]=axios.get('http://localhost:3000/persons/' + friends[i]).then(friend => friend.data);
               }
-            } 
+            }
             return res.data;
           });
       }
@@ -67,7 +99,9 @@ const RootQuery = new GraphQLObjectType({
   }
 });
 
-//Mutations
+
+// ========== MUTATIONS ==========
+
 const mutation = new GraphQLObjectType({
   name:'Mutation',
   fields:{
