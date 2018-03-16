@@ -21,12 +21,8 @@ render(){
         {/* Login Form */}
         <div className="d-flex justify-content-center">
           <form>
-            <div className="form-group">
-              <input type="email" className="form-control" id="loginEmail" placeholder="User ID (your email)"></input>
-            </div>
-            <div className="form-group">
-              <input type="password" className="form-control" id="loginPassword" placeholder="Password"></input>
-            </div>
+              <input type="email" className="form-control" id="loginEmail" placeholder="User ID (your email)"></input><br/>
+              <input type="password" className="form-control" id="loginPassword" placeholder="Password"></input><br/>
             <div className="d-flex justify-content-center">
               <button type="submit" className="btn btn-primary">Submit</button>
             </div>
