@@ -7,5 +7,5 @@ import MyProfile from './pages/MyProfile'
 import registerServiceWorker from './registerServiceWorker';
 import Bootstrap from 'bootstrap/dist/css/bootstrap.css';
 
-ReactDOM.render(<MyProfile />, document.getElementById('root'));
+ReactDOM.render(<Login />, document.getElementById('root'));
 registerServiceWorker();
