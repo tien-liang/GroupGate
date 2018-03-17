@@ -11,7 +11,7 @@ render(){
       {/* Header */}
       <nav className="navbar">
         <img className="logo" src="http://via.placeholder.com/100x100" alt="Logo" width="50"/>
-        <h1 className="mr-auto">App Name</h1>
+        <h1 className="mr-auto">Group Gate</h1>
 
         {/* Header */}
         <ul className="nav nav-tabs mr-auto">
