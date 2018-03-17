@@ -1,8 +1,9 @@
 import React, { Component } from 'react';
+import { Link } from 'react-router-dom';
 import LoginForm from "../components/forms/LoginForm";
 import '../css/login.css';
 
-export default class Login extends Component {
+export default class SignInPage extends Component {
 
 render(){
   return(
@@ -15,10 +16,8 @@ render(){
 
         {/* Header */}
         <ul className="nav nav-tabs mr-auto">
-
         </ul>
-
-          <button className="btn btn-link">SignUp</button>
+          <Link to="/signup">Sign Up</Link>
       </nav><br/><br/>
 
       {/* Body */}
@@ -28,14 +27,9 @@ render(){
         <h5 className="text-center notBold">Create Group. Find People. Finish Project. Provide Feedback.</h5><br/><br/>
         {/* Login Form */}
         <div className="d-flex justify-content-center">
-
           <LoginForm />
-
-
-
-
         </div>
-        <p className="text-center">Don't have an account? <button className="btn btn-link">Sign Up</button></p>
+        <p className="text-center">Don't have an account? <Link to="/signup">Sign Up</Link></p>
       </div>
     </div>
   );

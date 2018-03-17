@@ -1,14 +1,16 @@
 import React from 'react';
 import { Route } from 'react-router-dom';
 import MyProfilePage from './pages/MyProfilePage';
-import LoginPage from './pages/LoginPage';
+import SignInPage from './pages/SignInPage';
+import SignUpPage from './pages/SignUpPage'
 
 const App = () => (
 	<div className=" ui container">
-		<Route path="/" exact component={LoginPage} />
-		<Route path="/mypProfile" exact component={MyProfilePage} />
-	</div>
+		<Route path="/" exact component={SignInPage} />
+		<Route path="/signup" exact component={SignUpPage} />
+		<Route path="/myProfile" exact component={MyProfilePage} />
 
+	</div>
 )
 
 export default App;

@@ -1,8 +1,8 @@
 import React, { Component } from 'react';
-
+import { Link } from 'react-router-dom';
 import '../css/login.css';
 
-export default class SignUp extends Component {
+export default class SignUpPage extends Component {
 
 render(){
   return(
@@ -10,8 +10,10 @@ render(){
       {/* Navbar */}
       <nav className="navbar">
         <img className="logo" src="http://via.placeholder.com/100x100" alt="Logo" width="50"/>
-        <h1 className="mr-auto">App Name</h1>
+        <h1 className="mr-auto">Group Gate</h1>
+
         <ul className="nav nav-tabs mr-auto">
+          <p> Temp links until Sign in done--> </p>
           <li className="nav-item">
             <a className="nav-link" href="#">Other Users</a>
           </li>
@@ -22,7 +24,8 @@ render(){
             <a className="nav-link" href="#">My Profile</a>
           </li>
           </ul>
-          <button className="btn btn-link">Sign In</button>
+
+          <Link to="/">Sign In</Link>
       </nav><br/><br/>
       {/* Body */}
       <div>
@@ -41,7 +44,7 @@ render(){
             </div>
           </form>
         </div>
-        <p className="text-center">Already have an account? <button className="btn btn-link">Log In</button></p>
+        <p className="text-center">Already have an account? <Link to="/">Sign In</Link></p>
       </div>
     </div>
   );
