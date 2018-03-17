@@ -8,11 +8,22 @@ render(){
   return(
     <div className="container-fluid">
       {/* Navbar */}
-      <div className="navbar">
-        <img src="http://via.placeholder.com/100x100" alt="Logo" width="50"/>
-        <h1>App Name</h1>
-        <button className="btn btn-link">Sign In</button>
-      </div><br/><br/>
+      <nav className="navbar">
+        <img className="logo" src="http://via.placeholder.com/100x100" alt="Logo" width="50"/>
+        <h1 className="mr-auto">App Name</h1>
+        <ul className="nav nav-tabs mr-auto">
+          <li className="nav-item">
+            <a className="nav-link" href="#">Other Users</a>
+          </li>
+          <li className="nav-item">
+            <a className="nav-link" href="#">Project Groups</a>
+          </li>
+          <li className="nav-item">
+            <a className="nav-link" href="#">My Profile</a>
+          </li>
+          </ul>
+          <button className="btn btn-link">Sign In</button>
+      </nav><br/><br/>
       {/* Body */}
       <div>
         <h2 className="text-center notBold">Starting new class or personal group project? </h2>
