@@ -11,7 +11,7 @@ render(){
       <div className="navbar">
         <img src="http://via.placeholder.com/100x100" alt="Logo" width="50"/>
         <h1>App Name</h1>
-        <button className="btn btn-link">Sign In</button>
+        <button className="btn btn-link">Sign Up</button>
       </div><br/><br/>
       {/* Body */}
       <div>
@@ -24,7 +24,7 @@ render(){
               <input type="email" className="form-control" id="loginEmail" placeholder="User ID (your email)"></input><br/>
               <input type="password" className="form-control" id="loginPassword" placeholder="Password"></input><br/>
             <div className="d-flex justify-content-center">
-              <button type="submit" className="btn btn-primary">Submit</button>
+              <button type="submit" className="btn btn-primary">Log In</button>
             </div>
           </form>
         </div>
