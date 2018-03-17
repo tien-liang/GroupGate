@@ -21,7 +21,7 @@ render(){
             <a className="nav-link" href="#">Project Groups</a>
           </li>
           <li className="nav-item">
-            <a className="nav-link" href="#">My Profile</a>
+            <a className="nav-link" href="/myProfile">My Profile</a>
           </li>
           </ul>
 
