@@ -1,11 +1,15 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
-import './css/index.css';
-import Login from './pages/Login';
-import SignUp from './pages/SignUp';
-import MyProfile from './pages/MyProfile'
+import { BrowserRouter } from "react-router-dom";
+import 'semantic-ui-css/semantic.min.css';
+import App from './App';
 import registerServiceWorker from './registerServiceWorker';
 import Bootstrap from 'bootstrap/dist/css/bootstrap.css';
 
-ReactDOM.render(<Login />, document.getElementById('root'));
+ReactDOM.render(
+	<BrowserRouter>
+		<App />
+	</BrowserRouter>,
+	document.getElementById('root'));
+
 registerServiceWorker();
