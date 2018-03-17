@@ -1,4 +1,5 @@
-import React, { Component } from 'react'
+import React, { Component } from 'react';
+import 'semantic-ui-css/semantic.min.css';
 
 export default class EditableField extends Component {
     constructor(props){
@@ -49,7 +50,7 @@ export default class EditableField extends Component {
         return(
             <div className="editable-field">
                 <p> {this.props.label} {this.props.value} </p>
-                    <button id="edit" onClick={this.handleEdit}> edit </button>
+                    <button id="edit" onClick={this.handleEdit}>edit</button>
             </div>
         )
     }
