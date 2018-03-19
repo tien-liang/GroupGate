@@ -6,7 +6,7 @@ export default class Course extends Component {
 		this.ESCAPE_KEY = 27;
 		this.ENTER_KEY = 13;
 		this.state = {
-      adding: false,
+			adding: true,
 			editing: true,
 			addButtonDisabled: props.addButtonDisabled
 		}
@@ -29,7 +29,8 @@ export default class Course extends Component {
 
 	edit() {
 		this.setState({
-			editing: true
+			editing: true,
+			adding: false
 		})
 	}
 
@@ -46,7 +47,10 @@ export default class Course extends Component {
 	}
 
 	cancel = (e) => {
-		this.remove()
+		if(this.state.adding){					// fixes the difference between Editing new record and editing existing record
+				this.remove()
+		}
+
     this.setState({
 			editing: false
 		})
