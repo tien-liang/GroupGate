@@ -1,3 +1,5 @@
+// Left in to see the graphql handles from web-demo
+
 import React, { Component } from 'react'
 import Person from './Person'
 import { graphql } from 'react-apollo'
@@ -12,7 +14,7 @@ class PersonList extends Component {
     if (this.props.personQuery && this.props.personQuery.error) {
       return <div>Error</div>
     }
-  
+
     const peopleToRender = this.props.personQuery.persons
     return (
       <div>{peopleToRender.map(person => <Person key={person.id} person={person}/>)}</div>

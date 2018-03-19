@@ -1,3 +1,6 @@
+// CURRENTLY NOT USED
+// 2018-03-17, Otakar: have to think about at what level to manage the state
+
 import React, { Component } from "react";
 import PropTypes from "prop-types";
 import { Form, Button, Message } from "semantic-ui-react";
@@ -18,6 +21,14 @@ export default class UserInfoForm extends Component {
     loading: false,
     errors: {}
   };
+
+
+
+
+
+
+
+
 
   onChange = e =>
     this.setState({

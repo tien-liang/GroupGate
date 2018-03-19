@@ -1,18 +1,19 @@
 import React, { Component } from "react";
 import { Link } from 'react-router-dom';
-import EditableField from '../components/EditableField'
-import EditableTextArea from '../components/EditableTextArea'
+import EditableField from '../components/EditableField';
+import EditableTextArea from '../components/EditableTextArea';
+import CourseList from '../components/CourseList';
 
-import UserInfoForm from '../components/forms/UserInfoForm'
-
-
+//import UserInfoForm from '../components/forms/UserInfoForm'
 
 export default class MyProfile extends Component {
   constructor(props) {
     super(props)
       this.state = {
         displayNameText: "",
-        aboutMeText: ""
+        aboutMeText: "",
+        classes: [],
+        references: []
       }
       this.updateDisplayName = this.updateDisplayName.bind(this)
       this.updateAboutMe = this.updateAboutMe.bind(this)
@@ -54,7 +55,28 @@ export default class MyProfile extends Component {
 
         {/* Body */}
 
-          <UserInfoForm />
+        <div>
+          <div>
+              {/* User Info */}
+            <h5>Display Name</h5>
+            <EditableField label=""
+                            value = {this.state.displayNameText}
+                            onChange = {this.updateDisplayName} />
+            <h5>About Me</h5>
+            <EditableTextArea label=""
+                              value = {this.state.aboutMeText}
+                              onChange = {this.updateAboutMe} />
+            <h5>My Classes with Group projects </h5>
+
+              {/* Course list */}
+              <CourseList />
+
+
+              {/* Reference list */}
+
+
+          </div>
+        </div>
 
 
       </div>
