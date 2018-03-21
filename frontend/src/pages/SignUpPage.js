@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import { Link } from 'react-router-dom';
+import SignUpForm from '../components/forms/SignUpForm'
 import '../css/login.css';
 
 export default class SignUpPage extends Component {
@@ -35,15 +36,7 @@ render(){
         <h5 className="text-center notBold">Create Group. Find People. Finish Project. Provide Feedback.</h5><br/><br/>
         {/* Login Form */}
         <div className="d-flex justify-content-center">
-          <form>
-              <input type="email" className="form-control" id="signupEmail" placeholder="SFU Email"></input><br/>
-              <input type="text" className="form-control" id="signupName" placeholder="Display Name"></input><br/>
-              <input type="password" className="form-control" id="signupPassword" placeholder="Create Password"></input><br/>
-              <input type="password" className="form-control" id="signupVerifyPassword" placeholder="Retype Password"></input><br/>
-            <div className="d-flex justify-content-center">
-              <button type="submit" className="btn btn-primary">Create Profile</button>
-            </div>
-          </form>
+            <SignUpForm />
         </div>
         <p className="text-center">Already have an account? <Link to="/">Sign In</Link></p>
       </div>
