@@ -46,32 +46,14 @@ export default class ProjGroups extends Component {
       <div className="container fluid">
         <Nav />
 
-<<<<<<< HEAD
         <br/>
 
           {/*Your Groups Section*/}
-          <h5 className="sectionTitle ui dividing header">Project Groups You Created</h5>
+          <h5 className="ui dividing header">Project Groups You Created</h5>
           <ProjectGroup/>
           {/*Other Users Groups Section*/}
-          <h5 className="sectionTitle ui dividing header">Project Groups Other Users Created</h5>
-=======
-        <h4> Groups You Created </h4>
+          <h5 className="ui dividing header">Project Groups Other Users Created</h5>
 
-
-        <p>DEV NOTE: Query for Current user not done yet</p>
-
-        <h4> Groups Other Users Created </h4>
-
-
-        <p>DEV NOTE: Currently All 'Project Groups' Displayed.</p>
-
-
-
->>>>>>> a362a7013b47f2fd32e1d1d25c8ef54c3f14c320
-
-
-
-          {projGroupItems}
 
       </div>
     );

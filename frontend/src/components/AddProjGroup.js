@@ -57,7 +57,7 @@ export default class ProjectGroup extends Component {
 	remove(id) {
 		console.log('removing item at', id)																					// DEBUG
 		this.setState(prevState => ({
-			groups: prevState.courses.filter(group => group.id !== id)
+			groups: prevState.groups.filter(group => group.id !== id)
 		}))
 	}
 

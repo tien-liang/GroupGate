@@ -81,7 +81,7 @@ export default class Course extends Component {
 				<table className="ui celled table">
 					<thead>
 						<tr>
-							<th>{"Course Number:"}</th>
+							<th className="three wide">{"Course Number"}</th>
 							<th>{"Term"}</th>
 						</tr>
 					</thead>

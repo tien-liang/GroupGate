@@ -82,7 +82,7 @@ export default class CourseList extends Component {
 	render() {
 		return (
 			<div className="board">
-			<Button basic color="blue" onClick={this.add.bind(null,"")}id="add" disabled={this.state.addButtonDisabled}>+ Add Class</Button>
+			<Button basic color="blue" onClick={this.add.bind(null,"")} id="add" disabled={this.state.addButtonDisabled}>+ Add Class</Button>
 				{this.state.courses.map(this.eachCourse)}
 			</div>
 		)
