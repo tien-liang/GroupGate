@@ -13,6 +13,12 @@ render(){
         <img className="logo" src="http://via.placeholder.com/100x100" alt="Logo" width="50"/>
         <h1 className="mr-auto">Group Gate</h1>
 
+
+          Dummy link to MYProfile -->
+          <Link to='/myProfile'>myprofile</Link> ----------  
+
+
+
         <Link to="/signup">Sign Up</Link>
       </nav><br/><br/>
 
@@ -25,7 +31,7 @@ render(){
         <div className="d-flex justify-content-center">
           <LoginForm />
         </div>
-        <p className="text-center">Don't have an account? <Link to="/signup">Sign Up</Link></p>
+        <p className="text-center">Don't have an account? <Link to="/signup">Create account</Link></p>
       </div>
     </div>
   );
