@@ -41,6 +41,7 @@ INSTALLED_APPS = [
     'rest_framework',
 
     'users',
+    'groups',
 ]
 
 AUTH_USER_MODEL = 'users.CustomUser'
