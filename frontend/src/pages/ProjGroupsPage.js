@@ -3,6 +3,8 @@ import { Link } from 'react-router-dom';
 import Nav from '../components/Nav';
 import ProjectGroup from '../components/AddProjGroup';
 import axios from 'axios';
+import ProjGroupItem from '../components/ProjGroupItem';
+
 
 const BASE_URL = 'http://localhost:3000';
 const url= `${BASE_URL}/api/projgroups`;
@@ -30,16 +32,21 @@ export default class ProjGroups extends Component {
   }
 
 
-
-
   render() {
-
-    const {groups} = this.state;
+    const projGroupItems = this.state.groups.map((group, i) => {
+      return(
+          <div className="panel-group ">
+            <ProjGroupItem item={group} key={group.id}  />
+          </div>
+      )
+    }
+  )
 
     return (
-      <div>
+      <div className="container fluid">
         <Nav />
 
+<<<<<<< HEAD
         <br/>
 
           {/*Your Groups Section*/}
@@ -47,21 +54,24 @@ export default class ProjGroups extends Component {
           <ProjectGroup/>
           {/*Other Users Groups Section*/}
           <h5 className="sectionTitle ui dividing header">Project Groups Other Users Created</h5>
-
-        { groups.map((group, index) => (
-              <div className="col-sm-6" key={index}>
-                <div className="panel panel-primary">
-                  <div className="panel-heading">
-                    <h3 className="panel-title"><span className="btn">Group: { group.group_name }</span></h3>
-                  </div>
-                  <div className="panel-body">
-                    <p>Description: { group.group_descr } </p>
-                  </div>
-                </div>
-              </div>
-          ))}
+=======
+        <h4> Groups You Created </h4>
 
 
+        <p>DEV NOTE: Query for Current user not done yet</p>
+
+        <h4> Groups Other Users Created </h4>
+
+
+        <p>DEV NOTE: Currently All 'Project Groups' Displayed.</p>
+
+
+
+>>>>>>> a362a7013b47f2fd32e1d1d25c8ef54c3f14c320
+
+
+
+          {projGroupItems}
 
       </div>
     );
