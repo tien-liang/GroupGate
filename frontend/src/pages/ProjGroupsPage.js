@@ -1,6 +1,7 @@
 import React, { Component } from "react";
 import { Link } from 'react-router-dom';
 import Nav from '../components/Nav';
+import ProjectGroup from '../components/AddProjGroup';
 import axios from 'axios';
 
 const BASE_URL = 'http://localhost:3000';
@@ -39,7 +40,13 @@ export default class ProjGroups extends Component {
       <div>
         <Nav />
 
-        <p>Components for 'Project Groups' page go here.</p>
+        <br/>
+
+          {/*Your Groups Section*/}
+          <h5 className="sectionTitle ui dividing header">Project Groups You Created</h5>
+          <ProjectGroup/>
+          {/*Other Users Groups Section*/}
+          <h5 className="sectionTitle ui dividing header">Project Groups Other Users Created</h5>
 
         { groups.map((group, index) => (
               <div className="col-sm-6" key={index}>

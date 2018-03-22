@@ -59,17 +59,18 @@ export default class Course extends Component {
 
 	renderForm() {
 		return (
-			<div className="note" style={this.style}>
-				<form>
+			<div className="ui clearing segment">
+				<form className="ui form">
 					{this.props.label_1}
+					<div className="five wide field">
 					<input type="text" ref={input => this._newText = input}
 							  defaultValue={this.props.children}/>
+							</div>
 								{this.props.label_2}
 								{this.props.value_2}
 								{this.props.value_3}
-
-					<button id="save" onClick={this.save}>save</button>
-					<button id="cancel" onClick={this.cancel}>cancel</button>
+					<button className="ui primary button right floated" id="save" onClick={this.save}>Save</button>
+					<button className="ui red button right floated" id="cancel" onClick={this.cancel}>Cancel</button>
 				</form>
 			</div>
 		)
@@ -77,14 +78,28 @@ export default class Course extends Component {
 
 	renderDisplay() {
 		return (
-			<div className="note" style={this.style}>
-				<p> {this.props.label_1}{this.props.children}</p>
-				{this.props.label_2}{this.props.value_2}{this.props.value_3}
+				<table className="ui celled table">
+					<thead>
+						<tr>
+							<th>{"Course Number:"}</th>
+							<th>{"Term"}</th>
+						</tr>
+					</thead>
+					<tbody>
+						<tr>
+							<td>{this.props.children}</td>
+							<td>{this.props.value_2}{this.props.value_3}</td>
+						</tr>
+						<tr>
+							<td colSpan="2">
 				<span>
-					<button onClick={this.edit} id="edit">edit</button>
-					<button onClick={this.remove} id="remove">remove</button>
+					<button className="ui primary button right floated" onClick={this.edit} id="edit">Edit</button>
+					<button  className="ui red button right floated" onClick={this.remove} id="remove">Remove</button>
 				</span>
-			</div>
+			</td>
+			</tr>
+			</tbody>
+				</table>
 		)
 	}
 	render() {
