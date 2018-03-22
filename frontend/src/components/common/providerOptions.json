@@ -1,0 +1,26 @@
+[
+{
+  "text": "LinkedIn",
+  "value": "LinkedIn",
+  "image": "{ avatar: true, src: '/images/avatars/linkedin.png' }"
+},
+{
+  "text": "Git",
+  "value": "Git",
+  "image": "{ avatar: true, src: '/images/avatars/linkedin.png' }"
+},
+{
+  "text": "Hackerrank",
+  "value": "Hackerrank",
+  "image": "{ avatar: true, src: '/images/avatars/hackerrank.png' }"
+},
+{
+  "text": "StackOverflow",
+  "value": "Stackoverflow",
+  "image": "{ avatar: true, src: '/images/avatars/stackoverflow.png' }"
+},
+{
+  "text": "Other",
+  "value": "Other"
+}
+]
