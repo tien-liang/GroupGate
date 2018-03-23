@@ -24,8 +24,9 @@ export default class CourseList extends Component {
 			semester='Spring'
 		} else if( (date.getMonth()+1) >= 5 && (date.getMonth()+1) <= 8 ) {
 			semester = 'Summer'
-		} else { semester = 'Fall' }
-
+		} else {
+			semester = 'Fall'
+		}
 		this.setState(prevState => ({
 			courses: [
 				...prevState.courses,

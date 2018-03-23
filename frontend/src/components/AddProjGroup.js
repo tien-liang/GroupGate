@@ -26,7 +26,7 @@ export default class ProjectGroup extends Component {
 					id: this.nextId(),
 					groupName: text,
 					courseNumber: text,
-          status: "open",
+          status: "Open",
           description: text
 				}
 			],
