@@ -62,31 +62,33 @@ export default class Group extends Component {
 	handleChange(e){
 		this.setState({select_value: e.target.value})
 	}
-
+//Edit Form Render
 	renderForm() {
 		return (
 			<div className="ui clearing segment">
 			<div className="note" style={this.style}>
 				<form className="ui form">
+
 					{"Group Name:"}
 					<div className="five wide field">
 					<input type="text" ref={input => this._newGroupName = input}
 							  defaultValue={this.props.groupName}/>
 					</div>
+
   					{"Course Number:"}
   					<div className="five wide field">
   					<input type="text" ref={input => this._newCourseNumber = input}
   							  defaultValue={this.props.courseNumber}/>
   					</div>
+
     					{"Status:"}
     					<div className="five wide field">
 							<select value={this.state.select_value} ref={input=> this._newStatus = input} onChange={this.handleChange}>
 								<option value="Open">Open</option>
 								<option value="Closed">Closed</option>
 							</select>
-    					{/*<input type="text" ref={input => this._newStatus = input}
-    							  defaultValue={this.props.status}/>*/}
     					</div>
+
       					{"Description:"}
       					<div className="five wide field">
       					<input type="text" ref={input => this._newDescription = input}
@@ -99,7 +101,7 @@ export default class Group extends Component {
 			</div>
 		)
 	}
-
+//Normal Render
 	renderDisplay() {
 		return (
       <table className="ui single line basic table">

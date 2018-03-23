@@ -18,7 +18,14 @@ export default class MyProfile extends Component {
       this.state = {
         displayNameText: "John Doe",
         aboutMeText: "I am John Doe",
-        courses: [],                                                             // have to bring the courses from CourseList
+        courses: [
+          {
+            id : '470',
+            courseNumber : '470',
+            termYear: 2018,
+            termSemester: "Spring"
+          }
+        ],                                                             // have to bring the courses from CourseList
         references: [
           {
             id: 0,
@@ -143,7 +150,7 @@ export default class MyProfile extends Component {
 
               {/*My Class Section*/}
               <h5 className="ui dividing header">My Classes with Group Projects</h5>
-              <CourseList/>
+              <CourseList courseList={this.state.courses}/>
 
               {/*My Project Section*/}
               <h5 className="ui dividing header">My Reference Profiles</h5>

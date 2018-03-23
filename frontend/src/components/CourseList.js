@@ -6,7 +6,8 @@ export default class CourseList extends Component {
 	constructor(props) {
 		super(props)
 		this.state = {
-			courses: [],
+			adding: false,
+			courses: props.courseList,
 			addButtonDisabled: false
 		}
 		this.add = this.add.bind(this)
@@ -38,7 +39,7 @@ export default class CourseList extends Component {
 				}
 			],
 		}))
-
+		this.setState({adding: true})
 		this.setState({ addButtonDisabled: true })
 	}
 
@@ -73,7 +74,7 @@ export default class CourseList extends Component {
 		return (
 			<Course key={course.id}
 				  index={course.id} label_1='Course Number: ' label_2='Term: '
-					value_2= {course.termYear} value_3= {course.termSemester}
+					value_2= {course.termYear} value_3= {course.termSemester} adding={this.state.adding}
 					onCancel={this.onCancel} onChange={this.update} onRemove={this.remove}>
 				  {course.courseNumber}
 		  </Course>
@@ -83,8 +84,8 @@ export default class CourseList extends Component {
 	render() {
 		return (
 			<div className="board">
-			<Button basic color="blue" onClick={this.add.bind(null,"")} id="add" disabled={this.state.addButtonDisabled}>+ Add Class</Button>
 				{this.state.courses.map(this.eachCourse)}
+			<Button basic color="blue" onClick={this.add.bind(null,"")} id="add" disabled={this.state.addButtonDisabled}>+ Add Class</Button>
 			</div>
 		)
 	}
