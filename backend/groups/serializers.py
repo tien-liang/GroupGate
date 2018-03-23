@@ -4,6 +4,12 @@ from django.contrib.auth import get_user_model
 
 UserModel = get_user_model()
 
+
+class GroupMembershipSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = models.Membership
+        fields = ('user',)
+
 class UserSerializer(serializers.ModelSerializer):
 
     password = serializers.CharField(write_only=True)
@@ -26,14 +32,44 @@ class UserSerializer(serializers.ModelSerializer):
         model = UserModel
         fields = ('id', 'username', 'password', 'first_name', 'last_name')
 
-class GroupSerializer(serializers.ModelSerializer):
-    members = UserSerializer(many=True)
+# class GroupSerializer(serializers.ModelSerializer):
+#     members = UserSerializer(many=True)
+#     def create(self, validated_data):
+#         persons = validated_data.pop('members')
+#         group = models.Group.objects.create(**validated_data)
+#         if persons:
+#     class Meta:
+#         fields = (
+#             'id',
+#             'name',
+#             'description',
+#             'members',
+#         )
+#         model = models.Group
+
+class GroupCreateSerializer(serializers.ModelSerializer):
+    memberships = GroupMembershipSerializer(many=True, required=False)
+
+    def create(self, validated_data):
+        user_data = validated_data.pop('memberships')
+        group = models.Group.objects.create(**validated_data)
+        for user in user_data:
+            d=dict(user)
+            models.Membership.objects.create(group=group, user=d['user'])
+        return group
+
+    def update(self, instance, validated_data):
+        user_data = validated_data.pop('memberships')
+        for item in validated_data:
+            if models.Group._meta.get_field(item):
+                setattr(instance, item, validated_data[item])
+        models.Membership.objects.filter(group=instance).delete()
+        for user in user_data:
+            d=dict(user)
+            models.Membership.objects.create(group=instance, user=d['user'])
+        instance.save()
+        return instance
 
     class Meta:
-        fields = (
-            'id',
-            'name',
-            'description',
-            'members',
-        )
+        fields = ('id', 'name', 'description', 'memberships')
         model = models.Group
