@@ -40,7 +40,6 @@ export default class ProjGroups extends Component {
     })
   }
 
-
   render() {
     const projGroupItems = this.state.groups.map((group, i) => {
       return(
@@ -62,6 +61,8 @@ export default class ProjGroups extends Component {
           <ProjectGroup projectGroup={this.state.groups}/>
           {/*Other Users Groups Section*/}
           <h5 className="ui dividing header">Project Groups Other Users Created</h5>
+
+
 
           {projGroupItems}
       </div>

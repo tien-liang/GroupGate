@@ -1,4 +1,5 @@
 import React, { Component } from "react";
+import axios from 'axios';
 import { Link } from 'react-router-dom';
 import { Button } from "semantic-ui-react";
 import EditableField from '../components/EditableField';
@@ -9,37 +10,14 @@ import CourseList from '../components/CourseList'
 import Nav from '../components/Nav';
 import '../css/style.css';
 
+  const userId = '5ab53df643c2a043fced834a';
+
 export default class MyProfile extends Component {
-
-
 
   constructor(props) {
     super(props)
       this.state = {
-        displayNameText: "John Doe",
-        aboutMeText: "I am John Doe",
-        courses: [
-          {
-            id : '470',
-            courseNumber : 'CMPT 470',
-            termYear: 2018,
-            termSemester: "Spring"
-          }
-        ],                                                             // have to bring the courses from CourseList
-        references: [
-          {
-            id: 0,
-            refProvider: "LinkedIn",
-            refProfileUrl: "www.linkedin.com/johndoe"
-          },
-          {
-            refProvider: "Git",
-            refProfileUrl: "www.github.com/johndoe"
-          }
-
-        ],
-        addCourseDisabled: false,
-        addReferenceDisabled: false                                                           // have to bring the refs from ReferenceList
+        userDetails: ''
       }
       this.updateDisplayName = this.updateDisplayName.bind(this)
       this.updateAboutMe = this.updateAboutMe.bind(this)
@@ -50,6 +28,26 @@ export default class MyProfile extends Component {
       this.nextId = this.nextId.bind(this)
       this.onCancel = this.onCancel.bind(this)
   }
+
+  componentWillMount() {
+    this.getUserInfo();
+  }
+
+
+  getUserInfo(){
+
+    axios.get(`http://localhost:3000/api/userinfos/${userId}`)
+      .then(response => {
+        this.setState( {
+          userDetails: response.data
+
+          }, () => {
+          console.log(this.state);
+        })
+      })
+  }
+
+
 
   updateDisplayName(newText) {
     this.setState( prevState => ({
@@ -139,18 +137,19 @@ export default class MyProfile extends Component {
               {/*Display Name Section*/}
               <h5 className="ui dividing header">Display Name</h5>
               <EditableField label=""
-                              value = {this.state.displayNameText}
+                              value = {this.state.userDetails.display_name}
                               onChange = {this.updateDisplayName.bind(this)} />
 
               {/*About Me Section*/}
               <h5 className="ui dividing header">About Me</h5>
               <EditableTextArea label=""
-                                value = {this.state.aboutMeText}
+                                value = {this.state.userDetails.about_me}
                                 onChange = {this.updateAboutMe.bind(this)} />
 
               {/*My Class Section*/}
-              <h5 className="ui dividing header">My Classes with Group Projects</h5>
-              <CourseList courseList={this.state.courses}/>
+              <h5 className="ui dividing header">My Courses with Group Projects</h5>
+
+
 
               {/*My Project Section*/}
               <h5 className="ui dividing header">My Reference Profiles</h5>
