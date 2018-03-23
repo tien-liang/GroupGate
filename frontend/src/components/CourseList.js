@@ -1,5 +1,6 @@
 import React, { Component } from 'react'
 import Course from './Course'
+import { Button } from "semantic-ui-react";
 
 export default class CourseList extends Component {
 	constructor(props) {
@@ -81,10 +82,7 @@ export default class CourseList extends Component {
 	render() {
 		return (
 			<div className="board">
-				<button onClick={this.add.bind(null, "")}
-						id="add" disabled={this.state.addButtonDisabled}>
-					+ Add Course
-				</button>
+			<Button basic color="blue" onClick={this.add.bind(null,"")} id="add" disabled={this.state.addButtonDisabled}>+ Add Class</Button>
 				{this.state.courses.map(this.eachCourse)}
 			</div>
 		)

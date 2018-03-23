@@ -1,7 +1,10 @@
 import React, { Component } from "react";
 import { Link } from 'react-router-dom';
 import Nav from '../components/Nav';
+import ProjectGroup from '../components/AddProjGroup';
 import axios from 'axios';
+import ProjGroupItem from '../components/ProjGroupItem';
+
 
 const BASE_URL = 'http://localhost:3000';
 const url= `${BASE_URL}/api/projgroups`;
@@ -29,31 +32,27 @@ export default class ProjGroups extends Component {
   }
 
 
-
-
   render() {
-
-    const {groups} = this.state;
+    const projGroupItems = this.state.groups.map((group, i) => {
+      return(
+          <div className="panel-group ">
+            <ProjGroupItem item={group} key={group.id}  />
+          </div>
+      )
+    }
+  )
 
     return (
-      <div>
+      <div className="container fluid">
         <Nav />
 
-        <p>Components for 'Project Groups' page go here.</p>
+        <br/>
 
-        { groups.map((group, index) => (
-              <div className="col-sm-6" key={index}>
-                <div className="panel panel-primary">
-                  <div className="panel-heading">
-                    <h3 className="panel-title"><span className="btn">Group: { group.group_name }</span></h3>
-                  </div>
-                  <div className="panel-body">
-                    <p>Description: { group.group_descr } </p>
-                  </div>
-                </div>
-              </div>
-          ))}
-
+          {/*Your Groups Section*/}
+          <h5 className="ui dividing header">Project Groups You Created</h5>
+          <ProjectGroup/>
+          {/*Other Users Groups Section*/}
+          <h5 className="ui dividing header">Project Groups Other Users Created</h5>
 
 
       </div>

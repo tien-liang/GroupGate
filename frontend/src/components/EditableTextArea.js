@@ -48,9 +48,10 @@ export default class EditableTextArea extends Component {
     renderText() {                      // Render form, text disabled for editing
         return(
             <div className="editable-field">
-                <p> {this.props.label} {this.props.value} </p>
-                    <button id="edit" onClick={this.handleEdit}> edit </button>
-
+              <div className="ui clearing container">
+                <p className="left floated"> {this.props.label} {this.props.value} </p>
+                <button className="ui primary button right floated" id="edit" onClick={this.handleEdit}>Edit</button>
+              </div>
             </div>
         )
 
@@ -59,14 +60,18 @@ export default class EditableTextArea extends Component {
     renderInput() {                     // Render form, text enabled for editing
         return(
             <div className="input-field">
-                <form onSubmit={this.handleSave}>
+                <form onSubmit={this.handleSave} className="ui form">
+                  <div className="ui clearing container">
                     {this.props.label}
+                    <div className="eight wide field">
                     <textarea ref={ input => this._newText = input}
                         defaultValue={this.props.value}/>
+                    </div>
                     <span>
-                        <button id="save" onClick={this.handleSave}>save</button>
-                        <button id="cancel" onClick={this.handleCancel}>cancel</button>
+                      <button className="ui primary button right floated" id="save" onClick={this.handleSave}>Save</button>
+                      <button className="ui red button right floated" id="cancel" onClick={this.handleCancel}>Cancel</button>
                     </span>
+                  </div>
                 </form>
             </div>
         )

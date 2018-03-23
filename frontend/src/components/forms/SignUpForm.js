@@ -57,6 +57,7 @@ export default class SignUpForm extends React.Component {
               <p>{errors.global}</p>
             </Message>
           )}
+          {/*Email Input*/}
           <Form.Field error={!!errors.email}>
             <label htmlFor="email">Email</label>
             <input
@@ -70,6 +71,7 @@ export default class SignUpForm extends React.Component {
             />
             {errors.email && <InlineError text={errors.email} />}
           </Form.Field>
+          {/*Display Name Input*/}
           <Form.Field error={!!errors.displayName}>
             <label htmlFor="displayName">Display Name</label>
             <input
@@ -83,6 +85,7 @@ export default class SignUpForm extends React.Component {
             />
             {errors.displayName && <InlineError text={errors.displayName} />}
           </Form.Field>
+          {/*Password Input*/}
           <Form.Field error={!!errors.password}>
             <label htmlFor="password">Password</label>
             <input
@@ -96,7 +99,7 @@ export default class SignUpForm extends React.Component {
             />
             {errors.password && <InlineError text={errors.password} />}
           </Form.Field>
-
+          {/*Validate Password Input*/}
           <Form.Field error={!!errors.retypePassword}>
             <label htmlFor="retypePassword">Retype Password</label>
             <input
