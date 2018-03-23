@@ -2,11 +2,12 @@ from django.db import models
 from django.contrib.auth.models import AbstractUser
 
 class CustomUser(AbstractUser):
-    first_name = models.CharField(blank=True, max_length=255)
-    last_name = models.CharField(blank=True, max_length=255)
+    first_name = models.CharField(max_length=255)
+    last_name = models.CharField(max_length=255)
     # groups = models.ManyToManyField(
     #     Group, through=Group.members.through, blank=True
     # )
+    groups = models.ManyToManyField('Group', through = 'Membership', blank=True)
     
     def __str__(self):
         return self.username
