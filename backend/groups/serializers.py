@@ -6,15 +6,18 @@ UserModel = get_user_model()
 
 
 class GroupMembershipSerializer(serializers.ModelSerializer):
+    id = serializers.ReadOnlyField(source='group.id')
+    name = serializers.ReadOnlyField(source='group.name')
     class Meta:
         model = models.Membership
-        fields = ('user',)
+        fields = ('id', 'user', 'name',)
 
 class UserSerializer(serializers.ModelSerializer):
 
     password = serializers.CharField(write_only=True)
     first_name = serializers.CharField(required=True)
     last_name = serializers.CharField(required=True)
+    groups = GroupMembershipSerializer(source='membership_set', many=True)
 
     def create(self, validated_data):
 
@@ -30,14 +33,12 @@ class UserSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = UserModel
-        fields = ('id', 'username', 'password', 'first_name', 'last_name')
+        fields = ('id', 'username', 'password', 'first_name', 'last_name', 'groups')
 
 # class GroupSerializer(serializers.ModelSerializer):
 #     members = UserSerializer(many=True)
 #     def create(self, validated_data):
-#         persons = validated_data.pop('members')
-#         group = models.Group.objects.create(**validated_data)
-#         if persons:
+#         members_data = validated_data['members']
 #     class Meta:
 #         fields = (
 #             'id',
