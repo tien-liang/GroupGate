@@ -7,8 +7,8 @@ export default class Group extends Component {
 		this.ENTER_KEY = 13;
 		this.state = {
 			select_value: this.props.status,
-			adding: true,
-			editing: true,
+			adding: props.adding,
+			editing: false,
 			addButtonDisabled: props.addButtonDisabled
 		}
 		this.edit = this.edit.bind(this)
@@ -46,6 +46,7 @@ export default class Group extends Component {
 		this.setState({
 			editing: false
 		})
+		this.setState({adding: false})
 	}
 
 	cancel = (e) => {
@@ -90,8 +91,8 @@ export default class Group extends Component {
     					</div>
 
       					{"Description:"}
-      					<div className="five wide field">
-      					<input type="text" ref={input => this._newDescription = input}
+      					<div className="ten wide field">
+      					<textarea ref={input => this._newDescription = input}
       							  defaultValue={this.props.description}/>
       					</div>
 					<button className="ui primary button right floated" id="save" onClick={this.save}>Save</button>
@@ -120,6 +121,11 @@ export default class Group extends Component {
             <td>{this.props.status}</td>
             <td>{this.props.description}</td>
           </tr>
+					<tr>
+						<td>{"Group Member: "}{this.props.member.map((name,i)=>{
+							return name + " ";
+						})}</td>
+					</tr>
           <tr>
             <td colSpan="4">
 				<span>
@@ -133,6 +139,6 @@ export default class Group extends Component {
 		)
 	}
 	render() {
-		return this.state.editing ? this.renderForm() : this.renderDisplay()
+		return this.state.editing || this.state.adding ? this.renderForm() : this.renderDisplay()
 	}
 }
