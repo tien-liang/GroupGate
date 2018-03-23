@@ -1,6 +1,6 @@
 from rest_framework import viewsets
 from groups import models
-from .serializers import UserSerializer, GroupSerializer
+from .serializers import UserSerializer, GroupCreateSerializer
 from django.contrib.auth import get_user_model
 
 UserModel = get_user_model()
@@ -11,4 +11,4 @@ class UserViewSet(viewsets.ModelViewSet):
 
 class GroupViewSet(viewsets.ModelViewSet):
     queryset = models.Group.objects.all()
-    serializer_class = GroupSerializer
+    serializer_class = GroupCreateSerializer
