@@ -18,6 +18,12 @@ CRUD-capable
     members
 }
 
+{
+    "name": "x",
+    "description": "x",
+    "members": [{"user":1, "role":"dev"},{"user":2, "role":"dev"}]
+}
+
 How to run the backend:
 
 Requirements:

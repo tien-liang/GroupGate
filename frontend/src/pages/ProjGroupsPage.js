@@ -7,7 +7,7 @@ import ProjGroupItem from '../components/ProjGroupItem';
 
 
 const BASE_URL = 'http://localhost:3000';
-const url= `${BASE_URL}/api/projgroups`;
+const url= `${BASE_URL}/api/group_infos`;
 
 export default class ProjGroups extends Component {
 
@@ -54,7 +54,7 @@ export default class ProjGroups extends Component {
           {/*Other Users Groups Section*/}
           <h5 className="ui dividing header">Project Groups Other Users Created</h5>
 
-
+          {projGroupItems}
       </div>
     );
   }

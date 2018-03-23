@@ -12,3 +12,6 @@ class UserViewSet(viewsets.ModelViewSet):
 class GroupViewSet(viewsets.ModelViewSet):
     queryset = models.Group.objects.all()
     serializer_class = GroupCreateSerializer
+
+    # @detail_route(methods=['get'])
+    # def group(self, request, pk):

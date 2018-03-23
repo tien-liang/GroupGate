@@ -154,7 +154,7 @@ export default class MyProfile extends Component {
 
               {/*My Project Section*/}
               <h5 className="ui dividing header">My Reference Profiles</h5>
-              <Button basic color="blue" onClick={this.addProject}>+ Add Project Link</Button>
+              <Button basic color="blue" onClick={this.addProject}>+ Add Reference Profile</Button>
 
 
 

@@ -105,8 +105,6 @@ export default class Course extends Component {
 		)
 	}
 	render() {
-		console.log(this.state.editing)
-		console.log(this.state.adding)
 		return this.state.editing || this.state.adding ? this.renderForm() : this.renderDisplay()
 	}
 }
