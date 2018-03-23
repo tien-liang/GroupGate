@@ -14,7 +14,16 @@ export default class ProjGroups extends Component {
   constructor() {
     super();
     this.state = {
-      groups: []
+      groups: [
+        {
+          id: '47001',
+					groupName: '404 Non Wanna Be Found',
+					courseNumber: '470',
+          status: "Open",
+          description: 'whatever',
+          member: ['Davorin', 'Jason', 'Otakar', 'Tien']
+        }
+      ]
     };
   }
 
@@ -50,7 +59,7 @@ export default class ProjGroups extends Component {
 
           {/*Your Groups Section*/}
           <h5 className="ui dividing header">Project Groups You Created</h5>
-          <ProjectGroup/>
+          <ProjectGroup projectGroup={this.state.groups}/>
           {/*Other Users Groups Section*/}
           <h5 className="ui dividing header">Project Groups Other Users Created</h5>
 

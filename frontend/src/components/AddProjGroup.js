@@ -6,7 +6,8 @@ export default class ProjectGroup extends Component {
 	constructor(props) {
 		super(props)
 		this.state = {
-			groups: [],
+			adding: false,
+			groups: props.projectGroup,
 			addButtonDisabled: false
 		}
 		this.add = this.add.bind(this)
@@ -27,11 +28,12 @@ export default class ProjectGroup extends Component {
 					groupName: text,
 					courseNumber: text,
           status: "Open",
-          description: text
+          description: text,
+					member: []
 				}
 			],
 		}))
-
+		this.setState({adding: true})
 		this.setState({ addButtonDisabled: true })
 	}
 
@@ -65,7 +67,7 @@ export default class ProjectGroup extends Component {
 		return (
 			<Group key={group.id}
 				  index={group.id} groupName={group.groupName} courseNumber={group.courseNumber} status={group.status}
-					description= {group.description}
+					description= {group.description} member={group.member} adding={this.state.adding}
 					onCancel={this.onCancel} onChange={this.update} onRemove={this.remove}>
 		  </Group>
 		)
