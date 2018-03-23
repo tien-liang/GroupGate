@@ -35,11 +35,11 @@
     "dataSource": "db",
     "public": false
   },
-  "projgroups": {
+  "group_infos": {
     "dataSource": "db",
     "public": true
   },
-  "user_info": {
+  "user_infos": {
     "dataSource": "db",
     "public": true
   }
