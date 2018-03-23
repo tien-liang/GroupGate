@@ -27,7 +27,7 @@ class UserSerializer(serializers.ModelSerializer):
         fields = ('id', 'username', 'password', 'first_name', 'last_name')
 
 class GroupSerializer(serializers.ModelSerializer):
-    members = UserSerializer(read_only=True, many=True)
+    members = UserSerializer(many=True)
 
     class Meta:
         fields = (
