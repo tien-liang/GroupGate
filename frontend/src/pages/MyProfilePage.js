@@ -21,7 +21,7 @@ export default class MyProfile extends Component {
         courses: [
           {
             id : '470',
-            courseNumber : '470',
+            courseNumber : 'CMPT 470',
             termYear: 2018,
             termSemester: "Spring"
           }

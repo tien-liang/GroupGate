@@ -18,7 +18,7 @@ export default class ProjGroups extends Component {
         {
           id: '47001',
 					groupName: '404 Non Wanna Be Found',
-					courseNumber: '470',
+					courseNumber: 'CMPT 470',
           status: "Open",
           description: 'whatever',
           member: ['Davorin', 'Jason', 'Otakar', 'Tien']
