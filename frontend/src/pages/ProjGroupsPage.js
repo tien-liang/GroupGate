@@ -7,7 +7,7 @@ import ProjGroupItem from '../components/ProjGroupItem';
 
 
 const BASE_URL = 'http://localhost:3000';
-const url= `${BASE_URL}/api/group_infos`;
+const url= `${BASE_URL}/api/groupinfos`;
 
 export default class ProjGroups extends Component {
 
