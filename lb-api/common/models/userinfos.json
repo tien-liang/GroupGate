@@ -1,0 +1,70 @@
+{
+  "name": "userinfos",
+  "base": "PersistedModel",
+  "idInjection": true,
+  "options": {
+    "validateUpsert": true
+  },
+  "properties": {
+    "display_name": {
+      "type": "string",
+      "required": true
+    },
+    "about_me": {
+      "type": "string",
+      "required": true
+    },
+    "display_name": {
+      "type": "string",
+      "required": true
+    },
+    "courses": {
+      "type": [
+        "string"
+      ]
+    },
+    "references": {
+      "type": [
+        "string"
+      ]
+    },
+    "groups_owned": {
+      "type": [
+        "string"
+      ]
+    },
+    "groups_joined": {
+      "type": [
+        "string"
+      ]
+    },
+    "total_r_skills": {
+      "type": "number",
+      "required": true
+    },
+    "total_r_comm": {
+      "type": "number",
+      "required": true
+    },
+    "total_r_psolving": {
+      "type": "number",
+      "required": true
+    },
+    "total_r_timemngmt": {
+      "type": "number",
+      "required": true
+    },
+    "total_r_activity": {
+      "type": "number",
+      "required": true
+    },
+    "num_of_votes": {
+      "type": "number",
+      "required": true
+    }
+  },
+  "validations": [],
+  "relations": {},
+  "acls": [],
+  "methods": {}
+}
