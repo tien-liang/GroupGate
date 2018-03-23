@@ -23,7 +23,7 @@ Lockfile:
   No lockfile
 
 Trace: 
-  Error: Couldn't find a package.json file in "/Users/otakar/Dev/JS/gp"
+  Error: Couldn't find a package.json file in "/Users/otakar/Dev/JS/gp2"
       at new MessageError (/Users/otakar/.nvm/versions/node/v9.4.0/lib/node_modules/yarn/lib/cli.js:186:110)
       at /Users/otakar/.nvm/versions/node/v9.4.0/lib/node_modules/yarn/lib/cli.js:40048:15
       at Generator.next (<anonymous>)
