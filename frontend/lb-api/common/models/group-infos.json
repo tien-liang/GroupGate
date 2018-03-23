@@ -1,0 +1,43 @@
+{
+  "name": "group_infos",
+  "base": "PersistedModel",
+  "idInjection": true,
+  "options": {
+    "validateUpsert": true
+  },
+  "properties": {
+    "group_name": {
+      "type": "string",
+      "required": true
+    },
+    "group_descr": {
+      "type": "string"
+    },
+    "group_status": {
+      "type": "string",
+      "required": true
+    },
+    "group_course": {
+      "type": "string"
+    },
+    "group_url": {
+      "type": "string"
+    },
+    "group_gitlink": {
+      "type": "string"
+    },
+    "group_owner": {
+      "type": "string",
+      "required": true
+    },
+    "group_members": {
+      "type": [
+        "string"
+      ]
+    }
+  },
+  "validations": [],
+  "relations": {},
+  "acls": [],
+  "methods": {}
+}
