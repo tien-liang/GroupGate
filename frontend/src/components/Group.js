@@ -6,6 +6,7 @@ export default class Group extends Component {
 		this.ESCAPE_KEY = 27;
 		this.ENTER_KEY = 13;
 		this.state = {
+			select_value: this.props.status,
 			adding: true,
 			editing: true,
 			addButtonDisabled: props.addButtonDisabled
@@ -16,6 +17,7 @@ export default class Group extends Component {
 		this.cancel = this.cancel.bind(this)
 		this.renderForm = this.renderForm.bind(this)
 		this.renderDisplay = this.renderDisplay.bind(this)
+		this.handleChange = this.handleChange.bind(this)
 	}
 
 	componentDidUpdate() {
@@ -57,6 +59,10 @@ export default class Group extends Component {
 		this.props.onCancel( false )
 	}
 
+	handleChange(e){
+		this.setState({select_value: e.target.value})
+	}
+
 	renderForm() {
 		return (
 			<div className="ui clearing segment">
@@ -74,8 +80,12 @@ export default class Group extends Component {
   					</div>
     					{"Status:"}
     					<div className="five wide field">
-    					<input type="text" ref={input => this._newStatus = input}
-    							  defaultValue={this.props.status}/>
+							<select value={this.state.select_value} ref={input=> this._newStatus = input} onChange={this.handleChange}>
+								<option value="Open">Open</option>
+								<option value="Closed">Closed</option>
+							</select>
+    					{/*<input type="text" ref={input => this._newStatus = input}
+    							  defaultValue={this.props.status}/>*/}
     					</div>
       					{"Description:"}
       					<div className="five wide field">

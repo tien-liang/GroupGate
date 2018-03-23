@@ -24,8 +24,9 @@ export default class CourseList extends Component {
 			semester='Spring'
 		} else if( (date.getMonth()+1) >= 5 && (date.getMonth()+1) <= 8 ) {
 			semester = 'Summer'
-		} else { semester = 'Fall' }
-
+		} else {
+			semester = 'Fall'
+		}
 		this.setState(prevState => ({
 			courses: [
 				...prevState.courses,
@@ -82,7 +83,7 @@ export default class CourseList extends Component {
 	render() {
 		return (
 			<div className="board">
-			<Button basic color="blue" onClick={this.add.bind(null,"")} id="add" disabled={this.state.addButtonDisabled}>+ Add Class</Button>
+			<Button basic color="blue" onClick={this.add.bind(null,"")} id="add" disabled={this.state.addButtonDisabled}>+ Add Course</Button>
 				{this.state.courses.map(this.eachCourse)}
 			</div>
 		)

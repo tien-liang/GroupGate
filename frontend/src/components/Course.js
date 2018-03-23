@@ -67,8 +67,9 @@ export default class Course extends Component {
 							  defaultValue={this.props.children}/>
 							</div>
 								{this.props.label_2}
-								{this.props.value_2}
 								{this.props.value_3}
+								{" "}
+								{this.props.value_2}
 					<button className="ui primary button right floated" id="save" onClick={this.save}>Save</button>
 					<button className="ui red button right floated" id="cancel" onClick={this.cancel}>Cancel</button>
 				</form>
@@ -78,7 +79,7 @@ export default class Course extends Component {
 
 	renderDisplay() {
 		return (
-				<table className="ui celled table">
+				<table className="ui single line basic table">
 					<thead>
 						<tr>
 							<th className="three wide">{"Course Number"}</th>
@@ -88,7 +89,7 @@ export default class Course extends Component {
 					<tbody>
 						<tr>
 							<td>{this.props.children}</td>
-							<td>{this.props.value_2}{this.props.value_3}</td>
+							<td>{this.props.value_2}{" "}{this.props.value_3}</td>
 						</tr>
 						<tr>
 							<td colSpan="2">
