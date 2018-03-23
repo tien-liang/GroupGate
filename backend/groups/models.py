@@ -4,14 +4,13 @@ from django.contrib.auth.models import AbstractUser
 class CustomUser(AbstractUser):
     first_name = models.CharField(max_length=255)
     last_name = models.CharField(max_length=255)
+
     # @property
     # def full_name(self):
     #     return self.first_name + self.last_name
 
-    # groups = models.ManyToManyField(
-    #     Group, through=Group.members.through, blank=True
-    # )
     groups = models.ManyToManyField('Group', through = 'Membership', blank=True)
+    display_name = models.CharField(max_length=255, blank=True)
     
     def __str__(self):
         return self.username
@@ -27,6 +26,7 @@ class Group(models.Model):
     description = models.TextField()
     # owner = models.ForeignKey(CustomUser, on_delete=models.CASCADE, related_name='owner')
     members = models.ManyToManyField(CustomUser, blank=True, related_name='members')
+    course =models.CharField(max_length=200)
 
     def __str__(self):
         return self.name

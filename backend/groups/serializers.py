@@ -4,7 +4,6 @@ from django.contrib.auth import get_user_model
 
 UserModel = get_user_model()
 
-
 class MembershipSerializer(serializers.ModelSerializer):
     group_id = serializers.ReadOnlyField(source='group.id')
     group_name = serializers.ReadOnlyField(source='group.name')
@@ -20,6 +19,7 @@ class UserSerializer(serializers.ModelSerializer):
     first_name = serializers.CharField(required=True)
     last_name = serializers.CharField(required=True)
     groups = MembershipSerializer(source='membership_set', many=True)
+    display_name = serializers.CharField(required=False)
 
     def create(self, validated_data):
 
@@ -35,37 +35,16 @@ class UserSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = UserModel
-        fields = ('id', 'username', 'password', 'first_name', 'last_name', 'groups')
-
-# class GroupSerializer(serializers.ModelSerializer):
-#     members = UserSerializer(many=True)
-#     def create(self, validated_data):
-#         members_data = validated_data['members']
-#     class Meta:
-#         fields = (
-#             'id',
-#             'name',
-#             'description',
-#             'members',
-#         )
-#         model = models.Group
+        fields = ('id', 'username', 'password', 'first_name', 'last_name', 'display_name', 'groups')
 
 class GroupCreateSerializer(serializers.ModelSerializer):
     members = MembershipSerializer(source='membership_set', many=True, required=False)
-    print("\n\n\n")
-    print(members)
-    print("\n\n\n")
+
     def create(self, validated_data):
-        print("\n\n\n")
-        print(validated_data)
-        print("\n\n\n")
         user_data = validated_data.pop('membership_set')
         group = models.Group.objects.create(**validated_data)
         for user in user_data:
             d=dict(user)
-            print("\n\n\n")
-            print(d)
-            print("\n\n\n")
             models.Membership.objects.create(group=group, user=d['user'], role=d['role'])
         return group
 
@@ -82,5 +61,5 @@ class GroupCreateSerializer(serializers.ModelSerializer):
         return instance
 
     class Meta:
-        fields = ('id', 'name', 'description', 'members')
+        fields = ('id', 'name', 'course', 'description', 'members')
         model = models.Group
