@@ -4,7 +4,8 @@ import { Button } from "semantic-ui-react";
 
 export default class ProjectGroup extends Component {
 	constructor(props) {
-		super(props)
+		super(props);
+
 		this.state = {
 			adding: false,
 			groups: props.projectGroup,
@@ -17,20 +18,22 @@ export default class ProjectGroup extends Component {
 		this.nextId = this.nextId.bind(this)
 		this.onCancel = this.onCancel.bind(this)
 	}
-
 	add(text) {
 
 		this.setState(prevState => ({
 			groups: [
 				...prevState.groups,
 				{
-					id: this.nextId(),
-					groupName: text,
-					courseNumber: text,
-          status: "Open",
-          description: text,
-					member: []
-				}
+  				"group_name": "",
+  				"group_descr": "",
+  				"group_status": "",
+  				"group_course": "",
+  				"group_url": "",
+  				"group_gitlink": "",
+  				"group_owner": "",
+  				"group_members": [],
+  				"id": ""
+}
 			],
 		}))
 		this.setState({adding: true})
@@ -66,18 +69,21 @@ export default class ProjectGroup extends Component {
 	eachGroup(group, i) {
 		return (
 			<Group key={group.id}
-				  index={group.id} groupName={group.groupName} courseNumber={group.courseNumber} status={group.status}
-					description= {group.description} member={group.member} adding={this.state.adding}
+				  index={group.id} groupName={group.group_name} courseNumber={group.group_course} status={group.group_status}
+					description= {group.group_descr} member={group.group_members} adding={this.state.adding}
 					onCancel={this.onCancel} onChange={this.update} onRemove={this.remove}>
 		  </Group>
 		)
 	}
 
 	render() {
+	console.log(this.state)
 		return (
 			<div className="board">
 			<Button basic color="blue" onClick={this.add.bind(null,"")} id="add" disabled={this.state.addButtonDisabled}>+ New Group</Button>
-				{this.state.groups.map(this.eachGroup)}
+
+
+				{this.props.projectGroup.map(this.eachGroup)}
 			</div>
 		)
 	}

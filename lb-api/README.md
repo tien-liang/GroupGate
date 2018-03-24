@@ -13,7 +13,7 @@ Requirements:
 
 INSTRUCTIONS:
 
-1) in lb-api dir, nmp install
+1) in lb-api dir, npm install
 
 2) node .
 
