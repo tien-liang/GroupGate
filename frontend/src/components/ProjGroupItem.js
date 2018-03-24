@@ -30,7 +30,7 @@ export default class ProjGroupItem extends Component{
             <div className="col-xs-10">Members: { this.state.item.group_members } </div>
 
           </div>
-          <div class="col-md-offset-10"><button>Edit</button><button>Remove</button> </div>
+          <div className="col-md-offset-10"><button>Edit</button><button>Remove</button> </div>
 
 
 

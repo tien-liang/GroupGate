@@ -10,7 +10,7 @@ import CourseList from '../components/CourseList'
 import Nav from '../components/Nav';
 import '../css/style.css';
 
-  const userId = '5ab53df643c2a043fced834a';    // you have to update this user ID with id from your backend
+  const userId = '5ab60109351f8a12ba4937b2';    // you have to update this user ID with id from your backend
 
 export default class MyProfile extends Component {
 
