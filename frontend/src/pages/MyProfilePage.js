@@ -46,7 +46,6 @@ export default class MyProfile extends Component {
           id: response.data.id,
           displayName: response.data.display_name,
           aboutMe: response.data.about_me
-
           }, () => {
           console.log(this.state);
         })
@@ -54,13 +53,7 @@ export default class MyProfile extends Component {
   }
 
 
-
-
   updateDisplayName(newText) {
-
-    this.setState( prevState => ({
-      displayNameText: newText
-    }) )
 
     axios.request({
       method:'patch',
@@ -68,33 +61,38 @@ export default class MyProfile extends Component {
       data: {
         display_name: newText
       }
-
     }).then(response => {
 
-
-      // need to refresh the compnent here
     }).catch(err => console.log(err));
 
-
+    this.setState( prevState => ({
+      displayName: newText
+    }) )
 
   }
-
-
-
-
-
-
-
-
-
-
 
 
   updateAboutMe(newText) {
+
+    axios.request({
+      method:'patch',
+      url:`http://localhost:3000/api/userinfos/${this.state.id}`,
+      data: {
+        about_me: newText
+      }
+    }).then(response => {
+
+    }).catch(err => console.log(err));
+
+
     this.setState( prevState => ({
-      aboutMeText: newText
+      aboutMe: newText
     }) )
+
   }
+
+
+
   // ----------------------
   onCancel( newState ){
     this.setState({ addButtonDisabled: newState })
@@ -184,15 +182,10 @@ export default class MyProfile extends Component {
                                 value = {this.state.aboutMe}
                                 onChange = {this.updateAboutMe.bind(this)} />
 
-              {/*My Class Section*/}
-              <h5 className="ui dividing header">My Courses with Group Projects</h5>
 
-
-
-              {/*My Project Section*/}
+              {/*My References Section*/}
               <h5 className="ui dividing header">My Reference Profiles</h5>
               <Button basic color="blue" onClick={this.addProject}>+ Add Reference Profile</Button>
-
 
 
           </div>
