@@ -10,14 +10,18 @@ import CourseList from '../components/CourseList'
 import Nav from '../components/Nav';
 import '../css/style.css';
 
-  const userId = '5ab53df643c2a043fced834a';
+  const userId = '5ab53df643c2a043fced834a';    // you have to update this user ID with id from your backend
 
 export default class MyProfile extends Component {
 
   constructor(props) {
     super(props)
       this.state = {
-        userDetails: ''
+          id: '',
+          displayName: '',
+          aboutMe: '',
+          courses: [],
+          references: []
       }
       this.updateDisplayName = this.updateDisplayName.bind(this)
       this.updateAboutMe = this.updateAboutMe.bind(this)
@@ -27,19 +31,21 @@ export default class MyProfile extends Component {
       this.remove = this.remove.bind(this)
       this.nextId = this.nextId.bind(this)
       this.onCancel = this.onCancel.bind(this)
+      //this.updateAPI = this.updateAPI.bind(this)
   }
 
-  componentWillMount() {
+
+  componentDidMount() {
     this.getUserInfo();
   }
 
-
   getUserInfo(){
-
     axios.get(`http://localhost:3000/api/userinfos/${userId}`)
       .then(response => {
         this.setState( {
-          userDetails: response.data
+          id: response.data.id,
+          displayName: response.data.display_name,
+          aboutMe: response.data.about_me
 
           }, () => {
           console.log(this.state);
@@ -49,11 +55,41 @@ export default class MyProfile extends Component {
 
 
 
+
   updateDisplayName(newText) {
+
     this.setState( prevState => ({
       displayNameText: newText
     }) )
+
+    axios.request({
+      method:'patch',
+      url:`http://localhost:3000/api/userinfos/${this.state.id}`,
+      data: {
+        display_name: newText
+      }
+
+    }).then(response => {
+
+
+      // need to refresh the compnent here
+    }).catch(err => console.log(err));
+
+
+
   }
+
+
+
+
+
+
+
+
+
+
+
+
   updateAboutMe(newText) {
     this.setState( prevState => ({
       aboutMeText: newText
@@ -98,17 +134,19 @@ export default class MyProfile extends Component {
     this.setState({ addButtonDisabled: true })
   }
 
-  nextId() {
-    this.uniqueId = this.uniqueId || 0
-    return this.uniqueId++
-  }
-
   remove(id) {
     console.log('removing item at', id)
     this.setState(prevState => ({
       references: prevState.references.filter(reference => reference.id !== id)
     }))
   }
+
+  nextId() {
+    this.uniqueId = this.uniqueId || 0
+    return this.uniqueId++
+  }
+
+
 
   eachReference(reference, i) {											// loop for the courses rendering
     return (
@@ -137,13 +175,13 @@ export default class MyProfile extends Component {
               {/*Display Name Section*/}
               <h5 className="ui dividing header">Display Name</h5>
               <EditableField label=""
-                              value = {this.state.userDetails.display_name}
+                              value = {this.state.displayName}
                               onChange = {this.updateDisplayName.bind(this)} />
 
               {/*About Me Section*/}
               <h5 className="ui dividing header">About Me</h5>
               <EditableTextArea label=""
-                                value = {this.state.userDetails.about_me}
+                                value = {this.state.aboutMe}
                                 onChange = {this.updateAboutMe.bind(this)} />
 
               {/*My Class Section*/}
