@@ -83,7 +83,7 @@ export default class ProjectGroup extends Component {
 			<Button basic color="blue" onClick={this.add.bind(null,"")} id="add" disabled={this.state.addButtonDisabled}>+ New Group</Button>
 
 
-				{this.props.projectGroup.map(this.eachGroup)}
+				{this.state.groups.map(this.eachGroup)}
 			</div>
 		)
 	}
