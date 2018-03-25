@@ -34,9 +34,7 @@ export default class ProjGroups extends Component {
   render() {
     const projGroupItems = this.state.groups.map((group, i) => {
       return(
-          <div className="panel-group ">
             <ProjGroupItem item={group} key={group.id}  />
-          </div>
       )
     }
   )
