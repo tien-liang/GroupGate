@@ -21,8 +21,12 @@ CRUD-capable
 {
     "name": "x",
     "description": "x",
+    "course":"CMPT470"
     "members": [{"user":1, "role":"dev"},{"user":2, "role":"dev"}]
 }
+
+Filters groups with course with CMPT470
+/api/groups/?course="CMPT470"
 
 How to run the backend:
 
