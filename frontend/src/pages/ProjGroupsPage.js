@@ -15,37 +15,24 @@ export default class ProjGroups extends Component {
   constructor() {
     super();
     this.state = {
-      groups_created: [],
-      other_groups:[]
+      groups: [],
     };
   }
 
-  componentDidMount() {
-    this.getGroupsCreated();
-    this.getOtherGroups();
+  componentWillMount() {
+    this.getProjGroups();
   }
-
-  getGroupsCreated(){
-    axios.get(`${url}?filter={"group_owner":"${userId}"}`)
-    .then(response => {
-      this.setState( {
-        groups_created: response.data,
-        }, () => {
-        console.log(this.state);
-      })
-    })
-  }
-  getOtherGroups(){
+  getProjGroups(){
     axios.get(`${url}?filter={"where":{"group_owner":{"neq":"${userId}"}}}`)
       .then(response => {
-        this.setState( {other_groups: response.data}, () => {
+        this.setState( {groups: response.data}, () => {
           console.log(this.state)
         })
     })
   }
 
   render() {
-    const projGroupItems = this.state.other_groups.map((group, i) => {
+    const projGroupItems = this.state.groups.map((group, i) => {
       return(
           <div className="panel-group ">
             <ProjGroupItem item={group} key={group.id}  />
@@ -62,7 +49,7 @@ export default class ProjGroups extends Component {
 
           {/*Your Groups Section*/}
           <h5 className="ui dividing header">Project Groups You Created</h5>
-          <ProjectGroup projectGroup={this.state.groups_created}/>
+          <ProjectGroup/>
           {/*Other Users Groups Section*/}
           <h5 className="ui dividing header">Project Groups Other Users Created</h5>
 
