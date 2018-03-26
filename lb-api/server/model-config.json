@@ -42,5 +42,9 @@
   "groupinfos": {
     "dataSource": "db",
     "public": true
+  },
+  "courseinfos": {
+    "dataSource": "db",
+    "public": true
   }
 }

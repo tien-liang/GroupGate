@@ -33,7 +33,7 @@ export default class EditableTextArea extends Component {
 
     handleSave(e) {
         e.preventDefault()
-        this.props.onChange(this._newText.value)
+        this.props.onChange( '2', this._newText.value)
         this.setState({
               editing: false,
         });

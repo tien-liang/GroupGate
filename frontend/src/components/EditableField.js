@@ -1,6 +1,5 @@
 import React, { Component } from 'react';
 import 'semantic-ui-css/semantic.min.css';
-import axios from 'axios';
 
 export default class EditableField extends Component {
     constructor(props){
@@ -8,7 +7,6 @@ export default class EditableField extends Component {
         this.ESCAPE_KEY = 27;
         this.ENTER_KEY = 13;
         this.state = {
-            editText: props.inputValue,
             editing: false
         }
         this.handleEdit = this.handleEdit.bind(this)
@@ -35,7 +33,7 @@ export default class EditableField extends Component {
 
     handleSave(e) {
         e.preventDefault()
-        this.props.onChange(this._newText.value)
+        this.props.onChange('1', this._newText.value)
         this.setState({
               editing: false,
         });
