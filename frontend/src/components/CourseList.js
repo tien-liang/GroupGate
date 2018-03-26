@@ -23,7 +23,6 @@ export default class CourseList extends Component {
 		this.remove = this.remove.bind(this)
 		this.nextId = this.nextId.bind(this)
 		this.onCancel = this.onCancel.bind(this)
-
 		this.getCurrentTermSemester = this.getCurrentTermSemester.bind(this)
 	}
 
@@ -31,7 +30,7 @@ export default class CourseList extends Component {
 		this.getCourses();
 	}
 
-	getCourses(){
+	getCourses(){																																	// API call to load courses
 		axios.get(`${url}?q={ "user_id": ${this.state.userId}" } `)
 		.then(response => {
 				this.setState( {courses: response.data}, () => {
@@ -45,15 +44,14 @@ export default class CourseList extends Component {
 			( ((date.getMonth()+1) >= 5 && (date.getMonth()+1) <= 8 ) ? 'Summer' : 'Fall' ) )
 	}
 
-	add(text) {
-
+	add(text) {																																		// Add button clicked handler
 		this.setState(prevState => ({
 			courses: [
 				...prevState.courses,
 				{
-					id: this.nextId(),																								// ?
-					courseNumber: text,
-					termYear: date.getFullYear(),
+					id: this.nextId(),
+					courseNumber: text,																										// Watch out for variable naming difference
+					termYear: date.getFullYear(),																					// between state vars and API vars
 					termSemester: this.getCurrentTermSemester()
 				}
 			],
@@ -67,43 +65,30 @@ export default class CourseList extends Component {
 		return this.uniqueId++
 	}
 
-
-	update(newText, i) {
+	update( newText, i, addMode ) {
 		console.log('updating item at index: ', i, newText)
-		const dataPackage = newText;
+		// const dataPackage = newText;
 
-		if(this.adding){
+		if ( addMode ){
 			axios.request({
-					method:'post',
-					url:`http://localhost:3000/api/courseinfos/`,
-					data: {
-						courseNumber: dataPackage,
-						termYear: date.getFullYear(),
-						termSemester: this.getCurrentTermSemester(),
-						user_id: this.userId
-					}
-				}).then(response => {
-				}).catch(err => console.log(err));
-
-		}else{
-			axios.request({
-					method:'patch',
-					url:`http://localhost:3000/api/courseinfos/${i}`,
-					data: {
-							course_number: dataPackage
-					}
-				}).then(response => {
-				}).catch(err => console.log(err));
+			method:'post',
+			url:`http://localhost:3000/api/courseinfos/`,
+			data: {
+				course_number: newText,
+				term_year: date.getFullYear(),
+				term_semester: this.getCurrentTermSemester(),
+				user_id: this.state.userId
+			}
+		}).then(response => {
+			console.log( response )
+		}).catch(err => console.log(err));
 		}
 
-
-
-			this.setState(prevState => ({
-				courses: prevState.courses.map(
-					course => (course.id !== i) ? course : {...course, course_number: newText}
-				)
-			}))
-
+		this.setState(prevState => ({
+			courses: prevState.courses.map(
+				course => (course.id !== i) ? course : {...course, course_number: newText}
+			)
+		}))
 
 		this.setState({ addButtonDisabled: false })
 	}
@@ -114,6 +99,17 @@ export default class CourseList extends Component {
 
 	remove(id) {
 		console.log('removing item at', id)																					// DEBUG
+		axios.delete(`http://localhost:3000/api/courseinfos/${id}`)
+      .then(response => {
+        this.setState( {
+          id: response.data.id,
+          displayName: response.data.display_name,
+          aboutMe: response.data.about_me,
+          }, () => {
+          console.log('MP -> Loading user: ', this.state);
+        })
+      })
+
 		this.setState(prevState => ({
 			courses: prevState.courses.filter(course => course.id !== id)
 		}))
@@ -134,7 +130,7 @@ export default class CourseList extends Component {
 	render() {
 		return (
 			<div className="panel-group">
-				<Button basic color="blue" onClick={this.add.bind(null,"")} id="add"
+				<Button id="add" basic color="blue" onClick={this.add.bind(null,"")}
 								disabled={this.state.addButtonDisabled}>+ Add Course</Button>
 
 				{this.state.courses.map(this.eachCourse)}
