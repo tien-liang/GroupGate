@@ -50,9 +50,9 @@ export default class CourseList extends Component {
 				...prevState.courses,
 				{
 					id: this.nextId(),
-					courseNumber: text,																										// Watch out for variable naming difference
-					termYear: date.getFullYear(),																					// between state vars and API vars
-					termSemester: this.getCurrentTermSemester()
+					course_number: text,																										
+					term_year: date.getFullYear(),
+					term_semester: this.getCurrentTermSemester()
 				}
 			],
 		}))
@@ -86,7 +86,9 @@ export default class CourseList extends Component {
 
 		this.setState(prevState => ({
 			courses: prevState.courses.map(
-				course => (course.id !== i) ? course : {...course, course_number: newText}
+				course => (course.id !== i) ? course : {...course, course_number: newText,
+																													term_year: date.getFullYear(),
+																												term_semester: this.getCurrentTermSemester()  }
 			)
 		}))
 
