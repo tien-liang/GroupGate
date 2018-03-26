@@ -1,12 +1,20 @@
 import React, { Component } from 'react'
-import Reference from './Reference'
+import ReferenceListItem from './ReferenceListItem'
 import { Button } from "semantic-ui-react";
+import axios from 'axios';
+
+const BASE_URL = 'http://localhost:3000';
+const url= `${BASE_URL}/api/referenceinfos`;
+
+const date = new Date();
 
 export default class ReferenceList extends Component {
 	constructor(props) {
 		super(props)
 		this.state = {
+			userId: this.props.userId,
 			references: [],
+			adding: false,
 			addButtonDisabled: false
 		}
 		this.add = this.add.bind(this)
@@ -15,29 +23,36 @@ export default class ReferenceList extends Component {
 		this.remove = this.remove.bind(this)
 		this.nextId = this.nextId.bind(this)
 		this.onCancel = this.onCancel.bind(this)
+
 	}
 
-	add(text) {
-		var date = new Date();
-		var semester = ''
-		if ( (date.getMonth()+1) >= 1 && (date.getMonth()+1) <= 4   ){
-			semester='Spring'
-		} else if( (date.getMonth()+1) >= 5 && (date.getMonth()+1) <= 8 ) {
-			semester = 'Summer'
-		} else { semester = 'Fall' }
+	componentDidMount(){
+		this.getRefs();
+	}
 
+	getRefs(){																																	// API call to load Refs
+		axios.get(`${url}?q={ "user_id": ${this.state.userId}" } `)
+		.then(response => {
+				this.setState( {courses: response.data}, () => {
+					console.log('CL -> Trying to get Refs:', this.state.references);							/* DEBUG */
+				})
+		})
+	}
+
+
+
+	add(text) {																																		// Add button clicked handler
 		this.setState(prevState => ({
-			courses: [
-				...prevState.courses,
+			references: [
+				...prevState.references,
 				{
 					id: this.nextId(),
-					courseNumber: text,
-					termYear: date.getFullYear(),
-					termSemester: semester
+					ref_provider: '',																											// not finished
+					ref_url: text,
 				}
 			],
 		}))
-
+		this.setState({adding: true})
 		this.setState({ addButtonDisabled: true })
 	}
 
@@ -46,11 +61,28 @@ export default class ReferenceList extends Component {
 		return this.uniqueId++
 	}
 
-	update(newText, i) {
-		console.log('updating item at index', i, newText)
+	update( newText, i, addMode ) {
+		console.log('updating item at index: ', i, newText)
+
+		if ( addMode ){
+/*			axios.request({
+			method:'post',
+			url:`http://localhost:3000/api/referenceinfos/`,
+			data: {
+				ref_provider: '',																								// not finished
+				ref_url: newText,
+				user_id: this.state.userId
+			}
+		}).then(response => {
+			console.log( response )
+		}).catch(err => console.log(err));
+*/
+		}
+
 		this.setState(prevState => ({
 			courses: prevState.courses.map(
-				course => (course.id !== i) ? course : {...course, courseNumber: newText}
+				reference => (reference.id !== i) ? reference : {...reference, ref_provider: '',					// not finished
+																													ref_url: newText }
 			)
 		}))
 
@@ -63,27 +95,38 @@ export default class ReferenceList extends Component {
 
 	remove(id) {
 		console.log('removing item at', id)																					// DEBUG
+		axios.delete(`http://localhost:3000/api/referenceinfos/${id}`)
+      .then(response => {
+        this.setState( {
+          }, () => {
+          console.log('MP -> Loading user: ', this.state);
+        })
+      })
+
 		this.setState(prevState => ({
-			courses: prevState.courses.filter(course => course.id !== id)
+			courses: prevState.courses.filter(reference => reference.id !== id)
 		}))
 	}
 
-	eachRef(course, i) {
+	eachRef(reference, i) {
+		console.log ('CL -> checking reference at eachRef: ', reference.course_number, '  ', reference.id, i)									// DEBUG
 		return (
-			<Course key={course.id}
-				  index={course.id} label_1='Course Number: ' label_2='Term: '
-					value_2= {course.termYear} value_3= {course.termSemester}
+			<ReferenceListItem key={reference.id}
+				  index={reference.id} label_1='Reference Provider: ' 																						// INCOMPLETE HERE
+					provider= {reference.ref_provider} url= {reference.ref_url} adding={this.state.adding}
 					onCancel={this.onCancel} onChange={this.update} onRemove={this.remove}>
-				  {course.courseNumber}
-		  </Course>
+				  {reference.ref_provider} {reference.ref_url}
+		  </ReferenceListItem>
 		)
 	}
 
 	render() {
 		return (
-			<div className="board">
-			<Button basic color="blue" onClick={this.add.bind(null,"")} id="add" disabled={this.state.addButtonDisabled}>+ Add Course</Button>
-				{this.state.courses.map(this.eachCourse)}
+			<div className="panel-group">
+				<Button id="add" basic color="blue" onClick={this.add.bind(null,"")}
+								disabled={this.state.addButtonDisabled}>+ Add Reference</Button>
+
+				{this.state.references.map(this.eachRef)}
 			</div>
 		)
 	}

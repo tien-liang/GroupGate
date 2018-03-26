@@ -3,7 +3,7 @@ import axios from 'axios';
 import EditableField from '../components/EditableField';
 import EditableTextArea from '../components/EditableTextArea';
 import CourseList from '../components/CourseList'
-//import Reference from '../components/Reference';
+import ReferenceList from '../components/ReferenceList';
 
 import Nav from '../components/Nav';
 import '../css/style.css';
@@ -99,6 +99,7 @@ export default class MyProfile extends Component {
 
               {/*My References Section*/}
               <h5 className="ui dividing header">My Reference Profiles</h5>
+              <ReferenceList userId = {userId} />
 
           </div>
       </div>

@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import providerOptions from './common/providerOptions.json';
 // import linkedin_img from "./images/avatars/linkedin.png";
 
-export default class Reference extends Component {
+export default class ReferenceListItem extends Component {
 	constructor(props) {
 		super(props)
 		this.ESCAPE_KEY = 27;

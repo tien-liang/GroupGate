@@ -50,7 +50,7 @@ export default class CourseList extends Component {
 				...prevState.courses,
 				{
 					id: this.nextId(),
-					course_number: text,																										
+					course_number: text,
 					term_year: date.getFullYear(),
 					term_semester: this.getCurrentTermSemester()
 				}
@@ -104,9 +104,6 @@ export default class CourseList extends Component {
 		axios.delete(`http://localhost:3000/api/courseinfos/${id}`)
       .then(response => {
         this.setState( {
-          id: response.data.id,
-          displayName: response.data.display_name,
-          aboutMe: response.data.about_me,
           }, () => {
           console.log('MP -> Loading user: ', this.state);
         })

@@ -40,7 +40,7 @@ export default class Course extends Component {
 
 	save(e) {
 		e.preventDefault()
-		this.props.onChange( this._newText.value, this.props.index, this.state.adding )
+		this.props.onChange(this._newText.value, this.props.index, this.state.adding )
 		this.setState({
 			editing: false
 		})
