@@ -41,7 +41,7 @@ export default class OtherUsers extends Component {
   }
   ratingRender(user){
     if (user.num_of_votes>0){
-      return (<td>{(user.total_r_skills+user.total_r_comm+user.total_r_psolving+user.total_r_timemngmt+user.total_r_activity)/user.num_of_votes}</td>)
+      return (<td>{(user.total_r_skills+user.total_r_comm+user.total_r_psolving+user.total_r_timemngmt+user.total_r_activity)/5/user.num_of_votes}</td>)
     }else{
       return (<td>No Rating</td>)
     }
