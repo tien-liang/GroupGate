@@ -46,6 +46,7 @@ export default class CourseList extends Component {
 	}
 
 	add(text) {
+
 		this.setState(prevState => ({
 			courses: [
 				...prevState.courses,
@@ -71,14 +72,31 @@ export default class CourseList extends Component {
 		console.log('updating item at index: ', i, newText)
 		const dataPackage = newText;
 
-		axios.request({
-				method:'patch',
-				url:`http://localhost:3000/api/courseinfos/${i}`,
-				data: {
-						course_number: dataPackage
-				}
-			}).then(response => {
-			}).catch(err => console.log(err));
+		if(this.adding){
+			axios.request({
+					method:'post',
+					url:`http://localhost:3000/api/courseinfos/`,
+					data: {
+						courseNumber: dataPackage,
+						termYear: date.getFullYear(),
+						termSemester: this.getCurrentTermSemester(),
+						user_id: this.userId
+					}
+				}).then(response => {
+				}).catch(err => console.log(err));
+
+		}else{
+			axios.request({
+					method:'patch',
+					url:`http://localhost:3000/api/courseinfos/${i}`,
+					data: {
+							course_number: dataPackage
+					}
+				}).then(response => {
+				}).catch(err => console.log(err));
+		}
+
+
 
 			this.setState(prevState => ({
 				courses: prevState.courses.map(

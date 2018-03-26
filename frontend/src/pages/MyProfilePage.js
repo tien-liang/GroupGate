@@ -8,7 +8,12 @@ import CourseList from '../components/CourseList'
 import Nav from '../components/Nav';
 import '../css/style.css';
 
+
+const BASE_URL = 'http://localhost:3000';
+const url= `${BASE_URL}/api/userinfos`;
+
   const userId = '5ab53df643c2a043fced834a';    // DEV: you have to update this user ID with id from your backend
+                                                // 5ab877baf628341800003765   //restdb.io
 
 export default class MyProfile extends Component {
 
