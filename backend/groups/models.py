@@ -5,6 +5,10 @@ class CustomUser(AbstractUser):
     first_name = models.CharField(max_length=255)
     last_name = models.CharField(max_length=255)
 
+    # @property 
+    # def average_rating(self): 
+    #     return Rating.objects.filter(user__id=self.id).aggregate(models.Avg('rating'))
+
     # @property
     # def full_name(self):
     #     return self.first_name + self.last_name
@@ -35,3 +39,19 @@ class Membership(models.Model):
     user = models.ForeignKey(CustomUser, on_delete=models.CASCADE)
     group = models.ForeignKey(Group, on_delete=models.CASCADE)
     role = models.CharField(max_length=100)
+
+
+class Rating(models.Model):
+    user = models.ForeignKey(CustomUser, on_delete=models.CASCADE)
+
+    # STAR_CONVERSION = (
+    #     (1, 'One'),
+    #     (2, 'Two'),
+    #     (3, 'Three'),
+    #     (4, 'Four'),
+    #     (5, 'Five'),
+    #     )
+
+    # rating = models.PositiveSmallIntegerField(choices=STAR_CONVERSION)
+
+    rating = models.IntegerField()

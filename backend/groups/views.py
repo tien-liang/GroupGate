@@ -1,6 +1,6 @@
 from rest_framework import viewsets, generics
 from groups import models
-from .serializers import UserSerializer, GroupCreateSerializer
+from .serializers import UserSerializer, GroupCreateSerializer, RatingSerializer
 from django.contrib.auth import get_user_model
 from rest_framework.decorators import detail_route
 from rest_framework.response import Response
@@ -50,3 +50,8 @@ class GroupViewSet(viewsets.ModelViewSet):
 #         course = self.kwargs['course']
 #         return Purchase.objects.filter(group__course=course)
 
+
+
+class RatingViewSet(viewsets.ModelViewSet):
+    queryset = models.Rating.objects.all()
+    serializer_class = RatingSerializer
