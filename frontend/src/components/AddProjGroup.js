@@ -26,7 +26,7 @@ export default class ProjectGroup extends Component {
     this.getGroupsCreated();
   }
 	getGroupsCreated(){
-    axios.get(`${url}?filter={"group_owner":"${userId}"}`)
+    axios.get(`${url}?filter={"where":{"group_owner":{"like":"${userId}"}}}`)
     .then(response => {
       this.setState( {
         groups_created: response.data,

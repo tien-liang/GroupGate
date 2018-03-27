@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import { Link } from 'react-router-dom';
 import SignUpForm from '../components/forms/SignUpForm'
+import logoImg from "../assets/logo.png"
 import '../css/style.css';
 
 
@@ -11,7 +12,7 @@ render(){
     <div className="container-fluid">
 
       <nav className="navbar">
-        <img className="logo" src="http://via.placeholder.com/100x100" alt="Logo" width="50"/>
+        <img className="logo" src={logoImg } alt="Logo" width="50"/>
         <h1 className="mr-auto">Group Gate</h1>
 
         <Link to="/">Sign In</Link>

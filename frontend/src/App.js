@@ -7,6 +7,7 @@ import MyProfilePage from './pages/MyProfilePage';
 import ProjGroupsPage from './pages/ProjGroupsPage';
 import OtherUsersPage from './pages/OtherUsersPage';
 import UserDetailPage from './pages/UserDetailPage';
+import RatingPage from './pages/RatingPage';
 
 
 const App = () => (
@@ -18,6 +19,7 @@ const App = () => (
 		<Route path='/projGroups' exact component={ProjGroupsPage} />
 		<Route path='/otherUsers' exact component={OtherUsersPage} />
 		<Route path='/userDetail' exact component={UserDetailPage} />
+		<Route path='/rating' exact component={RatingPage}/>
 	</Switch>
 
 )
