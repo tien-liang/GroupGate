@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import { Link } from 'react-router-dom';
 import LoginForm from "../components/forms/LoginForm";
+import logoImg from "../assets/logo.png"
 import '../css/style.css';
 
 export default class SignInPage extends Component {
@@ -12,9 +13,9 @@ render(){
       {/* Header */}
       <nav className="navbar">
         {/*Logo placeholder*/}
-        <img className="logo" src="http://via.placeholder.com/100x100" alt="Logo" width="50"/>
+        <img src={logoImg }  width="50"/>
         {/*App Name*/}
-        <h1 className="mr-auto">Group Gate</h1>
+        <h1 className="mr-auto col-sm-3">Group Gate</h1>
 
 
           Dummy link to MYProfile -->

@@ -6,8 +6,8 @@ export default class Course extends Component {
 		this.ESCAPE_KEY = 27;
 		this.ENTER_KEY = 13;
 		this.state = {
-			adding: props.adding,
-			editing: false,
+			adding: props.adding,																						// false =
+			editing: false,																									// true = editing form, false = display text only
 			addButtonDisabled: props.addButtonDisabled
 		}
 		this.edit = this.edit.bind(this)
@@ -40,7 +40,7 @@ export default class Course extends Component {
 
 	save(e) {
 		e.preventDefault()
-		this.props.onChange(this._newText.value, this.props.index)
+		this.props.onChange(this._newText.value, this.props.index, this.state.adding )
 		this.setState({
 			editing: false
 		})

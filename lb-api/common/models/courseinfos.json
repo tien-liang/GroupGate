@@ -1,0 +1,30 @@
+{
+  "name": "courseinfos",
+  "base": "PersistedModel",
+  "idInjection": true,
+  "options": {
+    "validateUpsert": true
+  },
+  "properties": {
+    "course_number": {
+      "type": "string",
+      "required": true
+    },
+    "term_year": {
+      "type": "string",
+      "required": true
+    },
+    "term_semester": {
+      "type": "string",
+      "required": true
+    },
+    "user_id": {
+      "type": "string",
+      "required": true
+    }
+  },
+  "validations": [],
+  "relations": {},
+  "acls": [],
+  "methods": {}
+}
