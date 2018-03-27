@@ -25,6 +25,13 @@ CRUD-capable
     "members": [{"user":1, "role":"dev"},{"user":2, "role":"dev"}]
 }
 
+/api/ratings/
+
+{
+    "user":1
+    "rating":3
+}
+
 Filters groups with course with CMPT470
 /api/groups/?course="CMPT470"
 
