@@ -1,22 +1,26 @@
 Endpoints available
 
-CRUD-capable
 /api/users/
 
 {
-    username
-    password
-    first_name
-    last_name
+    "username": "dakdo",
+    "password": "dakdo",
+    "first_name": "dakdo",
+    "last_name": "dakdo"
+}
+
+This generates a JWT token. Use in the format:
+
+JWT <token>
+
+/api/users/login
+
+{
+    "username": "dakdo",
+    "password": "dakdo"
 }
 
 /api/groups/
-
-{
-    name
-    description
-    members
-}
 
 {
     "name": "x",
