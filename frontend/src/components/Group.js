@@ -42,7 +42,9 @@ export default class Group extends Component {
 
 	save(e) {
 		e.preventDefault()
-		this.props.onChange(this._newGroupName.value, this._newCourseNumber.value, this._newStatus.value, this._newDescription.value, this.props.index)
+		this.props.onChange(this._newGroupName.value, this._newCourseNumber.value,
+												this._newStatus.value, this._newDescription.value,
+												this.props.index, this.state.adding)
 		this.setState({
 			editing: false
 		})
@@ -122,9 +124,10 @@ export default class Group extends Component {
             <td>{this.props.description}</td>
           </tr>
 					<tr>
-						<td>{"Group Member: "}{this.props.member.map((name,i)=>{
+						<td>{"Group Members: "}{this.props.members.map((name,i)=>{
 							return name + " ";
-						})}</td>
+						})}
+</td>
 					</tr>
           <tr>
             <td colSpan="4">
