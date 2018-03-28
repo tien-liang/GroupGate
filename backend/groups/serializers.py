@@ -56,6 +56,7 @@ class GroupCreateSerializer(serializers.ModelSerializer):
     members = MembershipSerializer(source='membership_set', many=True, required=False)
     def create(self, validated_data):
         user_data = validated_data.pop('membership_set')
+        validated_data['owner'] = self.context['request'].user
         group = models.Group.objects.create(**validated_data)
         for user in user_data:
             d=dict(user)
@@ -75,7 +76,7 @@ class GroupCreateSerializer(serializers.ModelSerializer):
         return instance
 
     class Meta:
-        fields = ('id', 'name', 'course', 'description', 'members')
+        fields = ('id', 'name', 'course', 'description', 'members', 'owner',)
         model = models.Group
         # lookup_field = 'course'
 

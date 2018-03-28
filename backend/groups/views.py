@@ -4,6 +4,8 @@ from .serializers import UserSerializer, GroupCreateSerializer, RatingSerializer
 from django.contrib.auth import get_user_model
 from rest_framework.decorators import detail_route
 from rest_framework.response import Response
+from groups import permissions
+from rest_framework.permissions import IsAuthenticatedOrReadOnly
 
 
 UserModel = get_user_model()
@@ -16,7 +18,8 @@ class UserViewSet(viewsets.ModelViewSet):
 class GroupViewSet(viewsets.ModelViewSet):
     queryset = models.Group.objects.all()
     serializer_class = GroupCreateSerializer
-    # lookup_field = 'course'
+
+    permission_classes = (IsAuthenticatedOrReadOnly,)
 
     def get_queryset(self):
         """

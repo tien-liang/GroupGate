@@ -1,5 +1,6 @@
 from django.db import models
 from django.contrib.auth.models import AbstractUser
+from django.conf import settings
 
 class CustomUser(AbstractUser):
     first_name = models.CharField(max_length=255)
@@ -29,6 +30,8 @@ class Group(models.Model):
     name = models.CharField(max_length=200)
     description = models.TextField()
     # owner = models.ForeignKey(CustomUser, on_delete=models.CASCADE, related_name='owner')
+    owner = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
+
     members = models.ManyToManyField(CustomUser, blank=True, related_name='members')
     course =models.CharField(max_length=200)
 
