@@ -30,9 +30,11 @@ export default class ProjectGroup extends Component {
   }
 
 	getGroups(){
+		console.log("GL-> myGroups: ", this.props.myGroups)
 
-		if(this.props.myGroup){																											// if props. flag = true, get my groups
-			axios.get(`${url}?filter={"where":{"group_owner":{"like":"${userId}"}}}`)
+		if(this.props.myGroups){																											// if props. flag = true, get my groups
+			console.log ("GL -> I should be gettig users groups now")
+			axios.get(`${url}?filter={"where":{"group_owner":{"like":"${this.props.userId}"}}}`)
 			.then(response => {
 				this.setState( {
 					groups: response.data,
@@ -42,7 +44,8 @@ export default class ProjectGroup extends Component {
 			})
 		}
 		else{
-			axios.get(`${url}?filter={"where":{"group_owner":{"neq":"${userId}"}}}`)
+			console.log ("GL -> I should be gettig groups now")
+			axios.get(`${url}?filter={"where":{"group_owner":{"neq":"${this.props.userId}"}}}`)
 			.then(response => {
 				this.setState( {groups: response.data}, () => {
 				console.log(this.state)
@@ -104,7 +107,7 @@ export default class ProjectGroup extends Component {
 						group_name: newGroupName,
 						group_descr: newDescription,
 						group_status: newStatus,
-						group_course: newCourseNumber
+						group_course: newCourseNumber																				// items will need to be udpated when adding/removing members enabled
 					}
 				}).then(response => {
 				}).catch(err => console.log(err));

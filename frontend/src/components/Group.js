@@ -18,6 +18,7 @@ export default class Group extends Component {
 		this.renderForm = this.renderForm.bind(this)
 		this.renderDisplay = this.renderDisplay.bind(this)
 		this.handleChange = this.handleChange.bind(this)
+		this.displayButtons = this.displayButtons.bind(this)
 	}
 
 	componentDidUpdate() {
@@ -105,7 +106,25 @@ export default class Group extends Component {
 		)
 	}
 //Normal Render
+
+
+displayButtons(){
+
+		if( this.props.myGroups ){
+			return (
+				<span>
+					<button className="ui primary button right floated" onClick={this.edit} id="edit">Edit</button>
+					<button  className="ui red button right floated" onClick={this.remove} id="remove">Remove</button>
+				</span>
+			)
+		}
+}
+
+
 	renderDisplay() {
+
+
+
 		return (
       <table className="ui single line basic table">
         <thead>
@@ -131,11 +150,8 @@ export default class Group extends Component {
 					</tr>
           <tr>
             <td colSpan="4">
-				<span>
-					<button className="ui primary button right floated" onClick={this.edit} id="edit">Edit</button>
-					<button  className="ui red button right floated" onClick={this.remove} id="remove">Remove</button>
-				</span>
-      </td>
+								{this.displayButtons()}
+      			</td>
     </tr>
       </tbody>
     </table>

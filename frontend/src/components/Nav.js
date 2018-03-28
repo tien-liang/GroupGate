@@ -3,6 +3,7 @@ import { Link } from 'react-router-dom';
 import logoImg from "../assets/logo.png"
 
 export default class Nav extends React.Component {
+  
   render() {
     return (
       <nav className="navbar">
