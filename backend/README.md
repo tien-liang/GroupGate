@@ -26,7 +26,8 @@ JWT <token>
     "name": "x",
     "description": "x",
     "course":"CMPT470"
-    "members": [{"user":1, "role":"dev"},{"user":2, "role":"dev"}]
+    "members": [{"user":1, "role":"dev"},{"user":2, "role":"dev"}],
+    "owner": "3"
 }
 
 /api/ratings/
