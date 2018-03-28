@@ -1,5 +1,5 @@
 import React, { Component } from 'react'
-import CourseListItem from './CourseListItem'
+import Course from './Course'
 import { Button } from "semantic-ui-react";
 import axios from 'axios';
 
@@ -12,7 +12,6 @@ export default class CourseList extends Component {
 	constructor(props) {
 		super(props)
 		this.state = {
-			userId: this.props.userId,
 			courses: [],
 			adding: false,
 			addButtonDisabled: false
@@ -129,12 +128,12 @@ export default class CourseList extends Component {
 	eachCourse(course, i) {
 		console.log ('CL -> checking course at eachCourse: ', course.course_number, '  ', course.id, i)									// DEBUG
 		return (
-			<CourseListItem key={course.id}
+			<Course key={course.id}
 				  index={course.id} label_1='Course Number: ' label_2='Term: '
 					value_2= {course.term_year} value_3= {course.term_semester} adding={this.state.adding}
 					onCancel={this.onCancel} onChange={this.update} onRemove={this.remove}>
 				  {course.course_number}
-		  </CourseListItem>
+		  </Course>
 		)
 	}
 
