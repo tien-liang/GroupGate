@@ -1,11 +1,13 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
+import logoImg from "../assets/logo.png"
 
 export default class Nav extends React.Component {
+  
   render() {
     return (
       <nav className="navbar">
-        <img className="logo" src="http://via.placeholder.com/100x100" alt="Logo" width="50"/>
+        <img className="logo" src={logoImg} alt="Logo" width="50"/>
         <h1 className="mr-auto">Group Gate</h1>
 
 

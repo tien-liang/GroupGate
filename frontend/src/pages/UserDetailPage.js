@@ -1,14 +1,15 @@
 import React, { Component } from "react";
 import Nav from '../components/Nav';
 import { Button } from "semantic-ui-react";
+import {Link} from 'react-router-dom';
 
 export default class UserDetail extends Component {
   constructor() {
     super();
     this.state = {
-          displayName: 'Snoopy22',
-					totalScore: '85',
-					numOfRatings: '2',
+          displayName: 'Jessica C.',
+					totalScore: '70',
+					numOfRatings: '4',
           aboutUser: 'I am good at C++ and Java. I am working well in team and also on my own. I like banana.',
           courses: [
             {
@@ -54,6 +55,9 @@ export default class UserDetail extends Component {
                 <div className="ui segment grid">
                   <div className="ui three wide column">{course.courseNumber}</div>
                   <div className="ui three wide column">Term: {course.termSemester} {course.termYear}</div>
+                  <div className="ui six wide column"> Status: {"Open for initation"}</div>
+                  <div className="ui three wide column"><Button basic color="blue">Invite</Button></div>
+
                 </div>
               )
             })}
@@ -62,7 +66,9 @@ export default class UserDetail extends Component {
               return (
                 <div className="ui segment grid">
                   <div className="ui three wide column">{reference.refProvider}</div>
-                  <div className="ui thirdteen wide column">{reference.refProfileUrl}</div>
+                  <div className="ui thirdteen wide column"><Link to={``}>
+                    {reference.refProfileUrl}
+                  </Link></div>
                 </div>
               )
             })}

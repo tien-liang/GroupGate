@@ -39,8 +39,6 @@ export default class ReferenceList extends Component {
 		})
 	}
 
-
-
 	add(text) {																																		// Add button clicked handler
 		this.setState(prevState => ({
 			references: [
