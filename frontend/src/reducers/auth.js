@@ -6,16 +6,16 @@ const initialState = {
   errors: {},
 }
 export default (state=initialState, action) => {
-  switch(action.type) {
+  switch(action.type) { 
     case auth.LOGIN_SUCCESS:
       return {
         access: {
-          token: action.payload.access,
-          ...jwtDecode(action.payload.access)
+          token: action.payload.token,
+          ...jwtDecode(action.payload.token)
         },
         refresh: {
-          token: action.payload.refresh,
-          ...jwtDecode(action.payload.refresh)
+          token: action.payload.token,
+          ...jwtDecode(action.payload.token)
         },
         errors: {}
     }
@@ -23,8 +23,8 @@ export default (state=initialState, action) => {
       return {
         ...state,
         access: {
-          token: action.payload.access,
-          ...jwtDecode(action.payload.access)
+          token: action.payload.token,
+          ...jwtDecode(action.payload.token)
         }
       }
     case auth.LOGIN_FAILURE:
