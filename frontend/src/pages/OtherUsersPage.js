@@ -1,7 +1,9 @@
 import React, { Component } from "react";
 import axios from 'axios';
+import { Link } from 'react-router-dom';
 import Nav from '../components/Nav';
 import { Button } from "semantic-ui-react";
+//import OtherUser from '../components/OtherUser';
 
   const userId = '5ab93f5262a8ef074012e04a';    // you have to update this user ID with id from your backend
 
@@ -10,35 +12,24 @@ export default class OtherUsers extends Component {
     super();
     this.state = {
       id: '',
-      users: [
-      ]
+      users: []
     };
+    this.getOtherUsers = this.getOtherUsers.bind(this);
   }
   componentDidMount() {
-    this.getUserInfo();
-    this.getOtherUser();
+    this.getOtherUsers();
   }
-
-  getUserInfo(){
-    axios.get(`http://localhost:3000/api/userinfos/${userId}`)
-      .then(response => {
-        this.setState( {
-          id: response.data.id,
-          }, () => {
-          console.log(this.state);
-        })
-      })
-  }
-  getOtherUser(){
+  getOtherUsers(){
     axios.get(`http://localhost:3000/api/userinfos?filter[where][id][neq]=${userId}`)
       .then(response => {
         this.setState( {
           users: response.data,
           }, () => {
-          console.log(this.state.users);
+          console.log('OUP -> getOtherUsers: ',this.state.users);
         })
       })
   }
+
   ratingRender(user){
     if (user.num_of_votes>0){
       return (<td>{((user.total_r_skills+user.total_r_comm+user.total_r_psolving+user.total_r_timemngmt+user.total_r_activity)/5)/user.num_of_votes}</td>)
@@ -46,6 +37,7 @@ export default class OtherUsers extends Component {
       return (<td>No Rating</td>)
     }
   }
+
   render() {
     return (
       <div className=" container fluid">
@@ -64,7 +56,7 @@ export default class OtherUsers extends Component {
               {this.state.users.map((user,i)=>{
                 return(
                   <tr key={i}>
-                    <td><button type="button" className="btn btn-link">{user.display_name}</button></td>
+                    <td><Link to={`/otherUsers/${user.id}`} >{user.display_name}</Link></td>
                     {this.ratingRender(user)}
                     <td>{user.num_of_votes}</td>
                     <td><Button basic color="blue">Invite</Button></td>
@@ -72,6 +64,7 @@ export default class OtherUsers extends Component {
                 )
               })}
             </tbody>
+
           </table>
       </div>
     );
