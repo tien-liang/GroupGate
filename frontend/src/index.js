@@ -12,6 +12,9 @@ import configureStore from './store'
 import {Route, Switch} from 'react-router'
 import Login from './containers/Login';
 import PrivateRoute from './containers/PrivateRoute';
+// import SignInPage from './pages/SignInPage';
+import SignUpPage from './pages/SignUpPage'
+
 
 const history = createHistory()
 const store = configureStore(history)
@@ -20,6 +23,7 @@ ReactDOM.render((
     <ConnectedRouter history={history}>
 		<Switch>
 			<Route exact path="/login/" component={Login} />
+			<Route path='/signup' exact component={SignUpPage} />
 			<PrivateRoute path="/" component={App}/>
 		</Switch>
     </ConnectedRouter>
