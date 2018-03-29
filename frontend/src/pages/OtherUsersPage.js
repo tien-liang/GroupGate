@@ -40,6 +40,7 @@ export default class OtherUsers extends Component {
 
   render() {
     return (
+
       <div className=" container fluid">
           <Nav />
           <br/>

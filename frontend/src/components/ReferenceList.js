@@ -6,8 +6,6 @@ import axios from 'axios';
 const BASE_URL = 'http://localhost:3000';
 const url= `${BASE_URL}/api/referenceinfos`;
 
-const date = new Date();
-
 export default class ReferenceList extends Component {
 	constructor(props) {
 		super(props)
