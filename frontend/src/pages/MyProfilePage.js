@@ -12,7 +12,7 @@ import '../css/style.css';
 const BASE_URL = 'http://localhost:3000';
 const url= `${BASE_URL}/api/userinfos`;
 
-  const userId = '5ab93f5262a8ef074012e04a';    // DEV: you have to update this user ID with id from your backend
+  const userId = '5ab60109351f8a12ba4937b2';    // DEV: you have to update this user ID with id from your backend
                                                 // 5ab877baf628341800003765   //restdb.io
 
 export default class MyProfile extends Component {

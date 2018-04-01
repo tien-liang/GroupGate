@@ -2,7 +2,7 @@ import React, { Component } from "react";
 import Nav from '../components/Nav';
 import GroupList from '../components/GroupList';
 
-const userId = '5ab93f5262a8ef074012e04a';    // you have to update this user ID with id from your backend
+const userId = '5ab60109351f8a12ba4937b2';    // you have to update this user ID with id from your backend
 
 export default class ProjGroups extends Component {
 

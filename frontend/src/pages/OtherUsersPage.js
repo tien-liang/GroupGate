@@ -5,7 +5,7 @@ import Nav from '../components/Nav';
 import { Button } from "semantic-ui-react";
 //import OtherUser from '../components/OtherUser';
 
-  const userId = '5ab93f5262a8ef074012e04a';    // you have to update this user ID with id from your backend
+  const userId = '5ab60109351f8a12ba4937b2';    // you have to update this user ID with id from your backend
 
 export default class OtherUsers extends Component {
   constructor() {
@@ -32,9 +32,9 @@ export default class OtherUsers extends Component {
 
   ratingRender(user){
     if (user.num_of_votes>0){
-      return (<td>{((user.total_r_skills+user.total_r_comm+user.total_r_psolving+user.total_r_timemngmt+user.total_r_activity)/5)/user.num_of_votes}</td>)
+      return (((user.total_r_skills+user.total_r_comm+user.total_r_psolving+user.total_r_timemngmt+user.total_r_activity)/5)/user.num_of_votes)
     }else{
-      return (<td>No Rating</td>)
+      return ("No Rating")
     }
   }
 
@@ -44,6 +44,27 @@ export default class OtherUsers extends Component {
       <div className=" container fluid">
           <Nav />
           <br/>
+          <div className="ui link cards">
+            {this.state.users.map((user,i)=>{
+              return(
+                <div className="card" href={`/otherUsers/${user.id}`}>
+                  <div className="content">
+                    <div className="header">{user.display_name}</div>
+                  </div>
+                  <div className="content">
+                    Total Score (%): {this.ratingRender(user)}
+                  </div>
+                  <div className="content">
+                    {user.num_of_votes} Vote(s)
+                  </div>
+                  <div className="ui bottom attached button">
+                    + Invite
+                  </div>
+                </div>
+              )
+            })}
+          </div>
+          {/*
           <table className="ui very basic table">
             <thead>
               <tr>
@@ -66,7 +87,7 @@ export default class OtherUsers extends Component {
               })}
             </tbody>
 
-          </table>
+          </table>*/}
       </div>
     );
   }
