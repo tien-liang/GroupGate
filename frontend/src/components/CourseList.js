@@ -30,7 +30,7 @@ export default class CourseList extends Component {
 	}
 
 	getCourses(){																																	// API call to load courses
-		axios.get(`${url}?q={ "user_id": ${this.state.userId}" } `)
+		axios.get(`${url}?q={ "user_id": ${this.props.userId}" } `)
 		.then(response => {
 				this.setState( {courses: response.data}, () => {
 					console.log('CL -> Trying to get courses:', this.state.courses);							/* DEBUG */
@@ -74,9 +74,9 @@ export default class CourseList extends Component {
 			url:`http://localhost:3000/api/courseinfos/`,
 			data: {
 				course_number: newText,
-				term_year: date.getFullYear(),
+				term_year: String(date.getFullYear()),
 				term_semester: this.getCurrentTermSemester(),
-				user_id: this.state.userId
+				user_id: this.props.userId
 			}
 			}).then(response => {
 				console.log(response )
