@@ -30,7 +30,7 @@ export default class CourseList extends Component {
 	}
 
 	getCourses(){																																	// API call to load courses
-		axios.get(`${url}?q={ "user_id": ${this.props.userId}" } `)
+		axios.get(`${url}?filter={"where":{"user_id":{"like":"${this.props.userId}"}}} `)
 		.then(response => {
 				this.setState( {courses: response.data}, () => {
 					console.log('CL -> Trying to get courses:', this.state.courses);							/* DEBUG */

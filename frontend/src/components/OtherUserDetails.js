@@ -48,7 +48,6 @@ export default class OtherUserDetails extends Component {
 
   getUserDetails() {                                                            // currently making multiple calls to temp loopback API
     let userId = this.props.match.params.id;                                    // but in the Django, it should be a sngle call, /api/users/
-
     axios.get(`http://localhost:3000/api/userinfos/${userId}`)
       .then(response => {
         this.setState( {
@@ -67,10 +66,9 @@ export default class OtherUserDetails extends Component {
       })
   }
 
-  getUserCourses(){
-    let userId = this.props.match.params.id;                                    // but in the Django, it should be a sngle call, /api/users/
-
-    axios.get(`http://localhost:3000/api/courseinfos?q={ "user_id": ${userId}" }`)
+  getUserCourses(){                                    // but in the Django, it should be a sngle call, /api/users/
+    let userId = this.props.match.params.id;
+    axios.get(`http://localhost:3000/api/courseinfos?filter={"where":{"user_id":{"like":"${userId}"}}}`)
       .then(response => {
         this.setState( {courses: response.data}, () => {
 					console.log('CL -> Trying to get courses:', this.state.courses);							/* DEBUG */
