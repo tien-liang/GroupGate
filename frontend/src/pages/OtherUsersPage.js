@@ -49,7 +49,7 @@ export default class OtherUsers extends Component {
               return(
                 <div className="card" href={`/otherUsers/${user.id}`}>
                   <div className="content">
-                    <div className="header">{user.display_name}</div>
+                    <div className="header"><Link to={`/otherUsers/${user.id}`} >{user.display_name}</Link></div>
                   </div>
                   <div className="content">
                     Total Score (%): {this.ratingRender(user)}

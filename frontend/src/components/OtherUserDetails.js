@@ -43,6 +43,7 @@ export default class OtherUserDetails extends Component {
 
   componentDidMount() {
     this.getUserDetails();
+    this.getUserCourses();
   }
 
   getUserDetails() {                                                            // currently making multiple calls to temp loopback API
@@ -66,18 +67,23 @@ export default class OtherUserDetails extends Component {
       })
   }
 
+  getUserCourses(){
+    let userId = this.props.match.params.id;                                    // but in the Django, it should be a sngle call, /api/users/
+
+    axios.get(`http://localhost:3000/api/courseinfos?q={ "user_id": ${userId}" }`)
+      .then(response => {
+        this.setState( {courses: response.data}, () => {
+					console.log('CL -> Trying to get courses:', this.state.courses);							/* DEBUG */
+				})
+      })
+  }
+
   ratingRender(){
     if (this.state.numOfVotes>0){
       console.log('OUD-> ', this.state.totalRskills+this.state.totalRcomm )
-      return (
-
-
-        <p>{((this.state.totalRskills+this.state.totalRcomm+this.state.totalRpsolving+this.state.totalRtimemngmt+this.state.totalRactivity)/5)/this.state.numOfVotes}
-      </p>
-
-     )
+      return (((this.state.totalRskills+this.state.totalRcomm+this.state.totalRpsolving+this.state.totalRtimemngmt+this.state.totalRactivity)/5)/this.state.numOfVotes)
     }else{
-      return (<p>No Rating</p>)
+      return ("No Rating")
     }
   }
 
@@ -88,9 +94,7 @@ export default class OtherUserDetails extends Component {
           <br/>
           <div className="ui segment">
             <h5>User: {this.state.displayName}
-              ( {((this.state.totalRskills+this.state.totalRcomm+this.state.totalRpsolving
-                +this.state.totalRtimemngmt+this.state.totalRactivity)/5)/this.state.numOfVotes}
-                % / {this.state.numOfVotes} ratings )</h5>
+              ({this.ratingRender()} % / {this.state.numOfVotes} ratings )</h5>
             <br/>
             <h5 className="ui dividing header">About User</h5>
             {this.state.aboutMe}
@@ -102,7 +106,7 @@ export default class OtherUserDetails extends Component {
                   <div className="ui three wide column">{course.course_number}</div>
                   <div className="ui three wide column">Term: {course.term_semester} {course.term_year}</div>
                   <div className="ui six wide column"> Status: {"Open for initation"}</div>
-                  <div className="ui three wide column"><Button basic color="blue">Join</Button></div>
+                  <div className="ui three wide column"><Button basic color="blue">+ Invite</Button></div>
                 </div>
               )
             })}
