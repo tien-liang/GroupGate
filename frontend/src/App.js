@@ -2,7 +2,7 @@ import React from 'react';
 import { Switch, Route } from 'react-router-dom';
 
 
-// import SignUpPage from './pages/SignUpPage'
+import SignUpPage from './pages/SignUpPage'
 import MyProfilePage from './pages/MyProfilePage';
 import ProjGroupsPage from './pages/ProjGroupsPage';
 import OtherUsersPage from './pages/OtherUsersPage';
@@ -13,7 +13,7 @@ const App = () => (
 
 	<Switch>
 		{/* <Route path='/' exact component={SignInPage} /> */}
-		{/* <Route path='/signup' exact component={SignUpPage} /> */}
+		<Route path='/signup' exact component={SignUpPage} />
 		<Route path='/' exact component={MyProfilePage} />
 		<Route path='/projGroups' exact component={ProjGroupsPage} />
 		<Route path='/otherUsers' exact component={OtherUsersPage} />

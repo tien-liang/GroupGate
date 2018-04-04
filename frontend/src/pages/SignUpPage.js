@@ -2,7 +2,6 @@ import React, { Component } from 'react';
 import { Link } from 'react-router-dom';
 import SignUpForm from '../components/forms/SignUpForm'
 import logoImg from "../assets/logo.png"
-import '../css/style.css';
 
 
 export default class SignUpPage extends Component {

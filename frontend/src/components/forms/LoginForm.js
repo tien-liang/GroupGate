@@ -94,6 +94,7 @@ import React, {Component} from 'react'
 import { Alert, Button, Jumbotron,  Form, Container, Row, Col } from 'reactstrap';
 import Nav from '../Nav';
 import logoImg from "../../assets/logo.png";
+import { Link } from 'react-router-dom';
 
 import TextInput from '../TextInput'
 
@@ -124,25 +125,44 @@ export default class LoginForm extends Component {
 
     return (
       //<Jumbotron className="container">
-      <Container>
+      <div className="container-fluid">
         <nav className="navbar">
           <img className="logo" src={logoImg} alt="Logo" width="50"/>
           <h1 className="mr-auto">Group Gate</h1>
-        </nav>
+          <Link to="/signup">Sign Up</Link>
+        </nav><br/><br/>
+        <h2 className="text-center notBold">Starting new class or personal group project? </h2>
+        <h2 className="text-center notBold">Find the right people. Fast.</h2><br/>
+        <h5 className="text-center notBold">Create Group. Find People. Finish Project. Provide Feedback.</h5><br/><br/>
+      <Container fluid="true">
         <Form onSubmit={this.onSubmit}>
           <Row>
             <Col></Col>
-          <Col md={{ size: 4}}>
+          <Col md={{ size: 3}}>
+            <Row>
+            <Col></Col>
+            <Col>
             <h3>Login</h3>
+          </Col>
+          <Col></Col>
+        </Row>
+        <br/>
           {errors.non_field_errors?<Alert color="danger">{errors.non_field_errors}</Alert>:""}
           <TextInput name="username" label="Username" error={errors.username} getRef={input => this.primaryInput = input} onChange={this.handleInputChange}/>
           <TextInput name="password" label="Password" error={errors.password} type="password" onChange={this.handleInputChange}/>
+          <Row>
+          <Col></Col>
+          <Col>
           <Button type="submit" color="primary" size="lg">Log In</Button>
+        </Col>
+        <Col></Col>
+        </Row>
           </Col>
           <Col></Col>
         </Row>
         </Form>
       </Container>
+    </div>
       //</Jumbotron>
     )
   }
