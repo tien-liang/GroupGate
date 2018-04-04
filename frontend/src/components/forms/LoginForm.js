@@ -91,7 +91,9 @@
 //   export default LoginForm;
 
 import React, {Component} from 'react'
-import { Alert, Button, Jumbotron,  Form } from 'reactstrap';
+import { Alert, Button, Jumbotron,  Form, Container, Row, Col } from 'reactstrap';
+import Nav from '../Nav';
+import logoImg from "../../assets/logo.png";
 
 import TextInput from '../TextInput'
 
@@ -121,15 +123,27 @@ export default class LoginForm extends Component {
     const errors = this.props.errors || {}
 
     return (
-      <Jumbotron className="container">
+      //<Jumbotron className="container">
+      <Container>
+        <nav className="navbar">
+          <img className="logo" src={logoImg} alt="Logo" width="50"/>
+          <h1 className="mr-auto">Group Gate</h1>
+        </nav>
         <Form onSubmit={this.onSubmit}>
-          <h1>Authentication</h1>
+          <Row>
+            <Col></Col>
+          <Col md={{ size: 4}}>
+            <h3>Login</h3>
           {errors.non_field_errors?<Alert color="danger">{errors.non_field_errors}</Alert>:""}
           <TextInput name="username" label="Username" error={errors.username} getRef={input => this.primaryInput = input} onChange={this.handleInputChange}/>
           <TextInput name="password" label="Password" error={errors.password} type="password" onChange={this.handleInputChange}/>
           <Button type="submit" color="primary" size="lg">Log In</Button>
+          </Col>
+          <Col></Col>
+        </Row>
         </Form>
-      </Jumbotron>
+      </Container>
+      //</Jumbotron>
     )
   }
 }
