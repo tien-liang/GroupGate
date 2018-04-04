@@ -2,7 +2,7 @@ import React, { Component } from "react";
 import axios from 'axios';
 import { Link } from 'react-router-dom';
 import Nav from '../components/Nav';
-import { Button } from "semantic-ui-react";
+import { Button, Modal, Header, Icon } from "semantic-ui-react";
 //import OtherUser from '../components/OtherUser';
 
   const userId = '5ab60109351f8a12ba4937b2';    // you have to update this user ID with id from your backend
@@ -12,9 +12,16 @@ export default class OtherUsers extends Component {
     super();
     this.state = {
       id: '',
-      users: []
+      users: [],
+      open_modal: false,
+      invited_modal: false
     };
     this.getOtherUsers = this.getOtherUsers.bind(this);
+    this.invite = this.invite.bind(this);
+    this.openModal = this.openModal.bind(this);
+    this.closeModal = this.closeModal.bind(this);
+    this.openInvitedModal = this.openInvitedModal.bind(this);
+    this.closeInvitedModal = this.closeInvitedModal.bind(this);
   }
   componentDidMount() {
     this.getOtherUsers();
@@ -38,6 +45,34 @@ export default class OtherUsers extends Component {
     }
   }
 
+  invite(id){
+    //this.openInvitedModal();
+    console.log(userId)
+    axios.request({
+    method:'post',
+    url:`http://localhost:3000/api/invitations/`,
+    data: {
+      inviter_id: userId,
+      invitee_id: id,
+      status: "Pending"
+    }
+    }).then(response => {
+      console.log(response )
+    }).catch(err => console.log(err));
+  }
+  openModal(){
+    this.setState({open_modal: true});
+  }
+  closeModal(){
+    this.setState({open_modal: false});
+  }
+  openInvitedModal(){
+    this.setState({invited_modal: true});
+  }
+  closeInvitedModal(){
+    this.setState({invited_modal: false});
+    this.setState({open_modal: false});
+  }
   render() {
     return (
 
@@ -57,37 +92,45 @@ export default class OtherUsers extends Component {
                   <div className="content">
                     {user.num_of_votes} Vote(s)
                   </div>
-                  <div className="ui bottom attached button">
+                  <button className="ui bottom attached button" onClick={this.openModal}>
                     + Invite
-                  </div>
+                  </button>
+                  <Modal style={{width: 600, padding: 100}} open={this.state.open_modal} className="scrolling" basic size='small'>
+                  <Header icon='warning circle' />
+                  <Modal.Content>
+                    <p>Are you sure you want to invite {user.display_name} to your group?</p>
+                  </Modal.Content>
+                  <Modal.Actions>
+                    <Button basic color='red' inverted onClick={this.closeModal}>
+                      <Icon name='remove' /> No
+                    </Button>
+                    <Button color='green' inverted onClick={()=>this.invite(user.id)}>
+                      <Icon name='checkmark' /> Yes
+                    </Button>
+                  </Modal.Actions>
+                </Modal>
+                <Modal
+                  style={{width: 600, padding: 100}}
+                  className="scrolling"
+                  open={this.state.invited_modal}
+                  onClose={this.handleClose}
+                  basic
+                  size='small'
+                >
+                  <Header icon='browser' content='Invitation' />
+                  <Modal.Content>
+                    <h3>Your Invitation is sent!</h3>
+                  </Modal.Content>
+                  <Modal.Actions>
+                    <Button color='green' onClick={this.closeInvitedModal} inverted>
+                      <Icon name='checkmark' /> Got it
+                    </Button>
+                  </Modal.Actions>
+                </Modal>
                 </div>
               )
             })}
           </div>
-          {/*
-          <table className="ui very basic table">
-            <thead>
-              <tr>
-                <th>Display Name</th>
-                <th className="three wide">Total Score (%)</th>
-                <th className="three wide"># of Ratings</th>
-                <th></th>
-              </tr>
-            </thead>
-            <tbody>
-              {this.state.users.map((user,i)=>{
-                return(
-                  <tr key={i}>
-                    <td><Link to={`/otherUsers/${user.id}`} >{user.display_name}</Link></td>
-                    {this.ratingRender(user)}
-                    <td>{user.num_of_votes}</td>
-                    <td><Button basic color="blue">Invite</Button></td>
-                  </tr>
-                )
-              })}
-            </tbody>
-
-          </table>*/}
       </div>
     );
   }
