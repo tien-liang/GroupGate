@@ -8,6 +8,7 @@ import ProjGroupsPage from './pages/ProjGroupsPage';
 import OtherUsersPage from './pages/OtherUsersPage';
 import OtherUserDetails from './components/OtherUserDetails';
 import RatingPage from './pages/RatingPage';
+import InvitationPage from './pages/InvitationPage';
 
 const App = () => (
 
@@ -19,6 +20,7 @@ const App = () => (
 		<Route path='/otherUsers' exact component={OtherUsersPage} />
 		<Route path='/otherUsers/:id' exact component={OtherUserDetails} />
 		<Route path='/rating' exact component={RatingPage}/>
+		<Route path='/invitation' exact component={InvitationPage}/>
 	</Switch>
 
 )

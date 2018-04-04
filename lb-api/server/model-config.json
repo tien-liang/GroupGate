@@ -50,5 +50,10 @@
   "referenceinfos": {
     "dataSource": "db",
     "public": true
+  },
+  "invitation": {
+    "dataSource": "db",
+    "public": true
   }
+
 }
