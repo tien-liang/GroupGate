@@ -46,8 +46,8 @@ export default class OtherUsers extends Component {
   }
 
   invite(id){
-    //this.openInvitedModal();
-    console.log(userId)
+    this.openInvitedModal();
+    console.log(id)
     axios.request({
     method:'post',
     url:`http://localhost:3000/api/invitations/`,
