@@ -29,10 +29,10 @@ export default class ReferenceList extends Component {
 	}
 
 	getRefs(){																																	// API call to load Refs
-		axios.get(`${url}?q={ "user_id": ${this.state.userId}" } `)
+		axios.get(`${url}?filter={"where":{"user_id":{"like":"${this.props.userId}"}}} `)
 		.then(response => {
-				this.setState( {courses: response.data}, () => {
-					console.log('CL -> Trying to get Refs:', this.state.references);							/* DEBUG */
+				this.setState( {references: response.data}, () => {
+					console.log('RL -> Trying to get Refs:', this.state.references);							/* DEBUG */
 				})
 		})
 	}
@@ -57,27 +57,35 @@ export default class ReferenceList extends Component {
 		return this.uniqueId++
 	}
 
-	update( newText, i, addMode ) {
+	update( newProvider, newText, i, addMode ) {
 		console.log('updating item at index: ', i, newText)
 
 		if ( addMode ){
-/*			axios.request({
+			axios.request({
 			method:'post',
 			url:`http://localhost:3000/api/referenceinfos/`,
 			data: {
-				ref_provider: '',																								// not finished
+				ref_provider: newProvider,
 				ref_url: newText,
 				user_id: this.state.userId
 			}
 		}).then(response => {
 			console.log( response )
 		}).catch(err => console.log(err));
-*/
-		}
+
+	}else{
+		axios.request({
+			method:'patch',
+			url:`http://localhost:3000/api/referenceinfos/${i}`,
+			data: { "ref_provider": newProvider,
+		 				"ref_url": newText }
+		}).then(response => {
+		}).catch(err => console.log(err));
+	}
 
 		this.setState(prevState => ({
-			courses: prevState.courses.map(
-				reference => (reference.id !== i) ? reference : {...reference, ref_provider: '',					// not finished
+			references: prevState.references.map(
+				reference => (reference.id !== i) ? reference : {...reference, ref_provider: newProvider,
 																													ref_url: newText }
 			)
 		}))
@@ -100,7 +108,7 @@ export default class ReferenceList extends Component {
       })
 
 		this.setState(prevState => ({
-			courses: prevState.courses.filter(reference => reference.id !== id)
+			references: prevState.references.filter(reference => reference.id !== id)
 		}))
 	}
 
@@ -108,10 +116,9 @@ export default class ReferenceList extends Component {
 		console.log ('CL -> checking reference at eachRef: ', reference.course_number, '  ', reference.id, i)									// DEBUG
 		return (
 			<ReferenceListItem key={reference.id}
-				  index={reference.id} label_1='Reference Provider: ' 																						// INCOMPLETE HERE
+				  index={reference.id} label_1='Reference Provider: ' 																			
 					provider= {reference.ref_provider} url= {reference.ref_url} adding={this.state.adding}
 					onCancel={this.onCancel} onChange={this.update} onRemove={this.remove}>
-				  {reference.ref_provider} {reference.ref_url}
 		  </ReferenceListItem>
 		)
 	}

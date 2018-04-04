@@ -44,6 +44,7 @@ export default class OtherUserDetails extends Component {
   componentDidMount() {
     this.getUserDetails();
     this.getUserCourses();
+    this.getUserReferences();
   }
 
   getUserDetails() {                                                            // currently making multiple calls to temp loopback API
@@ -66,12 +67,22 @@ export default class OtherUserDetails extends Component {
       })
   }
 
-  getUserCourses(){                                    // but in the Django, it should be a sngle call, /api/users/
+  getUserCourses(){
     let userId = this.props.match.params.id;
     axios.get(`http://localhost:3000/api/courseinfos?filter={"where":{"user_id":{"like":"${userId}"}}}`)
       .then(response => {
         this.setState( {courses: response.data}, () => {
-					console.log('CL -> Trying to get courses:', this.state.courses);							/* DEBUG */
+					console.log('CL -> Trying to get courses:', this.state.courses);
+				})
+      })
+  }
+
+  getUserReferences(){
+    let userId = this.props.match.params.id;
+    axios.get(`http://localhost:3000/api/referenceinfos?filter={"where":{"user_id":{"like":"${userId}"}}}`)
+      .then(response => {
+        this.setState( {references: response.data}, () => {
+					console.log('RL -> Trying to get references:', this.state.references);
 				})
       })
   }
@@ -84,7 +95,17 @@ export default class OtherUserDetails extends Component {
       return ("No Rating")
     }
   }
-
+  providerIcon(provider){
+    if (provider == "LinkedIn"){
+      return (<i className="fa fa-linkedin fa-2x"></i>);
+    } else if (provider == "Git"){
+      return (<i className="fa fa-github fa-2x"></i>);
+    } else if (provider == "StackOverflow"){
+      return (<i className="fa fa-stack-overflow fa-2x"></i>);
+    } else{
+      return provider;
+    }
+  }
   render() {
     return (
       <div className=" container fluid">
@@ -112,7 +133,7 @@ export default class OtherUserDetails extends Component {
             {this.state.references.map((reference,i)=>{
               return (
                 <div className="ui segment grid">
-                  <div className="ui three wide column">{reference.ref_provider}</div>
+                  <div className="ui two wide column">{this.providerIcon(reference.ref_provider)}</div>
                   <div className="ui thirdteen wide column"><Link to={``}>
                     {reference.ref_url}
                   </Link></div>

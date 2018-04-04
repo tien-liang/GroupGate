@@ -3,6 +3,7 @@
   "version": "0.1.0",
   "private": true,
   "dependencies": {
+    "@fortawesome/react-fontawesome": "0.0.18",
     "apollo-cache-inmemory": "^1.1.10",
     "apollo-client": "^2.2.6",
     "apollo-client-preset": "^1.0.8",
@@ -12,6 +13,7 @@
     "cors": "^2.8.4",
     "express": "^4.16.2",
     "express-graphql": "^0.6.12",
+    "font-awesome": "^4.7.0",
     "graphql": "^0.13.1",
     "graphql-tag": "^2.8.0",
     "history": "^4.7.2",
