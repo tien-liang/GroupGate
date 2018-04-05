@@ -23,6 +23,7 @@ export default class ProjectGroup extends Component {
 		this.nextId = this.nextId.bind(this)
 		this.onCancel = this.onCancel.bind(this)
 		this.getGroups = this.getGroups.bind(this)
+		this.myGroupsButton = this.myGroupsButton.bind(this)
 	}
 
 	componentDidMount() {
@@ -30,10 +31,9 @@ export default class ProjectGroup extends Component {
   }
 
 	getGroups(){
-		console.log("GL-> myGroups: ", this.props.myGroups)
+		console.log("GL-> myGroups: ", this.props.myGroups)													// DEBUG, REMOVE
 
 		if(this.props.myGroups){																											// if props. flag = true, get my groups
-			console.log ("GL -> I should be gettig users groups now")
 			axios.get(`${url}?filter={"where":{"group_owner":{"like":"${this.props.userId}"}}}`)
 			.then(response => {
 				this.setState( {
@@ -44,7 +44,6 @@ export default class ProjectGroup extends Component {
 			})
 		}
 		else{
-			console.log ("GL -> I should be gettig groups now")
 			axios.get(`${url}?filter={"where":{"group_owner":{"neq":"${this.props.userId}"}}}`)
 			.then(response => {
 				this.setState( {groups: response.data}, () => {
@@ -79,9 +78,8 @@ export default class ProjectGroup extends Component {
 		}
 
 		update(newGroupName, newCourseNumber, newStatus, newDescription, i, addMode) {
-			console.log('GL -> Add mode: ', addMode)
+			console.log('GL -> Add mode: ', addMode)																	// DEBUG, REMOVE
 			if ( addMode ){
-				console.log("GL -> ")
 				axios.request({																														//Add group
 					method:'post',
 					url:`http://localhost:3000/api/groupinfos/`,
@@ -152,11 +150,22 @@ export default class ProjectGroup extends Component {
 			)
 		}
 
+		myGroupsButton(){
+				if( this.props.myGroups ){
+					return (
+						<span>
+							<Button basic color="blue" onClick={this.add.bind(null,"")} id="add"
+														disabled={this.state.addButtonDisabled}>+ New Group</Button>
+						</span>
+					)
+				}
+		}
+
 		render() {
 			return (
+
 				<div className="board">
-				<Button basic color="blue" onClick={this.add.bind(null,"")} id="add"
-								disabled={this.state.addButtonDisabled}>+ New Group</Button>
+					{this.myGroupsButton()}
 					{this.state.groups.map(this.eachGroup)}
 				</div>
 			)
