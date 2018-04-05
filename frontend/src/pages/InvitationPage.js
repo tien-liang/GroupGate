@@ -1,7 +1,7 @@
 import React, { Component } from "react";
 import axios from 'axios';
 import Nav from '../components/Nav';
-import { Button, Form, Select, Grid, TextArea } from "semantic-ui-react";
+import { Button, Form, Select, Grid, TextArea, Feed, Icon } from "semantic-ui-react";
 
 const BASE_URL = 'http://localhost:3000';
 const url= `${BASE_URL}/api/invitations`;
@@ -18,24 +18,38 @@ export default class Invitation extends Component {
     this.cancel = this.cancel.bind(this);
     this.eachInvitationReceived = this.eachInvitationReceived.bind(this);
     this.eachInvitationSent = this.eachInvitationSent.bind(this);
+    this.notification = this.notification.bind(this);
+    this.idToName = this.idToName.bind(this);
   }
 
   componentDidMount(){
-		this.getInvitations();
-	}
+    this.getInvitations();
+  }
 
+  //get invitation from DB
   getInvitations(){
-		axios.get(`${url}?filter={"where":{"inviter_id":{"like":"${userId}"}}} `)
-		.then(response => {
-				this.setState( {invitation_sent: response.data}, () => {
-				})
-		})
+    axios.get(`${url}?filter={"where":{"inviter_id":{"like":"${userId}"}}} `)
+    .then(response => {
+      this.setState( {invitation_sent: response.data}, () => {
+      })
+    })
     axios.get(`${url}?filter={"where":{"invitee_id":{"like":"${userId}"}}} `)
-		.then(response => {
-				this.setState( {invitation_received: response.data}, () => {
-				})
-		})
-	}
+    .then(response => {
+      this.setState( {invitation_received: response.data}, () => {
+      })
+    })
+  }
+  idToName(){
+    var arr = this.state.invitation_sent;
+    this.state.invitation_sent.map((invitation,i)=>{
+      axios.get(`http://localhost:3000/api/userinfos/${invitation.inviter_id}`)
+      .then(response => {
+        arr[i].inviter_name = response.data.display_name;
+        console.log(arr[i].inviter_name);
+      })})
+      this.setState({invitation_sent: arr});
+  }
+  //onClick function for accepting invitation received
   accept(id){
     axios.request({
       method:'patch',
@@ -44,6 +58,8 @@ export default class Invitation extends Component {
     }).then(response => {
     }).catch(err => console.log(err));
   }
+
+  //onClick function for rejecting invitation received
   reject(id){
     axios.request({
       method:'patch',
@@ -52,73 +68,124 @@ export default class Invitation extends Component {
     }).then(response => {
     }).catch(err => console.log(err));
   }
+
+  //onclick function for canceling invitation sent
   cancel(id){
     axios.delete(`http://localhost:3000/api/invitations/${id}`)
-      .then(response => {
-        this.setState( {
-          }, () => {
-        })
+    .then(response => {
+      this.setState( {
+      }, () => {
       })
+    })
 
-		this.setState(prevState => ({
-			invitation_sent: prevState.invitation_sent.filter(invitation => invitation.id !== id)
-		}))
+    this.setState(prevState => ({
+      invitation_sent: prevState.invitation_sent.filter(invitation => invitation.id !== id)
+    }))
   }
+
+  //render each invitation received
   eachInvitationReceived(invitation,i){
-    return(
-      <table className="ui single line basic table">
-        <thead>
-          <tr>
-            <th className="three wide">{"Inviter"}</th>
-            <th>{"Invitee"}</th>
-          </tr>
-        </thead>
-        <tbody>
-          <tr>
-            <td>{invitation.inviter_id}</td>
-            <td>{invitation.invitee_id}</td>
-          </tr>
-          <tr>
-            <td colSpan="2">
-      <span>
-        <button  className="ui red button right floated" onClick={()=>this.reject(invitation.id)} id="reject">Reject</button>
-        <button className="ui green button right floated" onClick={()=>this.accept(invitation.id)} id="accept">Accept</button>
-      </span>
-    </td>
-    </tr>
-    </tbody>
-      </table>
-    )
+    //only show pending invitation
+    if (invitation.status == "Pending"){
+      return(
+        <table className="ui single line basic table">
+          <thead>
+            <tr>
+              <th className="three wide">{"Inviter"}</th>
+              <th>{"Invitee"}</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>{invitation.inviter_id}</td>
+              <td>{invitation.invitee_id}</td>
+            </tr>
+            <tr>
+              <td colSpan="2">
+                <span>
+                  <button  className="ui red button right floated" onClick={()=>this.reject(invitation.id)} id="reject">Reject</button>
+                  <button className="ui green button right floated" onClick={()=>this.accept(invitation.id)} id="accept">Accept</button>
+                </span>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      )
+    }
   }
+
+  //render each invitation sent
   eachInvitationSent(invitation,i){
-    return(
-      <table className="ui single line basic table">
-        <thead>
-          <tr>
-            <th className="three wide">{"Inviter"}</th>
-            <th>{"Invitee"}</th>
-          </tr>
-        </thead>
-        <tbody>
-          <tr>
-            <td>{invitation.inviter_id}</td>
-            <td>{invitation.invitee_id}</td>
-          </tr>
-          <tr>
-            <td colSpan="2">
-      <span>
-        <button className="ui red button right floated" onClick={()=>this.cancel(invitation.id)} id="cancel">Cancel Invitation</button>
-      </span>
-    </td>
-    </tr>
-    </tbody>
-      </table>
-    )
+    //only show pending invitation
+    if (invitation.status == "Pending"){
+      return(
+        <table className="ui single line basic table">
+          <thead>
+            <tr>
+              <th className="three wide">{"Inviter"}</th>
+              <th>{"Invitee"}</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>{invitation.inviter_id}</td>
+              <td>{invitation.invitee_id}</td>
+            </tr>
+            <tr>
+              <td colSpan="2">
+                <span>
+                  <button className="ui red button right floated" onClick={()=>this.cancel(invitation.id)} id="cancel">Cancel Invitation</button>
+                </span>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      )
+    }
   }
-  render() {
+
+  //Notification for invitation sent (accepted or rejected)
+  notification(invitation,i){
+    if (invitation.status == "Accepted"){
+      let summary = invitation.invitee_id + " accepted your invitation.";
+      return(
+        <Feed>
+          <Feed.Event>
+            <Feed.Label>
+              <Icon name="checkmark" color="green"/>
+            </Feed.Label>
+            <Feed.Content
+              summary={summary}
+            />
+          </Feed.Event>
+        </Feed>
+      )
+    } else if (invitation.status == "Rejected"){
+      let summary = invitation.invitee_id+" rejected your invitation.";
+      return(
+        <Feed>
+          <Feed.Event>
+            <Feed.Label>
+              <Icon name="remove" color="red"/>
+            </Feed.Label>
+            <Feed.Content
+              summary={summary}
+            />
+          </Feed.Event>
+        </Feed>
+      )
+    }
+  }
+
+
+  render(){
     return (
       <div className="container">
         <Nav />
+        <h5 className="ui dividing header">Notification</h5>
+        <div>
+          {this.state.invitation_sent.map(this.notification)}
+        </div>
         <h5 className="ui dividing header">Invitation Received</h5>
         <div>
           {this.state.invitation_received.map(this.eachInvitationReceived)}
