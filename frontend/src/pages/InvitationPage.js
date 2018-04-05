@@ -47,6 +47,11 @@ export default class Invitation extends Component {
       data: {status: "Accepted"}
     }).then(response => {
     }).catch(err => console.log(err));
+    this.setState(prevState => ({
+      invitation_received: prevState.invitation_received.map(
+        invitation => (invitation.id !== id) ? invitation : {...invitation, status: "Accepted"}
+      )
+    }))
   }
 
   //onClick function for rejecting invitation received
@@ -57,6 +62,11 @@ export default class Invitation extends Component {
       data: {status: "Rejected"}
     }).then(response => {
     }).catch(err => console.log(err));
+    this.setState(prevState => ({
+      invitation_received: prevState.invitation_received.map(
+        invitation => (invitation.id !== id) ? invitation : {...invitation, status: "Rejected"}
+      )
+    }))
   }
 
   //onclick function for canceling invitation sent
@@ -82,6 +92,7 @@ export default class Invitation extends Component {
           <thead>
             <tr>
               <th className="three wide">{"Inviter"}</th>
+              <th>{"Group Name"}</th>
             </tr>
           </thead>
           <tbody>
@@ -110,7 +121,8 @@ export default class Invitation extends Component {
         <table className="ui single line basic table">
           <thead>
             <tr>
-              <th>{"Invitee"}</th>
+              <th className="three wide">{"Invitee"}</th>
+              <th>{"Group Name"}</th>
             </tr>
           </thead>
           <tbody>
