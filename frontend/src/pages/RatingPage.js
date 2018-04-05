@@ -22,26 +22,30 @@ export default class Rating extends Component {
   render() {
     return (
       <div className="container">
-          <Nav />
+        <Nav />
+        <br/><br/>
+        <h5 className="ui dividing header">My Rating</h5>
+        <h5 className="ui dividing header">Available Rating for Group Members</h5>
+
+        {/*
           <div className="ui segment">
           <Grid centered columns={3}>
-            <Grid.Column>
-              <h2>Group Member Rating</h2>
-              <h6>You are currently rating for <strong>Jessica C.</strong></h6>
-              <br/>
+          <Grid.Column>
+          <h2>Group Member Rating</h2>
+          <h6>You are currently rating for <strong>Jessica C.</strong></h6>
+          <br/>
           <Form className="ui form center">
-            <Form.Field control={Select} label='Technical Skills' options={options} placeholder='-' width={6}/>
-            <Form.Field control={Select} label='Problem Solving' options={options} placeholder='-' width={6} />
-            <Form.Field control={Select} label='Communication' options={options} placeholder='-' width={6} />
-            <Form.Field control={Select} label='Time Management' options={options} placeholder='-' width={6} />
-            <Form.Field control={Select} label='Activity' options={options} placeholder='-' width={6} />
-            <Form.Field control={TextArea} label='Comment' placeholder='Add more comments...' />
-            <Form.Field control={Button}>Submit</Form.Field>
-          </Form>
-        </Grid.Column>
-      </Grid>
-    </div>
-      </div>
-    );
-  }
+          <Form.Field control={Select} label='Technical Skills' options={options} placeholder='-' width={6}/>
+          <Form.Field control={Select} label='Problem Solving' options={options} placeholder='-' width={6} />
+          <Form.Field control={Select} label='Communication' options={options} placeholder='-' width={6} />
+          <Form.Field control={Select} label='Time Management' options={options} placeholder='-' width={6} />
+          <Form.Field control={Select} label='Activity' options={options} placeholder='-' width={6} />
+          <Form.Field control={Button}>Submit</Form.Field>
+        </Form>
+      </Grid.Column>
+    </Grid>
+  </div>*/}
+</div>
+);
+}
 }

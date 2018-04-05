@@ -1,0 +1,50 @@
+{
+  "name": "rating",
+  "base": "PersistedModel",
+  "idInjection": true,
+  "options": {
+    "validateUpsert": true
+  },
+  "properties": {
+    "rating_by_id": {
+      "type": "string",
+      "required": true
+    },
+    "rating_for_id": {
+      "type": "string",
+      "required": true
+    },
+    "rating_by_name": {
+      "type": "string",
+      "required": true
+    },
+    "rating_for_name": {
+      "type": "string",
+      "required": true
+    },
+    "tech_skill": {
+      "type": "number",
+      "required": true
+    },
+    "communication": {
+      "type": "number",
+      "required": true
+    },
+    "p_solving": {
+      "type": "number",
+      "required": true
+    },
+    "timemngmt": {
+      "type": "number",
+      "required": true
+    },
+    "activity": {
+      "type": "number",
+      "required": true
+    }
+  },
+  "validations": [],
+  "relations": {},
+  "acls": [],
+  "methods": {}
+}
