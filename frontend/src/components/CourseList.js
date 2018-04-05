@@ -1,6 +1,6 @@
 import React, { Component } from 'react'
 import Course from './Course'
-import { Button } from "semantic-ui-react";
+import { Button, Message } from "semantic-ui-react";
 import axios from 'axios';
 
 const BASE_URL = 'http://localhost:3000';
@@ -14,7 +14,8 @@ export default class CourseList extends Component {
 		this.state = {
 			courses: [],
 			adding: false,
-			addButtonDisabled: false
+			addButtonDisabled: false,
+			repeated_warning_hidden: true
 		}
 		this.add = this.add.bind(this)
 		this.eachCourse = this.eachCourse.bind(this)
@@ -23,24 +24,24 @@ export default class CourseList extends Component {
 		this.nextId = this.nextId.bind(this)
 		this.onCancel = this.onCancel.bind(this)
 		this.getCurrentTermSemester = this.getCurrentTermSemester.bind(this)
+		this.warning = this.warning.bind(this)
 	}
 
 	componentDidMount(){
 		this.getCourses();
 	}
 
-	getCourses(){																																	// API call to load courses
+	getCourses(){
+		var arr = [];																															// API call to load courses
 		axios.get(`${url}?filter={"where":{"user_id":{"like":"${this.props.userId}"}}} `)
-		.then(response => {
-				this.setState( {courses: response.data}, () => {
-					console.log('CL -> Trying to get courses:', this.state.courses);							/* DEBUG */
-				})
-		})
+		.then(response =>
+			this.setState({courses: response.data})
+		)
 	}
 
 	getCurrentTermSemester(){
 		return (  (date.getMonth()+1) >= 1 && ((date.getMonth()+1) <= 4 ) ? 'Spring' :
-			( ((date.getMonth()+1) >= 5 && (date.getMonth()+1) <= 8 ) ? 'Summer' : 'Fall' ) )
+		( ((date.getMonth()+1) >= 5 && (date.getMonth()+1) <= 8 ) ? 'Summer' : 'Fall' ) )
 	}
 
 	add(text) {																																		// Add button clicked handler
@@ -70,14 +71,14 @@ export default class CourseList extends Component {
 
 		if ( addMode ){
 			axios.request({																														//Add course
-			method:'post',
-			url:`http://localhost:3000/api/courseinfos/`,
-			data: {
-				course_number: newText,
-				term_year: String(date.getFullYear()),
-				term_semester: this.getCurrentTermSemester(),
-				user_id: this.props.userId
-			}
+				method:'post',
+				url:`http://localhost:3000/api/courseinfos/`,
+				data: {
+					course_number: newText,
+					term_year: String(date.getFullYear()),
+					term_semester: this.getCurrentTermSemester(),
+					user_id: this.props.userId
+				}
 			}).then(response => {
 				console.log(response )
 			}).catch(err => console.log(err));
@@ -98,53 +99,59 @@ export default class CourseList extends Component {
 		this.setState(prevState => ({
 			courses: prevState.courses.map(
 				course => (course.id !== i) ? course : {...course, course_number: newText,
-																													term_year: date.getFullYear(),
-																												term_semester: this.getCurrentTermSemester()  }
-			)
-		}))
+					term_year: date.getFullYear(),
+					term_semester: this.getCurrentTermSemester()  }
+				)
+			}))
 
-		this.setState({ addButtonDisabled: false })
-	}
+			this.setState({ addButtonDisabled: false })
 
-	onCancel( newState ){
-		this.setState({ addButtonDisabled: newState })
-	}
+		}
 
-	remove(id) {
-		console.log('removing item at', id)																					// DEBUG
-		axios.delete(`http://localhost:3000/api/courseinfos/${id}`)
-      .then(response => {
-        this.setState( {
-          }, () => {
-          console.log('MP -> Loading user: ', this.state);
-        })
-      })
+		onCancel( newState ){
+			this.setState({ addButtonDisabled: newState })
+		}
 
-		this.setState(prevState => ({
-			courses: prevState.courses.filter(course => course.id !== id)
-		}))
-	}
+		remove(id) {
+			console.log('removing item at', id)																					// DEBUG
+			axios.delete(`http://localhost:3000/api/courseinfos/${id}`)
+			.then(response => {
+				this.setState( {
+				}, () => {
+					console.log('MP -> Loading user: ', this.state);
+				})
+			})
 
-	eachCourse(course, i) {
-		console.log ('CL -> checking course at eachCourse: ', course.course_number, '  ', course.id, i)									// DEBUG
-		return (
-			<Course key={course.id}
-				  index={course.id} label_1='Course Number: ' label_2='Term: '
+			this.setState(prevState => ({
+				courses: prevState.courses.filter(course => course.id !== id)
+			}))
+		}
+		warning(){
+			this.setState({repeated_warning_hidden: false})
+			setTimeout(function() { this.setState({repeated_warning_hidden: true}); }.bind(this), 4000);
+		}
+		eachCourse(course, i) {
+			console.log ('CL -> checking course at eachCourse: ', course.course_number, '  ', course.id, i)									// DEBUG
+			return (
+				<Course key={course.id}
+					index={course.id} label_1='Course Number: ' label_2='Term: '
 					value_2= {course.term_year} value_3= {course.term_semester} adding={this.state.adding}
-					onCancel={this.onCancel} onChange={this.update} onRemove={this.remove}>
-				  {course.course_number}
-		  </Course>
-		)
-	}
+					onCancel={this.onCancel} onChange={this.update} onRemove={this.remove} userId={this.props.userId} warning={this.warning}>
+					{course.course_number}
+				</Course>
+			)
+		}
 
-	render() {
-		return (
-			<div className="panel-group">
-				<Button id="add" basic color="blue" onClick={this.add.bind(null,"")}
-								disabled={this.state.addButtonDisabled}>+ Add Course</Button>
-
-				{this.state.courses.map(this.eachCourse)}
-			</div>
-		)
-	}
-}
+		render() {
+			return (
+				<div className="panel-group">
+					<Button id="add" basic color="blue" onClick={this.add.bind(null,"")}
+						disabled={this.state.addButtonDisabled}>+ Add Course</Button>
+						{this.state.courses.map(this.eachCourse)}
+						<Message negative hidden={this.state.repeated_warning_hidden}>
+							<Message.Header>Course already existed!</Message.Header>
+						</Message>
+					</div>
+				)
+			}
+		}
