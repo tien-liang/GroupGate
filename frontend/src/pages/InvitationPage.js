@@ -1,6 +1,7 @@
 import React, { Component } from "react";
 import axios from 'axios';
 import Nav from '../components/Nav';
+import { Link } from 'react-router-dom';
 import { Button, Form, Select, Grid, TextArea, Feed, Icon } from "semantic-ui-react";
 
 const BASE_URL = 'http://localhost:3000';
@@ -92,12 +93,12 @@ export default class Invitation extends Component {
           <thead>
             <tr>
               <th className="three wide">{"Inviter"}</th>
-              <th>{"Group Name"}</th>
+              <th>{"Course"}</th>
             </tr>
           </thead>
           <tbody>
             <tr>
-              <td>{invitation.inviter_name}</td>
+              <td><Link to={`/otherUsers/${invitation.inviter_id}`} >{invitation.inviter_name}</Link></td>
             </tr>
             <tr>
               <td colSpan="2">
@@ -122,12 +123,12 @@ export default class Invitation extends Component {
           <thead>
             <tr>
               <th className="three wide">{"Invitee"}</th>
-              <th>{"Group Name"}</th>
+              <th>{"Course"}</th>
             </tr>
           </thead>
           <tbody>
             <tr>
-              <td>{invitation.invitee_name}</td>
+              <td><Link to={`/otherUsers/${invitation.invitee_id}`} >{invitation.invitee_name}</Link></td>
             </tr>
             <tr>
               <td colSpan="2">
