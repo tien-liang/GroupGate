@@ -19,7 +19,6 @@ export default class Invitation extends Component {
     this.eachInvitationReceived = this.eachInvitationReceived.bind(this);
     this.eachInvitationSent = this.eachInvitationSent.bind(this);
     this.notification = this.notification.bind(this);
-    this.idToName = this.idToName.bind(this);
   }
 
   componentDidMount(){
@@ -39,16 +38,7 @@ export default class Invitation extends Component {
       })
     })
   }
-  idToName(){
-    var arr = this.state.invitation_sent;
-    this.state.invitation_sent.map((invitation,i)=>{
-      axios.get(`http://localhost:3000/api/userinfos/${invitation.inviter_id}`)
-      .then(response => {
-        arr[i].inviter_name = response.data.display_name;
-        console.log(arr[i].inviter_name);
-      })})
-      this.setState({invitation_sent: arr});
-  }
+
   //onClick function for accepting invitation received
   accept(id){
     axios.request({
@@ -92,13 +82,11 @@ export default class Invitation extends Component {
           <thead>
             <tr>
               <th className="three wide">{"Inviter"}</th>
-              <th>{"Invitee"}</th>
             </tr>
           </thead>
           <tbody>
             <tr>
-              <td>{invitation.inviter_id}</td>
-              <td>{invitation.invitee_id}</td>
+              <td>{invitation.inviter_name}</td>
             </tr>
             <tr>
               <td colSpan="2">
@@ -122,14 +110,12 @@ export default class Invitation extends Component {
         <table className="ui single line basic table">
           <thead>
             <tr>
-              <th className="three wide">{"Inviter"}</th>
               <th>{"Invitee"}</th>
             </tr>
           </thead>
           <tbody>
             <tr>
-              <td>{invitation.inviter_id}</td>
-              <td>{invitation.invitee_id}</td>
+              <td>{invitation.invitee_name}</td>
             </tr>
             <tr>
               <td colSpan="2">
@@ -147,7 +133,7 @@ export default class Invitation extends Component {
   //Notification for invitation sent (accepted or rejected)
   notification(invitation,i){
     if (invitation.status == "Accepted"){
-      let summary = invitation.invitee_id + " accepted your invitation.";
+      let summary = invitation.invitee_name + " accepted your invitation.";
       return(
         <Feed>
           <Feed.Event>
@@ -161,7 +147,7 @@ export default class Invitation extends Component {
         </Feed>
       )
     } else if (invitation.status == "Rejected"){
-      let summary = invitation.invitee_id+" rejected your invitation.";
+      let summary = invitation.invitee_name+" rejected your invitation.";
       return(
         <Feed>
           <Feed.Event>

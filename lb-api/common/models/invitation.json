@@ -14,6 +14,22 @@
       "type": "string",
       "required": true
     },
+    "inviter_name": {
+      "type": "string",
+      "required": true
+    },
+    "invitee_name": {
+      "type": "string",
+      "required": true
+    },
+    "group_id": {
+      "type": "string",
+      "required": true
+    },
+    "course_number": {
+      "type": "string",
+      "required": true
+    },
     "status": {
       "type": "string",
       "required": true

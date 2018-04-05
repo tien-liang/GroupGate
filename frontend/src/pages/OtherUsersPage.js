@@ -12,10 +12,12 @@ export default class OtherUsers extends Component {
     super();
     this.state = {
       id: '',
+      name: '',
       users: [],
       open_modal: false,
       invited_modal: false
     };
+    this.getUserName = this.getUserName.bind(this);
     this.getOtherUsers = this.getOtherUsers.bind(this);
     this.invite = this.invite.bind(this);
     this.openModal = this.openModal.bind(this);
@@ -25,6 +27,7 @@ export default class OtherUsers extends Component {
   }
   componentDidMount() {
     this.getOtherUsers();
+    this.getUserName();
   }
   getOtherUsers(){
     axios.get(`http://localhost:3000/api/userinfos?filter[where][id][neq]=${userId}`)
@@ -36,7 +39,16 @@ export default class OtherUsers extends Component {
         })
       })
   }
-
+  getUserName(){
+    axios.get(`http://localhost:3000/api/userinfos/${userId}`)
+      .then(response => {
+        this.setState( {
+          name: response.data.display_name,
+          }, () => {
+          console.log('OUP -> getOtherUsers: ',this.state.users);
+        })
+      })
+  }
   ratingRender(user){
     if (user.num_of_votes>0){
       return (((user.total_r_skills+user.total_r_comm+user.total_r_psolving+user.total_r_timemngmt+user.total_r_activity)/5)/user.num_of_votes)
@@ -45,7 +57,7 @@ export default class OtherUsers extends Component {
     }
   }
 
-  invite(id){
+  invite(id, invitee_name){
     this.openInvitedModal();
     console.log(id)
     axios.request({
@@ -54,6 +66,8 @@ export default class OtherUsers extends Component {
     data: {
       inviter_id: userId,
       invitee_id: id,
+      inviter_name: this.state.name,
+      invitee_name: invitee_name,
       status: "Pending"
     }
     }).then(response => {
@@ -79,6 +93,7 @@ export default class OtherUsers extends Component {
       <div className=" container fluid">
           <Nav />
           <br/>
+          {/*render user cards*/}
           <div className="ui link cards">
             {this.state.users.map((user,i)=>{
               return(
@@ -95,6 +110,7 @@ export default class OtherUsers extends Component {
                   <button className="ui bottom attached button" onClick={this.openModal}>
                     + Invite
                   </button>
+                  {/*Show confirmation modal when invite button clicked*/}
                   <Modal style={{width: 600, padding: 100}} open={this.state.open_modal} className="scrolling" basic size='small'>
                   <Header icon='warning circle' />
                   <Modal.Content>
@@ -104,11 +120,12 @@ export default class OtherUsers extends Component {
                     <Button basic color='red' inverted onClick={this.closeModal}>
                       <Icon name='remove' /> No
                     </Button>
-                    <Button color='green' inverted onClick={()=>this.invite(user.id)}>
+                    <Button color='green' inverted onClick={()=>this.invite(user.id, user.display_name)}>
                       <Icon name='checkmark' /> Yes
                     </Button>
                   </Modal.Actions>
                 </Modal>
+                {/*Show invitation sent modal*/}
                 <Modal
                   style={{width: 600, padding: 100}}
                   className="scrolling"
