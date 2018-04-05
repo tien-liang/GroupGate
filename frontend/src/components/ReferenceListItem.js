@@ -1,5 +1,7 @@
 import React, { Component } from 'react';
 import providerOptions from './common/providerOptions.json';
+import { Label } from "semantic-ui-react";
+import {Link} from 'react-router-dom';
 // import linkedin_img from "./images/avatars/linkedin.png";
 
 export default class ReferenceListItem extends Component {
@@ -13,6 +15,7 @@ export default class ReferenceListItem extends Component {
 			adding: props.adding,
 			editing: false,
 			addButtonDisabled: props.addButtonDisabled,
+			url: ""
 		}
 		this.edit = this.edit.bind(this)
 		this.remove = this.remove.bind(this)
@@ -21,6 +24,7 @@ export default class ReferenceListItem extends Component {
 		this.renderForm = this.renderForm.bind(this)
 		this.renderDisplay = this.renderDisplay.bind(this)
 		this.handleChange = this.handleChange.bind(this)
+		this.setURL = this.setURL.bind(this)
 	}
 
 	componentDidUpdate() {
@@ -31,7 +35,18 @@ export default class ReferenceListItem extends Component {
 			textArea.select()
 		}
 	}
-
+	defaultURL(provider){
+		if (provider == "LinkedIn"){
+			return "http://www.linkedin.com/in/"
+		}else if(provider == "StackOverflow"){
+			return "http://stackoverflow.com/users/"
+		}else if(provider == "Git"){
+			return "http://github.com/"
+		}
+	}
+	setURL(){
+		this.setState({url: this.defaultURL(this.state.provider)+this.props.url})
+	}
 	edit() {
 		this.setState({
 			editing: true,
@@ -82,8 +97,13 @@ export default class ReferenceListItem extends Component {
 						</div>
 						<div className="twelve wide field">
 							<label>URL</label>
+							<div className="inline field">
+							<Label size="huge" horizontal>
+    						{this.defaultURL(this.state.provider)}
+  						</Label>
 							<input type="text" ref={input => this._newText = input}
 							  	defaultValue={this.props.url}/>
+								</div>
 						</div>
 					</div>
 					<button className="ui primary button right floated" id="save" onClick={this.save}>Save</button>
@@ -144,7 +164,7 @@ export default class ReferenceListItem extends Component {
 				<tbody>
 					<tr>
 						<td className="center aligned">{this.providerIcon(this.props.provider)}</td>
-						<td>{this.props.url}</td>
+						<td><Link to={this.state.url} >{this.defaultURL(this.props.provider)}{this.props.url}</Link></td>
 					</tr>
 					<tr>
 						<td colSpan="2">

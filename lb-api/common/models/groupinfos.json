@@ -31,8 +31,20 @@
       "required": true
     },
     "group_members": {
-      "type": [
-        "string"
+      "type": "array",
+      "items": [
+        { "id" :
+          {
+            "type": "string",
+            "required": true
+          }
+        },
+        { "name" :
+          {
+            "type": "string",
+            "required": true
+          }
+        }
       ]
     }
   },

@@ -143,8 +143,8 @@ displayButtons(){
             <td>{this.props.description}</td>
           </tr>
 					<tr>
-						<td>{"Group Members: "}{this.props.members.map((name,i)=>{
-							return name + " ";
+						<td>{"Group Members: "}{this.props.members.map((member,i)=>{
+							return member.name + " ";
 						})}
 </td>
 					</tr>
