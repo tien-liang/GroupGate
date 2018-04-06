@@ -6,13 +6,13 @@ from django.db.models import Avg
 UserModel = get_user_model()
 
 class MembershipSerializer(serializers.ModelSerializer):
-    group_id = serializers.ReadOnlyField(source='group.id')
-    group_name = serializers.ReadOnlyField(source='group.name')
-    user_id = serializers.ReadOnlyField(source='customuser.id')
-    user_name = serializers.ReadOnlyField(source='customuser.first_name')
+
+    group_name = serializers.ReadOnlyField(source='group_id.name')
+    user_display_name = serializers.ReadOnlyField(source='user_id.display_name')
+    
     class Meta:
         model = models.Membership
-        fields = ('group_id', 'group_name', 'user_id', 'user_name', 'user', 'role',)
+        fields = ('group_id', 'group_name', 'user_id', 'user_display_name', 'user_role',)
 
 class UserSerializer(serializers.ModelSerializer):
 
@@ -20,17 +20,12 @@ class UserSerializer(serializers.ModelSerializer):
     first_name = serializers.CharField(required=True)
     last_name = serializers.CharField(required=True)
     groups = MembershipSerializer(source='membership_set', many=True)
-    display_name = serializers.CharField(required=False)
+    display_name = serializers.CharField(required=True)
 
     average_rating = serializers.SerializerMethodField()
     
     def get_average_rating(self, obj):
-        print("\n\n\n")
-        # print(models.Rating.objects.filter(user=obj.id)).all().aggregate(Avg('rating'))
-        print(obj.id)
-        print("\n\n\n")
-        # average_rating = models.Rating.objects.filter(user=obj.id).aggregate(Avg('rating')).get('rating__rating')
-        # average_rating = models.Rating.objects.all().aggregate(Avg('rating'))
+
         average_rating = models.Rating.objects.all().filter(user=obj.id).aggregate(Avg('rating'))
         if average_rating is None:
             return 0
@@ -42,6 +37,7 @@ class UserSerializer(serializers.ModelSerializer):
             username=validated_data['username'],
             first_name=validated_data['first_name'],
             last_name=validated_data['last_name'],
+            display_name=validated_data['display_name'],
         )
         user.set_password(validated_data['password'])
         user.save()
@@ -50,17 +46,22 @@ class UserSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = UserModel
-        fields = ('id', 'username', 'password', 'first_name', 'last_name', 'display_name', 'groups', 'average_rating')
+        fields = ('id', 'username', 'password', 'first_name', 'last_name', 'display_name', 'groups', 'average_rating', 'about_me')
 
 class GroupCreateSerializer(serializers.ModelSerializer):
+
     members = MembershipSerializer(source='membership_set', many=True, required=False)
+
     def create(self, validated_data):
         user_data = validated_data.pop('membership_set')
-        validated_data['owner'] = self.context['request'].user
+        owner = self.context['request'].user
+        validated_data['owner'] = owner
         group = models.Group.objects.create(**validated_data)
         for user in user_data:
             d=dict(user)
-            models.Membership.objects.create(group=group, user=d['user'], role=d['role'])
+            models.Membership.objects.create(group_id=group, user_id=d['user_id'], user_role=d['user_role'])
+        models.Membership.objects.create(group_id=group, user_id=owner, user_role="owner")
+
         return group
 
     def update(self, instance, validated_data):
@@ -68,10 +69,12 @@ class GroupCreateSerializer(serializers.ModelSerializer):
         for item in validated_data:
             if models.Group._meta.get_field(item):
                 setattr(instance, item, validated_data[item])
-        models.Membership.objects.filter(group=instance).delete()
+        models.Membership.objects.filter(group_id=instance).delete()
         for user in user_data:
             d=dict(user)
-            models.Membership.objects.create(group=instance, user=d['user'], role=d['role'])
+            models.Membership.objects.create(group_id=instance, user_id=d['user_id'], user_role=d['user_role'])
+        owner = instance.owner
+        models.Membership.objects.create(group_id=instance, user_id=owner, user_role="owner")
         instance.save()
         return instance
 
@@ -81,6 +84,7 @@ class GroupCreateSerializer(serializers.ModelSerializer):
         # lookup_field = 'course'
 
 class RatingSerializer(serializers.ModelSerializer):
+
     # user = serializers.SerializerMethodField(source='get_user_id', read_only=True)
 
     # def get_user_id(self, obj):
@@ -91,3 +95,12 @@ class RatingSerializer(serializers.ModelSerializer):
         fields = ('id', 'user', 'rating')
         model = models.Rating
 
+class InviteSerializer(serializers.ModelSerializer):
+
+    class Meta:
+        fields = ('id', 'from_user', 'to_user', 'group', 'status')
+        model=models.Invite
+
+class InviteResponseSerializer(serializers.Serializer):
+
+    response = serializers.BooleanField(required=True)
