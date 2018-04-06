@@ -39,6 +39,7 @@ export default class UserCard extends Component {
         invitee_id: id,
         inviter_name: this.props.inviter_name,
         invitee_name: invitee_name,
+        course_number: this.props.selected_course,
         status: "Pending"
       }
     }).then(response => {
@@ -60,14 +61,13 @@ export default class UserCard extends Component {
   }
   render(){
     return(
-      <div className="card" href={`/otherUsers/${this.state.user.id}`}>
+      <div className="card">
         <div className="content">
           <div className="header"><Link to={`/otherUsers/${this.state.user.id}`} >{this.state.user.display_name}</Link></div>
         </div>
         <div className="content">
           Total Score (%): {this.ratingRender(this.state.user)}
-        </div>
-        <div className="content">
+          <br/>
           {this.state.user.num_of_votes} Vote(s)
         </div>
         <button className="ui bottom attached button" onClick={this.openModal}>

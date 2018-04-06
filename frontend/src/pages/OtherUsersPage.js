@@ -60,7 +60,7 @@ export default class OtherUsers extends Component {
   eachUser(user,i){
     if (user.courses.includes(this.state.selected_course)){
       return(
-        <UserCard user={user} inviter_id={userId} inviter_name={this.state.name}/>
+        <UserCard user={user} inviter_id={userId} inviter_name={this.state.name} course={this.state.selected_course}/>
       )}
     }
     handleChange(e,value){
@@ -81,7 +81,7 @@ export default class OtherUsers extends Component {
           </Header>
           <Dropdown button className='icon' floating labeled icon='filter' search placeholder='Search Courses' options={this.state.user_courses} onChange={this.handleChange}/>
           <br/><br/>
-          <div className="ui link cards">
+          <div className="ui cards">
             {this.state.users.map((user,i)=>{return this.eachUser(user,i)})}
           </div>
         </div>

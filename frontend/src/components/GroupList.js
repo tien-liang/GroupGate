@@ -1,6 +1,6 @@
 import React, { Component } from 'react'
 import Group from './Group'
-import { Button } from "semantic-ui-react";
+import { Button, Message } from "semantic-ui-react";
 import axios from 'axios';
 
 const userId = '5ab60109351f8a12ba4937b2';    // you have to update this user ID with id from your backend
@@ -14,7 +14,8 @@ export default class ProjectGroup extends Component {
 			userId: this.props.userId,
 			adding: false,
 			groups: [],
-			addButtonDisabled: false
+			addButtonDisabled: false,
+			repeated_warning_hidden: true
     }
 		this.add = this.add.bind(this)
 		this.eachGroup = this.eachGroup.bind(this)
@@ -24,6 +25,7 @@ export default class ProjectGroup extends Component {
 		this.onCancel = this.onCancel.bind(this)
 		this.getGroups = this.getGroups.bind(this)
 		this.myGroupsButton = this.myGroupsButton.bind(this)
+		this.warning = this.warning.bind(this)
 	}
 
 	componentDidMount() {
@@ -138,14 +140,17 @@ export default class ProjectGroup extends Component {
 				groups: prevState.groups.filter(group => group.id !== id)
 			}))
 		}
-
+		warning(){
+			this.setState({repeated_warning_hidden: false})
+			setTimeout(function() { this.setState({repeated_warning_hidden: true}); }.bind(this), 4000);
+		}
 		eachGroup(group, i) {
 			console.log("GL -> goup members at i: ", i,  group.group_members)
 			return (
 				<Group key={group.id}
 					  index={group.id} groupName={group.group_name} courseNumber={group.group_course} status={group.group_status}
 						description= {group.group_descr} members={group.group_members} adding={this.state.adding}
-						onCancel={this.onCancel} onChange={this.update} onRemove={this.remove} myGroups={this.props.myGroups}>
+						onCancel={this.onCancel} onChange={this.update} onRemove={this.remove} userId={this.props.userId} myGroups={this.props.myGroups} warning={this.warning}>
 			  </Group>
 			)
 		}
@@ -167,6 +172,9 @@ export default class ProjectGroup extends Component {
 				<div className="board">
 					{this.myGroupsButton()}
 					{this.state.groups.map(this.eachGroup)}
+					<Message negative hidden={this.state.repeated_warning_hidden}>
+						<Message.Header>Course already existed!</Message.Header>
+					</Message>
 				</div>
 			)
 		}
