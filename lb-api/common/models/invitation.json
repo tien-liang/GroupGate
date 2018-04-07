@@ -23,8 +23,7 @@
       "required": true
     },
     "group_id": {
-      "type": "string",
-      "required": true
+      "type": "string"
     },
     "course_number": {
       "type": "string",

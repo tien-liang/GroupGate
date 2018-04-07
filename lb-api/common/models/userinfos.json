@@ -14,11 +14,6 @@
       "type": "string",
       "required": true
     },
-    "courses": {
-      "type": [
-        "string"
-      ]
-    },
     "references": {
       "type": [
         "string"
@@ -60,7 +55,13 @@
     }
   },
   "validations": [],
-  "relations": {},
+  "relations": {
+    "coursesTaken": {
+      "type": "hasMany",
+      "model": "courseinfos",
+      "foreignKey": "user_id"
+    }
+  },
   "acls": [],
   "methods": {}
 }

@@ -30,7 +30,7 @@ export default class OtherUsers extends Component {
   }
   getUserCourses(){
     var arr = [];
-    axios.get(`http://localhost:3000/api/courseinfos?filter={"where":{"user_id":{"like":"${userId}"}}}`)
+    axios.get(`http://localhost:3000/api/userinfos/${userId}/coursesTaken`)
     .then(response => {
       response.data.map((course)=>{arr.push({ key: course.course_number, text: course.course_number, value: course.course_number });})
       this.setState({user_courses: arr})
@@ -60,7 +60,7 @@ export default class OtherUsers extends Component {
   eachUser(user,i){
     if (user.courses.includes(this.state.selected_course)){
       return(
-        <UserCard user={user} inviter_id={userId} inviter_name={this.state.name} course={this.state.selected_course}/>
+        <UserCard user={user} inviter_id={userId} inviter_name={this.state.name} selected_course={this.state.selected_course}/>
       )}
     }
     handleChange(e,value){

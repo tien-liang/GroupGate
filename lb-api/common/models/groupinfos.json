@@ -33,14 +33,14 @@
     "group_members": {
       "type": "array",
       "items": [
-        { "id" :
-          {
+        {
+          "id": {
             "type": "string",
             "required": true
           }
         },
-        { "name" :
-          {
+        {
+          "name": {
             "type": "string",
             "required": true
           }

@@ -99,6 +99,7 @@ export default class Invitation extends Component {
           <tbody>
             <tr>
               <td><Link to={`/otherUsers/${invitation.inviter_id}`} >{invitation.inviter_name}</Link></td>
+              <td>{invitation.course_number}</td>
             </tr>
             <tr>
               <td colSpan="2">
@@ -129,6 +130,7 @@ export default class Invitation extends Component {
           <tbody>
             <tr>
               <td><Link to={`/otherUsers/${invitation.invitee_id}`} >{invitation.invitee_name}</Link></td>
+              <td>{invitation.course_number}</td>
             </tr>
             <tr>
               <td colSpan="2">
@@ -146,7 +148,7 @@ export default class Invitation extends Component {
   //Notification for invitation sent (accepted or rejected)
   notification(invitation,i){
     if (invitation.status == "Accepted"){
-      let summary = invitation.invitee_name + " accepted your invitation.";
+      let summary = invitation.invitee_name + " in " + invitation.course_number + " accepted your invitation.";
       return(
         <Feed>
           <Feed.Event>

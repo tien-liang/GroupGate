@@ -21,16 +21,21 @@ export default class UserCard extends Component {
   componentWillReceiveProps(newProps) {
     this.setState({open_modal: newProps.open_modal});
   }
-
+  //Check if there is 0 number of rating.
   ratingRender(user){
+    //if more than 0, print the average rating
     if (user.num_of_votes>0){
       return (((user.total_r_skills+user.total_r_comm+user.total_r_psolving+user.total_r_timemngmt+user.total_r_activity)/5)/user.num_of_votes)
+      //if 0 rating, print No Rating
     }else{
       return ("No Rating")
     }
   }
+  //onClick function when user click yes at the modal pop up after clicking invite
   invite(id, invitee_name){
     this.openInvitedModal();
+    this.closeModal();
+    console.log(this.props.selected_course)
     axios.request({
       method:'post',
       url:`http://localhost:3000/api/invitations/`,
@@ -46,18 +51,21 @@ export default class UserCard extends Component {
       console.log(response )
     }).catch(err => console.log(err));
   }
-    openModal(){
+  //Show confirmation modal
+  openModal(){
       this.setState({open_modal: true});
     }
+  //Close confirmation modal
   closeModal(){
     this.setState({open_modal: false});
   }
+  //Show invitation sent modal
   openInvitedModal(){
     this.setState({invited_modal: true});
   }
+  //Close invitation sent modal
   closeInvitedModal(){
     this.setState({invited_modal: false});
-    this.setState({open_modal: false});
   }
   render(){
     return(

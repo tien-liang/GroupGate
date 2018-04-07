@@ -12,6 +12,7 @@ export default class CourseList extends Component {
 	constructor(props) {
 		super(props)
 		this.state = {
+			userId: this.props.userId,
 			courses: [],
 			adding: false,
 			addButtonDisabled: false,
@@ -28,14 +29,18 @@ export default class CourseList extends Component {
 	}
 
 	componentDidMount(){
+		console.log(this.state.userId)
 		this.getCourses();
 	}
 
 	getCourses(){
 		var arr = [];																															// API call to load courses
-		axios.get(`${url}?filter={"where":{"user_id":{"like":"${this.props.userId}"}}} `)
-		.then(response =>
+			console.log(this.state.userId)
+		axios.get(`http://localhost:3000/api/userinfos/${this.state.userId}/coursesTaken`)
+		.then(response =>{
+			console.log(response.data)
 			this.setState({courses: response.data})
+		}
 		)
 	}
 
@@ -72,12 +77,12 @@ export default class CourseList extends Component {
 		if ( addMode ){
 			axios.request({																														//Add course
 				method:'post',
-				url:`http://localhost:3000/api/courseinfos/`,
+				url:`http://localhost:3000/api//userinfos/${this.props.user.id}/coursesTaken`,
 				data: {
 					course_number: newText,
 					term_year: String(date.getFullYear()),
 					term_semester: this.getCurrentTermSemester(),
-					user_id: this.props.userId
+					user_id: this.props.user.id
 				}
 			}).then(response => {
 				console.log(response )

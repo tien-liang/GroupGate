@@ -13,6 +13,7 @@ export default class ProjectGroup extends Component {
     this.state = {
 			userId: this.props.userId,
 			adding: false,
+			courses: [],
 			groups: [],
 			addButtonDisabled: false,
 			repeated_warning_hidden: true
@@ -30,8 +31,19 @@ export default class ProjectGroup extends Component {
 
 	componentDidMount() {
     this.getGroups();
-  }
+		this.getCourses();
+	}
 
+	getCourses(){
+		var arr = [];																															// API call to load courses
+			console.log(this.state.userId)
+		axios.get(`http://localhost:3000/api/userinfos/${this.state.userId}/coursesTaken`)
+		.then(response =>{
+			console.log(response.data)
+			this.setState({courses: response.data})
+		}
+		)
+	}
 	getGroups(){
 		console.log("GL-> myGroups: ", this.props.myGroups)													// DEBUG, REMOVE
 
@@ -150,7 +162,7 @@ export default class ProjectGroup extends Component {
 				<Group key={group.id}
 					  index={group.id} groupName={group.group_name} courseNumber={group.group_course} status={group.group_status}
 						description= {group.group_descr} members={group.group_members} adding={this.state.adding}
-						onCancel={this.onCancel} onChange={this.update} onRemove={this.remove} userId={this.props.userId} myGroups={this.props.myGroups} warning={this.warning}>
+						onCancel={this.onCancel} onChange={this.update} onRemove={this.remove} userId={userId} myGroups={this.props.myGroups} warning={this.warning}>
 			  </Group>
 			)
 		}

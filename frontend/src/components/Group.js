@@ -1,5 +1,6 @@
 import React, { Component } from 'react'
 import axios from 'axios';
+import { Dropdown } from "semantic-ui-react";
 
 const BASE_URL = 'http://localhost:3000';
 const url= `${BASE_URL}/api/courseinfos`;
@@ -11,9 +12,11 @@ export default class Group extends Component {
 		this.ENTER_KEY = 13;
 		this.state = {
 			select_value: this.props.status,
+			selected_course: this.props.courseNumber,
 			adding: props.adding,
 			editing: false,
 			user_courses: [],
+			coursesOptions: [],
 			addButtonDisabled: props.addButtonDisabled
 		}
 		this.edit = this.edit.bind(this)
@@ -24,17 +27,23 @@ export default class Group extends Component {
 		this.renderDisplay = this.renderDisplay.bind(this)
 		this.handleChange = this.handleChange.bind(this)
 		this.displayButtons = this.displayButtons.bind(this)
+		this.getCourses = this.getCourses.bind(this)
+		this.CourseshandleChange = this.CourseshandleChange.bind(this)
 	}
 	componentDidMount(){
 		this.getCourses();
 	}
 
 	getCourses(){
-		var arr = [];																															// API call to load courses
-		axios.get(`${url}?filter={"where":{"user_id":{"like":"${this.props.userId}"}}} `)
+		var arr = [];
+		var options = [];																														// API call to load courses
+		axios.get(`http://localhost:3000/api/userinfos/${this.props.userId}/coursesTaken`)
 		.then(response => {
 			response.data.map((course)=>{arr.push(course.course_number)})
 			this.setState({user_courses: arr})
+			response.data.map((course)=>{options.push({ key: course.course_number, text: course.course_number, value: course.course_number });})
+      this.setState({coursesOptions: options})
+			console.log(options)
 		})
 	}
 	componentDidUpdate() {
@@ -59,8 +68,8 @@ export default class Group extends Component {
 
 	save(e) {
 		e.preventDefault()
-		if (!this.state.user_courses.includes(this._newCourseNumber.value)){
-			this.props.onChange(this._newGroupName.value, this._newCourseNumber.value,
+		if (!this.state.user_courses.includes(this.state.selected_course)){
+			this.props.onChange(this._newGroupName.value, this.state.selected_course,
 				this._newStatus.value, this._newDescription.value,
 				this.props.index, this.state.adding)
 			}else{
@@ -90,6 +99,9 @@ export default class Group extends Component {
 		handleChange(e){
 			this.setState({select_value: e.target.value})
 		}
+		CourseshandleChange(e,value){
+      this.setState({selected_course: value.value})
+    }
 		//Edit Form Render
 		renderForm() {
 			return (
@@ -103,10 +115,9 @@ export default class Group extends Component {
 									defaultValue={this.props.groupName}/>
 								</div>
 
-								{"Course Number:"}
+								{"Course:"}
 								<div className="five wide field">
-									<input type="text" ref={input => this._newCourseNumber = input}
-										defaultValue={this.props.courseNumber}/>
+									<Dropdown search selection placeholder='Courses' defaultValue={this.state.selected_course} options={this.state.coursesOptions} onChange={this.CourseshandleChange}/>
 									</div>
 
 									{"Status:"}
