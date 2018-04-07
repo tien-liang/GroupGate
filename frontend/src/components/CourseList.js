@@ -77,12 +77,12 @@ export default class CourseList extends Component {
 		if ( addMode ){
 			axios.request({																														//Add course
 				method:'post',
-				url:`http://localhost:3000/api//userinfos/${this.props.user.id}/coursesTaken`,
+				url:`http://localhost:3000/api//userinfos/${this.props.userId}/coursesTaken`,
 				data: {
 					course_number: newText,
 					term_year: String(date.getFullYear()),
 					term_semester: this.getCurrentTermSemester(),
-					user_id: this.props.user.id
+					user_id: this.props.userId
 				}
 			}).then(response => {
 				console.log(response )

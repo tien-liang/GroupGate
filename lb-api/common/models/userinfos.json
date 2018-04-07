@@ -60,6 +60,11 @@
       "type": "hasMany",
       "model": "courseinfos",
       "foreignKey": "user_id"
+    },
+    "groupinfos": {
+      "type": "hasAndBelongsToMany",
+      "model": "groupinfos",
+      "foreignKey": "group_id"
     }
   },
   "acls": [],

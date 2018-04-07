@@ -38,13 +38,14 @@ export default class UserCard extends Component {
     console.log(this.props.selected_course)
     axios.request({
       method:'post',
-      url:`http://localhost:3000/api/invitations/`,
+      url:`http://localhost:3000/api/groupinfos/${this.props.groupId}/invitations`,
       data: {
         inviter_id: this.props.inviter_id,
         invitee_id: id,
         inviter_name: this.props.inviter_name,
         invitee_name: invitee_name,
         course_number: this.props.selected_course,
+        group_id: this.props.groupId,
         status: "Pending"
       }
     }).then(response => {

@@ -12,7 +12,8 @@ export default class Invitation extends Component {
     super();
     this.state = {
       invitation_received: [],
-      invitation_sent: []
+      invitation_sent: [],
+      userinfo: {}
     };
     this.accept = this.accept.bind(this);
     this.reject = this.reject.bind(this);
@@ -23,9 +24,19 @@ export default class Invitation extends Component {
   }
 
   componentDidMount(){
+    this.getUserInfo();
     this.getInvitations();
   }
-
+  getUserInfo(){
+    axios.get(`http://localhost:3000/api/userinfos/${userId}`)
+      .then(response => {
+        this.setState( {
+          userinfo: response.data
+          }, () => {
+          console.log('MP -> Loading user: ', this.state);
+        })
+      })
+  }
   //get invitation from DB
   getInvitations(){
     axios.get(`${url}?filter={"where":{"inviter_id":{"like":"${userId}"}}} `)
@@ -41,7 +52,7 @@ export default class Invitation extends Component {
   }
 
   //onClick function for accepting invitation received
-  accept(id){
+  accept(id,group_id){
     axios.request({
       method:'patch',
       url:`http://localhost:3000/api/invitations/${id}`,
@@ -53,6 +64,27 @@ export default class Invitation extends Component {
         invitation => (invitation.id !== id) ? invitation : {...invitation, status: "Accepted"}
       )
     }))
+
+    axios.request({																														//Add group
+      method:'post',
+      url:`http://localhost:3000/api/groupinfos/${group_id}/userinfos`,
+      data: {
+        "display_name": this.state.userinfo.display_name,
+        "about_me": this.state.userinfo.about_me,
+        "references": this.state.userinfo.references,
+        "groups_owned": this.state.userinfo.groups_owned,
+        "groups_joined": this.state.userinfo.groups_joined,
+        "total_r_skills": this.state.userinfo.total_r_skills,
+        "total_r_comm": this.state.userinfo.total_r_comm,
+        "total_r_psolving": this.state.userinfo.total_r_psolving,
+        "total_r_timemngmt": this.state.userinfo.total_r_timemngmt,
+        "total_r_activity": this.state.userinfo.total_r_activity,
+        "num_of_votes": this.state.userinfo.num_of_votes,
+        "user_id": this.state.userinfo.id
+      }
+    }).then(response => {
+      console.log( response )
+    }).catch(err => console.log(err));
   }
 
   //onClick function for rejecting invitation received
@@ -105,7 +137,7 @@ export default class Invitation extends Component {
               <td colSpan="2">
                 <span>
                   <button  className="ui red button right floated" onClick={()=>this.reject(invitation.id)} id="reject">Reject</button>
-                  <button className="ui green button right floated" onClick={()=>this.accept(invitation.id)} id="accept">Accept</button>
+                  <button className="ui green button right floated" onClick={()=>this.accept(invitation.id,invitation.group_id)} id="accept">Accept</button>
                 </span>
               </td>
             </tr>

@@ -29,27 +29,21 @@
     "group_owner": {
       "type": "string",
       "required": true
-    },
-    "group_members": {
-      "type": "array",
-      "items": [
-        {
-          "id": {
-            "type": "string",
-            "required": true
-          }
-        },
-        {
-          "name": {
-            "type": "string",
-            "required": true
-          }
-        }
-      ]
     }
   },
   "validations": [],
-  "relations": {},
+  "relations": {
+    "invitations": {
+      "type": "hasMany",
+      "model": "invitation",
+      "foreignKey": "group_id"
+    },
+    "userinfos": {
+      "type": "hasAndBelongsToMany",
+      "model": "userinfos",
+      "foreignKey": "user_id"
+    }
+  },
   "acls": [],
   "methods": {}
 }

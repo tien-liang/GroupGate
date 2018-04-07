@@ -48,7 +48,7 @@ export default class ProjectGroup extends Component {
 		console.log("GL-> myGroups: ", this.props.myGroups)													// DEBUG, REMOVE
 
 		if(this.props.myGroups){																											// if props. flag = true, get my groups
-			axios.get(`${url}?filter={"where":{"group_owner":{"like":"${this.props.userId}"}}}`)
+			axios.get(`http://localhost:3000/api/userinfos/${this.props.userId}/groupinfos`)
 			.then(response => {
 				this.setState( {
 					groups: response.data,
@@ -93,10 +93,11 @@ export default class ProjectGroup extends Component {
 
 		update(newGroupName, newCourseNumber, newStatus, newDescription, i, addMode) {
 			console.log('GL -> Add mode: ', addMode)																	// DEBUG, REMOVE
+			var courseId = this.state.courses.find((course)=>{return course.course_number === newCourseNumber}).id;
 			if ( addMode ){
 				axios.request({																														//Add group
 					method:'post',
-					url:`http://localhost:3000/api/groupinfos/`,
+					url:`http://localhost:3000/api/userinfos/${this.state.userId}/groupinfos`,
 					data: {
 						group_name: newGroupName,
 						group_descr: newDescription,
@@ -105,7 +106,7 @@ export default class ProjectGroup extends Component {
 						group_url: "",
 						group_gitlink: "",
 						group_owner: this.state.userId,
-						group_members: []
+						courseId: courseId
 					}
 				}).then(response => {
 					console.log( response )

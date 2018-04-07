@@ -14,12 +14,15 @@ export default class OtherUsers extends Component {
       id: '',
       name: '',
       users: [],
+      courses: [],
+      groups: [],
       user_courses: [],
       selected_course: ""
     };
     this.getUserCourses = this.getUserCourses.bind(this);
     this.getUserName = this.getUserName.bind(this);
     this.getOtherUsers = this.getOtherUsers.bind(this);
+    this.getGroups = this.getGroups.bind(this);
     this.eachUser = this.eachUser.bind(this);
     this.handleChange = this.handleChange.bind(this);
   }
@@ -27,14 +30,27 @@ export default class OtherUsers extends Component {
     this.getUserCourses();
     this.getOtherUsers();
     this.getUserName();
+    this.getGroups();
+  }
+  getGroups(){
+			axios.get(`http://localhost:3000/api/userinfos/${userId}/groupinfos`)
+			.then(response => {
+				this.setState( {
+					groups: response.data,
+					})
+			})
   }
   getUserCourses(){
     var arr = [];
     axios.get(`http://localhost:3000/api/userinfos/${userId}/coursesTaken`)
     .then(response => {
-      response.data.map((course)=>{arr.push({ key: course.course_number, text: course.course_number, value: course.course_number });})
-      this.setState({user_courses: arr})
+      this.setState({courses: response.data})
     })
+    axios.get(`http://localhost:3000/api/userinfos/${userId}/groupinfos`)
+		.then(response => {
+    response.data.map((group)=>{arr.push({ key: group.group_course, text: group.group_course, value: group.group_course });})
+    this.setState({user_courses: arr})
+		})
   }
   getOtherUsers(){
     axios.get(`http://localhost:3000/api/userinfos?filter[where][id][neq]=${userId}`)
@@ -58,10 +74,17 @@ export default class OtherUsers extends Component {
   }
 
   eachUser(user,i){
-    if (user.courses.includes(this.state.selected_course)){
-      return(
-        <UserCard user={user} inviter_id={userId} inviter_name={this.state.name} selected_course={this.state.selected_course}/>
-      )}
+    var coursesTaken = [];
+    axios.get(`http://localhost:3000/api//userinfos/${user.id}/coursesTaken`)
+    .then(response => {
+      response.data.map((course)=>{coursesTaken.push(course.course_number)});
+      if (coursesTaken.includes(this.state.selected_course)){
+        var courseId = this.state.courses.find((course)=>{return course.course_number === this.state.selected_course}).id;
+        var groupId = this.state.groups.find((group)=>{return group.courseId === courseId}).id;
+        return(
+          <UserCard user={user} inviter_id={userId} inviter_name={this.state.name} selected_course={this.state.selected_course} groupId={groupId}/>
+        )}
+    })
     }
     handleChange(e,value){
       this.setState({selected_course:value.value})
@@ -77,6 +100,7 @@ export default class OtherUsers extends Component {
             Find Users
             <Header.Subheader>
               Select a course to find users in your course
+              Make sure you have a group created to see specific course in the list
             </Header.Subheader>
           </Header>
           <Dropdown button className='icon' floating labeled icon='filter' search placeholder='Search Courses' options={this.state.user_courses} onChange={this.handleChange}/>
