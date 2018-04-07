@@ -10,7 +10,13 @@ export default class UserCard extends Component {
     this.state = {
       user: this.props.user,
       open_modal: false,
-      invited_modal: false
+      invited_modal: false,
+      tSkill: 0,
+      comm: 0,
+      psolve: 0,
+      time: 0,
+      act: 0,
+      count: 0
     };
     this.invite = this.invite.bind(this);
     this.openModal = this.openModal.bind(this);
@@ -21,11 +27,41 @@ export default class UserCard extends Component {
   componentWillReceiveProps(newProps) {
     this.setState({open_modal: newProps.open_modal});
   }
+  getRatings(){
+    var tSkill = 0;
+    var comm = 0;
+    var psolve = 0;
+    var time = 0;
+    var act = 0;
+    var count = 0;
+    axios.get(`http://localhost:3000/api/userinfos/${this.props.user.id}/ratings`)
+		.then(response =>{
+			console.log(response.data)
+      response.data.map((rating)=>{
+        if (rating.rating_for_id === this.props.user.id && rating.rated){
+          count++;
+          tSkill+=rating.tech_skill;
+          comm+=rating.communication;
+          psolve+=rating.p_solving;
+          time+=rating.timemngmt;
+          act+=rating.activity;
+        }
+      })
+			this.setState({
+        tSkill: tSkill,
+        comm: comm,
+        psolve: psolve,
+        time: time,
+        act: act,
+        count: count
+      })
+		})
+  }
   //Check if there is 0 number of rating.
   ratingRender(user){
     //if more than 0, print the average rating
-    if (user.num_of_votes>0){
-      return (((user.total_r_skills+user.total_r_comm+user.total_r_psolving+user.total_r_timemngmt+user.total_r_activity)/5)/user.num_of_votes)
+    if (this.state.count>0){
+      return (((this.state.tSkill+this.state.comm+this.state.psolve+this.state.time+this.state.act)/5)/this.state.count)
       //if 0 rating, print No Rating
     }else{
       return ("No Rating")

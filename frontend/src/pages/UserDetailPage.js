@@ -6,37 +6,7 @@ import {Link} from 'react-router-dom';
 export default class UserDetail extends Component {
   constructor() {
     super();
-    this.state = {
-          displayName: 'Jessica C.',
-					totalScore: '70',
-					numOfRatings: '4',
-          aboutUser: 'I am good at C++ and Java. I am working well in team and also on my own. I like banana.',
-          courses: [
-            {
-              id : '470',
-              courseNumber : 'CMPT 470',
-              termYear: 2018,
-              termSemester: "Spring"
-            },
-            {
-              id : '275',
-              courseNumber : 'CMPT 275',
-              termYear: 2017,
-              termSemester: "Fall"
-            }
-          ],
-          references: [
-            {
-              id: 0,
-              refProvider: "LinkedIn",
-              refProfileUrl: "www.linkedin.com/johndoe"
-            },
-            {
-              refProvider: "Git",
-              refProfileUrl: "www.github.com/johndoe"
-            }
-          ]
-    };
+    this.state = {};
   }
   render() {
     return (

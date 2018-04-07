@@ -45,11 +45,41 @@ export default class OtherUserDetails extends Component {
     this.getUserDetails();
     this.getUserCourses();
     this.getUserReferences();
+    this.getRatings();
   }
-
+  getRatings(){
+    var tSkill = 0;
+    var comm = 0;
+    var psolve = 0;
+    var time = 0;
+    var act = 0;
+    var count = 0;
+    axios.get(`http://localhost:3000/api/userinfos/${this.state.id}/ratings`)
+		.then(response =>{
+			console.log(response.data)
+      response.data.map((rating)=>{
+        if (rating.rating_for_id === this.state.id && rating.rated){
+          count++;
+          tSkill+=rating.tech_skill;
+          comm+=rating.communication;
+          psolve+=rating.p_solving;
+          time+=rating.timemngmt;
+          act+=rating.activity;
+        }
+      })
+			this.setState({
+        tSkill: tSkill,
+        comm: comm,
+        psolve: psolve,
+        time: time,
+        act: act,
+        count: count
+      })
+		})
+  }
   getUserDetails() {                                                            // currently making multiple calls to temp loopback API
-    let userId = this.props.match.params.id;                                    // but in the Django, it should be a sngle call, /api/users/
-    axios.get(`http://localhost:3000/api/userinfos/${userId}`)
+    this.setState({id: this.props.match.params.id});                                    // but in the Django, it should be a sngle call, /api/users/
+    axios.get(`http://localhost:3000/api/userinfos/${this.state.id}`)
       .then(response => {
         this.setState( {
           id: response.data.id,
@@ -87,10 +117,11 @@ export default class OtherUserDetails extends Component {
       })
   }
 
-  ratingRender(){
-    if (this.state.numOfVotes>0){
-      console.log('OUD-> ', this.state.totalRskills+this.state.totalRcomm )
-      return (((this.state.totalRskills+this.state.totalRcomm+this.state.totalRpsolving+this.state.totalRtimemngmt+this.state.totalRactivity)/5)/this.state.numOfVotes)
+  ratingRender(user){
+    //if more than 0, print the average rating
+    if (this.state.count>0){
+      return (((this.state.tSkill+this.state.comm+this.state.psolve+this.state.time+this.state.act)/5)/this.state.count)
+      //if 0 rating, print No Rating
     }else{
       return ("No Rating")
     }

@@ -80,7 +80,12 @@ export default class OtherUsers extends Component {
       response.data.map((course)=>{coursesTaken.push(course.course_number)});
       if (coursesTaken.includes(this.state.selected_course)){
         var courseId = this.state.courses.find((course)=>{return course.course_number === this.state.selected_course}).id;
-        var groupId = this.state.groups.find((group)=>{return group.courseId === courseId}).id;
+        var group = this.state.groups.find((group)=>{return group.courseId === courseId});
+        console.log(group)
+        var groupId;
+        if (group){
+          groupId = group.id;
+        }
         return(
           <UserCard user={user} inviter_id={userId} inviter_name={this.state.name} selected_course={this.state.selected_course} groupId={groupId}/>
         )}
