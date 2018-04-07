@@ -6,19 +6,7 @@
     "validateUpsert": true
   },
   "properties": {
-    "rating_by_id": {
-      "type": "string",
-      "required": true
-    },
     "rating_for_id": {
-      "type": "string",
-      "required": true
-    },
-    "rating_by_name": {
-      "type": "string",
-      "required": true
-    },
-    "rating_for_name": {
       "type": "string",
       "required": true
     },
@@ -41,10 +29,25 @@
     "activity": {
       "type": "number",
       "required": true
+    },
+    "rated": {
+      "type": "boolean",
+      "required": true
     }
   },
   "validations": [],
-  "relations": {},
+  "relations": {
+    "userinfos": {
+      "type": "belongsTo",
+      "model": "userinfos",
+      "foreignKey": "user_id"
+    },
+    "groupinfos": {
+      "type": "belongsTo",
+      "model": "groupinfos",
+      "foreignKey": "group_id"
+    }
+  },
   "acls": [],
   "methods": {}
 }

@@ -3,8 +3,6 @@ import axios from 'axios';
 import { Dropdown, Icon, Button, Card, Label } from "semantic-ui-react";
 import { Link } from 'react-router-dom';
 
-const BASE_URL = 'http://localhost:3000';
-const url= `${BASE_URL}/api/courseinfos`;
 
 export default class Group extends Component {
 	constructor(props) {
@@ -43,7 +41,6 @@ export default class Group extends Component {
 		axios.get(`http://localhost:3000/api/userinfos/${this.props.userId}/groupinfos`)
 		.then(response => {
 			response.data.map((course)=>{this.setState({groups: response.data})})
-
 		})
 	}
 	getCourses(){
@@ -62,7 +59,6 @@ export default class Group extends Component {
 		})
 	}
 	getGroupMembers(){
-		var members = [];
 		axios.get(`http://localhost:3000/api/groupinfos/${this.props.index}/userinfos`)
 		.then(response => {
 			this.setState({group_members: response.data})
@@ -91,7 +87,7 @@ export default class Group extends Component {
 	save(e) {
 		e.preventDefault()
 		console.log(this.state.user_courses_with_group)
-		if (!this.state.user_courses_with_group.includes(this.state.selected_course)){
+		if (!this.state.user_courses_with_group.includes(this.state.selected_course)|!this.state.adding){
 			this.props.onChange(this._newGroupName.value, this.state.selected_course,
 				this._newStatus.value, this._newDescription.value,
 				this.props.index, this.state.adding)
@@ -126,7 +122,7 @@ export default class Group extends Component {
 			this.setState({selected_course: value.value})
 		}
 		groupStatus(){
-			if (this.props.status == "Open"){
+			if (this.props.status === "Open"){
 				return (
 					<div>
 						<Icon name='check circle' />
@@ -205,7 +201,7 @@ export default class Group extends Component {
 											<Card.Content>
 												Course: {this.props.courseNumber}<br/>
 												Status: {this.props.status}<br/>
-												Members: {this.state.group_members.map((member)=>{return (<Label horizontal><Link to={`/otherUsers/${member.id}`} >{member.display_name}</Link></Label>)})}<br/>
+												Members: {this.state.group_members.map((member)=>{return (<Label horizontal key={member.id}><Link to={`/otherUsers/${member.id}`} >{member.display_name}</Link></Label>)})}<br/>
 												Description: {this.props.description}<br/>
 											</Card.Content>
 											{this.displayButtons()}

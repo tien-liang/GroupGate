@@ -1,5 +1,4 @@
 import React, { Component } from 'react';
-import providerOptions from './common/providerOptions.json';
 import { Label } from "semantic-ui-react";
 import {Link} from 'react-router-dom';
 // import linkedin_img from "./images/avatars/linkedin.png";
@@ -36,11 +35,11 @@ export default class ReferenceListItem extends Component {
 		}
 	}
 	defaultURL(provider){
-		if (provider == "LinkedIn"){
+		if (provider === "LinkedIn"){
 			return "http://www.linkedin.com/in/"
-		}else if(provider == "StackOverflow"){
+		}else if(provider === "StackOverflow"){
 			return "http://stackoverflow.com/users/"
-		}else if(provider == "Git"){
+		}else if(provider === "Git"){
 			return "http://github.com/"
 		}
 	}
@@ -141,11 +140,11 @@ export default class ReferenceListItem extends Component {
 		)
 	}
 	providerIcon(provider){
-		if (provider == "LinkedIn"){
+		if (provider === "LinkedIn"){
 			return (<i className="fa fa-linkedin fa-2x"></i>);
-		} else if (provider == "Git"){
+		} else if (provider === "Git"){
 			return (<i className="fa fa-github fa-2x"></i>);
-		} else if (provider == "StackOverflow"){
+		} else if (provider === "StackOverflow"){
 			return (<i className="fa fa-stack-overflow fa-2x"></i>);
 		} else{
 			return provider;

@@ -96,11 +96,11 @@ export default class OtherUserDetails extends Component {
     }
   }
   providerIcon(provider){
-    if (provider == "LinkedIn"){
+    if (provider === "LinkedIn"){
       return (<i className="fa fa-linkedin fa-2x"></i>);
-    } else if (provider == "Git"){
+    } else if (provider === "Git"){
       return (<i className="fa fa-github fa-2x"></i>);
-    } else if (provider == "StackOverflow"){
+    } else if (provider === "StackOverflow"){
       return (<i className="fa fa-stack-overflow fa-2x"></i>);
     } else{
       return provider;

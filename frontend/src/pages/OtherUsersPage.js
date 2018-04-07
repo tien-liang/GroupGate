@@ -2,7 +2,7 @@ import React, { Component } from "react";
 import axios from 'axios';
 import Nav from '../components/Nav';
 import UserCard from '../components/UserCard';
-import { Button, Modal, Header, Icon, Dropdown } from "semantic-ui-react";
+import {  Header, Dropdown } from "semantic-ui-react";
 //import OtherUser from '../components/OtherUser';
 
 const userId = '5ab60109351f8a12ba4937b2';    // you have to update this user ID with id from your backend
@@ -48,7 +48,7 @@ export default class OtherUsers extends Component {
     })
     axios.get(`http://localhost:3000/api/userinfos/${userId}/groupinfos`)
 		.then(response => {
-    response.data.map((group)=>{arr.push({ key: group.group_course, text: group.group_course, value: group.group_course });})
+    response.data.map((group)=>{arr.push({ text: group.group_course, value: group.group_course });})
     this.setState({user_courses: arr})
 		})
   }

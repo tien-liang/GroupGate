@@ -65,6 +65,11 @@
       "type": "hasAndBelongsToMany",
       "model": "groupinfos",
       "foreignKey": "group_id"
+    },
+    "ratings": {
+      "type": "hasMany",
+      "model": "rating",
+      "foreignKey": "user_id"
     }
   },
   "acls": [],

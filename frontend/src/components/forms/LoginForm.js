@@ -91,8 +91,7 @@
 //   export default LoginForm;
 
 import React, {Component} from 'react'
-import { Alert, Button, Jumbotron,  Form, Container, Row, Col } from 'reactstrap';
-import Nav from '../Nav';
+import { Alert, Button,  Form, Container, Row, Col } from 'reactstrap';
 import logoImg from "../../assets/logo.png";
 import { Link } from 'react-router-dom';
 

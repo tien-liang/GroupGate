@@ -3,8 +3,6 @@ import Course from './Course'
 import { Button, Message } from "semantic-ui-react";
 import axios from 'axios';
 
-const BASE_URL = 'http://localhost:3000';
-const url= `${BASE_URL}/api/courseinfos`;
 
 const date = new Date();
 
@@ -33,8 +31,7 @@ export default class CourseList extends Component {
 		this.getCourses();
 	}
 
-	getCourses(){
-		var arr = [];																															// API call to load courses
+	getCourses(){																															// API call to load courses
 			console.log(this.state.userId)
 		axios.get(`http://localhost:3000/api/userinfos/${this.state.userId}/coursesTaken`)
 		.then(response =>{
