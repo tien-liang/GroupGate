@@ -1,10 +1,27 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
 import logoImg from "../assets/logo.png";
+import auth from '../Auth'
+import { Redirect } from 'react-router'
+import {Button} from "semantic-ui-react";
 
 export default class Nav extends React.Component {
+  constructor(props){
+      super(props)
+      this.state = {
+        logout: false
+      }
+      this.signout = this.signout.bind(this)
+  }
 
+  signout(){
+    auth.clearAppStorage();
+    this.setState({logout: true})
+  }
   render() {
+    if (this.state.logout){
+      return  <Redirect to='/login' />
+    }
     return (
       <nav className="navbar">
         <img className="logo" src={logoImg} alt="Logo" width="50"/>
@@ -29,7 +46,7 @@ export default class Nav extends React.Component {
           </li>
           </ul>
 
-          <Link to="/">Sign Out</Link>
+          <Button basic onClick={this.signout}><Link to="/">Sign Out</Link></Button>
       </nav>
 
     );

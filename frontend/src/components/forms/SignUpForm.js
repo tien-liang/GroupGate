@@ -1,62 +1,106 @@
 import React from "react";
 import PropTypes from "prop-types";
-import { Form, Button, Message } from "semantic-ui-react";
+import {Modal, Form, Button, Message } from "semantic-ui-react";
 import Validator from "validator";
 import InlineError from "../messages/InlineError";
+import axios from 'axios'
+import { Redirect } from 'react-router'
 
 export default class SignUpForm extends React.Component {
-  state = {
-    data: {
-      email: "",
-      displayName: "",
-      password: "",
-      retypePassword: "",
-    },
-    loading: false,
-    errors: {}
-  };
+  constructor(props) {
+    super(props)
 
-  onChange = e =>
+    this.state = {
+      data: {
+        email: "",
+        displayName: "",
+        password: "",
+        retypePassword: "",
+      },
+      loading: false,
+      errors: {},
+      repeated_email_hidden: true,
+      modalOpen: false,
+      sign_up_done: false
+    }
+    this.onChange = this.onChange.bind(this)
+    this.onSubmit = this.onSubmit.bind(this)
+    this.validate = this.validate.bind(this)
+  }
+
+
+    onChange = e =>
     this.setState({
       data: { ...this.state.data, [e.target.name]: e.target.value }
     });
 
-  onSubmit = () => {
-    const errors = this.validate(this.state.data);
-    this.setState({ errors });
-    if (Object.keys(errors).length === 0) {
-      this.setState({ loading: true });
-      this.props
-        .submit(this.state.data)          // <------------------------
-        .catch(err =>
-          this.setState({ errors: err.response.data.errors, loading: false })
-        );
+    onSubmit = () => {
+      const errors = this.validate(this.state.data);
+      this.setState({ errors });
+      if (Object.keys(errors).length === 0) {
+        this.setState({ loading: true });
+        axios.post('http://localhost:3000/api/Users', {
+          email: this.state.data.email,
+          password: this.state.data.password
+        })
+        .then(function (response) {
+          console.log(response)
+          this.setState({loading:false, modalOpen: true})
+        })
+        .catch((error)=> {
+          console.log(error.response)
+          if (error.response.status === 422){
+            this.setState({loading: false,repeated_email_hidden: false})
+            setTimeout(function() { this.setState({repeated_email_hidden: true}); }.bind(this), 4000);
+            console.log("Email already exists")
+          }
+        });
+      }
+    };
+
+    // VALIDATE email and password
+    validate = data => {
+      const errors = {};
+      if (!Validator.isEmail(data.email)) errors.email = "Invalid email";
+      if (!data.displayName) errors.displayName = "Can't be blank";
+      if (!data.password) errors.password = "Can't be blank";
+      if (!data.retypePassword) errors.retypePassword = "Can't be blank";
+      if ( data.password !== data.retypePassword) errors.retypePassword = "Passwords do not match";
+      return errors;
+    };
+    modalOpen(){
+      this.setState({modalOpen: true})
     }
-  };
-
-  // VALIDATE email and password
-  validate = data => {
-    const errors = {};
-    if (!Validator.isEmail(data.email)) errors.email = "Invalid email";
-    if (!data.displayName) errors.displayName = "Can't be blank";
-    if (!data.password) errors.password = "Can't be blank";
-    if (!data.retypePassword) errors.retypePassword = "Can't be blank";
-    if ( data.password !== data.retypePassword) errors.retypePassword = "Passwords do not match";
-    return errors;
-  };
-
-  render() {
-      const { data, errors, loading } = this.state;
+    handleClose(){
+      this.setState({modalOpen: false, sign_up_done: true})
+    }
+    render() {
+      if (this.state.sign_up_done){
+        return  <Redirect to='/login' />
+      }
+      const { data, errors, loading, repeated_email_hidden } = this.state;
 
       return (
-
+        <div>
+        <Modal
+        open={this.state.modalOpen}
+        onClose={this.handleClose}
+        basic
+        size='small'
+      >
+        <Modal.Content>
+          <h3>Account Signed Up! Redirect to Login Page!</h3>
+        </Modal.Content>
+        <Modal.Actions>
+          <Button color='green' onClick={this.handleClose} inverted>
+            Go
+          </Button>
+        </Modal.Actions>
+      </Modal>
         <Form className="ui form center" onSubmit={this.onSubmit} loading={loading}>
-          {errors.global && (
-            <Message negative>
-              <Message.Header>Something went wrong</Message.Header>
-              <p>{errors.global}</p>
-            </Message>
-          )}
+          {<Message negative hidden={this.state.repeated_email_hidden}>
+            <Message.Header>Email already existed!</Message.Header>
+          </Message>}
           {/*Email Input*/}
           <Form.Field error={!!errors.email}>
             <label htmlFor="email">Email</label>
@@ -116,6 +160,7 @@ export default class SignUpForm extends React.Component {
 
           <Button primary className="login-form-control right">Crate Profile</Button>
         </Form>
+      </div>
       );
     }
   }
