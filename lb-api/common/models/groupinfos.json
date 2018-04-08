@@ -15,7 +15,8 @@
     },
     "group_status": {
       "type": "string",
-      "required": true
+      "required": true,
+      "default": "Open"
     },
     "group_course": {
       "type": "string"
@@ -27,8 +28,7 @@
       "type": "string"
     },
     "group_owner": {
-      "type": "string",
-      "required": true
+      "type": "string"
     }
   },
   "validations": [],

@@ -1,7 +1,6 @@
 import React, { Component } from 'react';
 import { Label } from "semantic-ui-react";
 import {Link} from 'react-router-dom';
-// import linkedin_img from "./images/avatars/linkedin.png";
 
 export default class ReferenceListItem extends Component {
 	constructor(props) {
@@ -35,12 +34,12 @@ export default class ReferenceListItem extends Component {
 		}
 	}
 	defaultURL(provider){
-		if (provider === "LinkedIn"){
-			return "http://www.linkedin.com/in/"
-		}else if(provider === "StackOverflow"){
+		if(provider === "StackOverflow"){
 			return "http://stackoverflow.com/users/"
 		}else if(provider === "Git"){
 			return "http://github.com/"
+		}else{
+			return "http://www.linkedin.com/in/"
 		}
 	}
 	setURL(){
@@ -109,34 +108,6 @@ export default class ReferenceListItem extends Component {
 					<button className="ui red button right floated" id="cancel" onClick={this.cancel}>Cancel</button>
 				</form>
 			</div>
-			/*
-			<div className="reference" style={this.style}>
-				<form>
-
-						{this.props.label_1}
-
-						<dropdown placeholder='Select Provider' fluid selection options={providerOptions} />
-
-
-						{this.props.label_2}
-						<container>
-							<input type="text" ref={input => this._newText = input} defaultValue={this.props.refProfileUrl}/>
-						</container>
-
-									{this.props.value_2}
-
-						<button>
-							<button id="save" onClick={this.save}>Save</button>
-
-							<button id="cancel" onClick={this.cancel}>Cancel</button>
-						</button>
-
-
-
-
-				</form>
-			</div>
-			*/
 		)
 	}
 	providerIcon(provider){
@@ -163,7 +134,7 @@ export default class ReferenceListItem extends Component {
 				<tbody>
 					<tr>
 						<td className="center aligned">{this.providerIcon(this.props.provider)}</td>
-						<td><Link to={this.state.url} >{this.defaultURL(this.props.provider)}{this.props.url}</Link></td>
+						<td><a>{this.defaultURL(this.props.provider)}{this.props.url}</a></td>
 					</tr>
 					<tr>
 						<td colSpan="2">
@@ -175,15 +146,6 @@ export default class ReferenceListItem extends Component {
 		</tr>
 		</tbody>
 			</table>
-			/*
-			<div className="" style={this.style}>
-				<p> {this.props.label_1}{this.props.children}</p>
-				{this.props.label_2}{this.props.value_2}{this.props.value_3}
-				<span>
-					<button onClick={this.edit} id="edit">edit</button>
-					<button onClick={this.remove} id="remove">remove</button>
-				</span>
-			</div>*/
 		)
 	}
 	render() {

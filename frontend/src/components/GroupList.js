@@ -2,16 +2,14 @@ import React, { Component } from 'react'
 import Group from './Group'
 import { Button, Message } from "semantic-ui-react";
 import axios from 'axios';
+import auth from '../Auth'
+const userId = auth.getUserInfo();
 
-const userId = '5ab60109351f8a12ba4937b2';    // you have to update this user ID with id from your backend
-
-const BASE_URL = 'http://localhost:3000';
-const url= `${BASE_URL}/api/groupinfos`;
 export default class ProjectGroup extends Component {
 	constructor(props){
 		super(props);
 		this.state = {
-			userId: this.props.userId,
+			userId: "",
 			adding: false,
 			courses: [],
 			groups: [],
@@ -24,60 +22,46 @@ export default class ProjectGroup extends Component {
 		this.remove = this.remove.bind(this)
 		this.nextId = this.nextId.bind(this)
 		this.onCancel = this.onCancel.bind(this)
-		this.getGroups = this.getGroups.bind(this)
 		this.myGroupsButton = this.myGroupsButton.bind(this)
 		this.warning = this.warning.bind(this)
 	}
 
 	componentDidMount() {
-		this.getGroups();
-		this.getCourses();
+		this.getUserInfo();
 	}
 
-	getCourses(){																														// API call to load courses
-		console.log(this.state.userId)
-		axios.get(`http://localhost:3000/api/userinfos/${this.state.userId}/coursesTaken`)
-		.then(response =>{
-			console.log(response.data)
-			this.setState({courses: response.data})
-		}
-	)
-}
-getGroups(){
-	console.log("GL-> myGroups: ", this.props.myGroups)													// DEBUG, REMOVE
-
-	if(this.props.myGroups){																											// if props. flag = true, get my groups
-		axios.get(`http://localhost:3000/api/userinfos/${this.props.userId}/groupinfos`)
+	getUserInfo(){
+		axios.get(`http://localhost:3000/api/userinfos?filter={"where":{"userId":{"like":"${this.props.userId}"}}}`)
 		.then(response => {
 			this.setState( {
-				groups: response.data,
+				userId: response.data[0].id,
 			}, () => {
-				console.log(this.state);
+				console.log('MP -> Loading user: ', this.state);
 			})
-		})
-	}
-	else{
-		axios.get(`${url}?filter={"where":{"group_owner":{"neq":"${this.props.userId}"}}}`)
-		.then(response => {
-			this.setState( {groups: response.data}, () => {
-				console.log(this.state)
+			console.log(this.state.userId)
+			axios.get(`http://localhost:3000/api/userinfos/${this.state.userId}/coursesTaken`)
+			.then(response =>{
+				console.log(response.data)
+				this.setState({courses: response.data})
+			}
+		)
+			axios.get(`http://localhost:3000/api/userinfos/${this.state.userId}/groupinfos`)
+			.then(response =>{
+				console.log(response.data)
+				this.setState({groups: response.data})
 			})
-		})
-	}
+	})
 }
-
 
 add(text) {
 	this.setState(prevState => ({
 		groups: [
 			...prevState.groups,
 			{
-				id: this.nextId(),
 				group_name: text,
-				group_course: text,
 				group_status: "Open",
 				group_descr: text,
-				group_members: []
+				course_number: text
 			}
 		],
 	}))
@@ -100,17 +84,11 @@ update(newGroupName, newCourseNumber, newStatus, newDescription, i, addMode) {
 			data: {
 				group_name: newGroupName,
 				group_descr: newDescription,
-				group_status: newStatus,
-				group_course: newCourseNumber,
-				group_url: "",
-				group_gitlink: "",
-				group_owner: this.state.userId,
-				courseId: courseId
+				group_course: newCourseNumber
 			}
 		}).then(response => {
 			console.log( response )
 		}).catch(err => console.log(err));
-
 	}else {
 		axios.request({																														// update group
 			method:'patch',
@@ -119,7 +97,7 @@ update(newGroupName, newCourseNumber, newStatus, newDescription, i, addMode) {
 				group_name: newGroupName,
 				group_descr: newDescription,
 				group_status: newStatus,
-				group_course: newCourseNumber																				// items will need to be udpated when adding/removing members enabled
+				group_course: newCourseNumber																		// items will need to be udpated when adding/removing members enabled
 			}
 		}).then(response => {
 			console.log(response)
@@ -163,7 +141,7 @@ eachGroup(group, i) {
 		<Group key={group.id}
 			index={group.id} groupName={group.group_name} courseNumber={group.group_course} status={group.group_status}
 			description= {group.group_descr} members={group.group_members} adding={this.state.adding}
-			onCancel={this.onCancel} onChange={this.update} onRemove={this.remove} userId={userId} myGroups={this.props.myGroups} warning={this.warning}>
+			onCancel={this.onCancel} onChange={this.update} onRemove={this.remove} userId={this.state.userId} myGroups={this.props.myGroups} warning={this.warning}>
 		</Group>
 	)
 }

@@ -26,6 +26,8 @@ export default class SignUpForm extends React.Component {
     this.onChange = this.onChange.bind(this)
     this.onSubmit = this.onSubmit.bind(this)
     this.validate = this.validate.bind(this)
+    this.modalOpen = this.modalOpen.bind(this)
+    this.handleClose = this.handleClose.bind(this)
   }
 
 
@@ -38,18 +40,28 @@ export default class SignUpForm extends React.Component {
       const errors = this.validate(this.state.data);
       this.setState({ errors });
       if (Object.keys(errors).length === 0) {
-        this.setState({ loading: true });
         axios.post('http://localhost:3000/api/Users', {
           email: this.state.data.email,
           password: this.state.data.password
         })
-        .then(function (response) {
+        .then((response)=>{
+          console.log(response.data.id)
+          axios.post('http://localhost:3000/api/userinfos', {
+            userId: response.data.id,
+            display_name: this.state.data.displayName
+          })
+          .then((response)=>{
+            console.log(response)
+          })
+          .catch((error)=> {
+            console.log(error.response)
+          });
           console.log(response)
           this.setState({loading:false, modalOpen: true})
         })
         .catch((error)=> {
           console.log(error.response)
-          if (error.response.status === 422){
+          if (error.response && error.response.status === 422){
             this.setState({loading: false,repeated_email_hidden: false})
             setTimeout(function() { this.setState({repeated_email_hidden: true}); }.bind(this), 4000);
             console.log("Email already exists")
@@ -82,14 +94,14 @@ export default class SignUpForm extends React.Component {
 
       return (
         <div>
-        <Modal
+        <Modal style={{width: 600, padding: 100}} className="scrolling"
         open={this.state.modalOpen}
         onClose={this.handleClose}
         basic
         size='small'
       >
         <Modal.Content>
-          <h3>Account Signed Up! Redirect to Login Page!</h3>
+          <h3>Account Signed Up!<br/> Redirect to Login Page!</h3>
         </Modal.Content>
         <Modal.Actions>
           <Button color='green' onClick={this.handleClose} inverted>

@@ -39,6 +39,7 @@ export default class LoginForm extends Component {
         password: this.state.password
       }).then(function (response) {
         auth.setToken(response.data.id)
+        auth.setUserInfo(response.data.userId)
         this.setState({loading: false, login: true})
       }).catch((error)=> {
           if (error.response && error.response.status === 401){

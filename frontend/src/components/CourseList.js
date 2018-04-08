@@ -1,16 +1,15 @@
 import React, { Component } from 'react'
 import Course from './Course'
 import { Button, Message } from "semantic-ui-react";
+import auth from '../Auth'
 import axios from 'axios';
-
-
 const date = new Date();
-
+const userId = auth.getUserInfo();
 export default class CourseList extends Component {
 	constructor(props) {
 		super(props)
 		this.state = {
-			userId: this.props.userId,
+			userId: "",
 			courses: [],
 			adding: false,
 			addButtonDisabled: false,
@@ -26,19 +25,26 @@ export default class CourseList extends Component {
 		this.warning = this.warning.bind(this)
 	}
 
-	componentDidMount(){
-		console.log(this.state.userId)
-		this.getCourses();
+	componentWillMount(){
+		this.getUserInfo();
 	}
 
-	getCourses(){																															// API call to load courses
-			console.log(this.state.userId)
-		axios.get(`http://localhost:3000/api/userinfos/${this.state.userId}/coursesTaken`)
-		.then(response =>{
-			console.log(response.data)
-			this.setState({courses: response.data})
-		}
-		)
+	getUserInfo(){
+		axios.get(`http://localhost:3000/api/userinfos?filter={"where":{"userId":{"like":"${userId}"}}}`)
+			.then(response => {
+				this.setState( {
+					userId: response.data[0].id,
+					}, () => {
+					console.log('MP -> Loading user: ', this.state);
+				})
+				console.log(this.state.userId)
+				axios.get(`http://localhost:3000/api/userinfos/${this.state.userId}/coursesTaken`)
+				.then(response =>{
+					console.log(response.data)
+					this.setState({courses: response.data})
+				}
+				)
+			})
 	}
 
 	getCurrentTermSemester(){
@@ -51,7 +57,6 @@ export default class CourseList extends Component {
 			courses: [
 				...prevState.courses,
 				{
-					id: this.nextId(),
 					course_number: text,
 					term_year: date.getFullYear(),
 					term_semester: this.getCurrentTermSemester()
@@ -74,12 +79,11 @@ export default class CourseList extends Component {
 		if ( addMode ){
 			axios.request({																														//Add course
 				method:'post',
-				url:`http://localhost:3000/api//userinfos/${this.props.userId}/coursesTaken`,
+				url:`http://localhost:3000/api/userinfos/${this.state.userId}/coursesTaken`,
 				data: {
 					course_number: newText,
 					term_year: String(date.getFullYear()),
 					term_semester: this.getCurrentTermSemester(),
-					user_id: this.props.userId
 				}
 			}).then(response => {
 				console.log(response )
@@ -91,12 +95,9 @@ export default class CourseList extends Component {
 				url:`http://localhost:3000/api/courseinfos/${i}`,
 				data: { course_number: newText }
 			}).then(response => {
+				console.log(response)
 			}).catch(err => console.log(err));
 		}
-
-
-
-
 
 		this.setState(prevState => ({
 			courses: prevState.courses.map(
@@ -138,7 +139,7 @@ export default class CourseList extends Component {
 				<Course key={course.id}
 					index={course.id} label_1='Course Number: ' label_2='Term: '
 					value_2= {course.term_year} value_3= {course.term_semester} adding={this.state.adding}
-					onCancel={this.onCancel} onChange={this.update} onRemove={this.remove} userId={this.props.userId} warning={this.warning}>
+					onCancel={this.onCancel} onChange={this.update} onRemove={this.remove} userId={this.state.userId} warning={this.warning}>
 					{course.course_number}
 				</Course>
 			)

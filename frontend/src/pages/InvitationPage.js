@@ -3,10 +3,12 @@ import axios from 'axios';
 import Nav from '../components/Nav';
 import { Link } from 'react-router-dom';
 import { Feed, Icon } from "semantic-ui-react";
+import auth from '../Auth'
+const userId = auth.getUserInfo();
 
 const BASE_URL = 'http://localhost:3000';
 const url= `${BASE_URL}/api/invitations`;
-const userId = '5ab60109351f8a12ba4937b2';
+
 export default class Invitation extends Component {
   constructor() {
     super();
@@ -23,32 +25,29 @@ export default class Invitation extends Component {
     this.notification = this.notification.bind(this);
   }
 
-  componentDidMount(){
+  componentWillMount() {
     this.getUserInfo();
-    this.getInvitations();
   }
+
   getUserInfo(){
-    axios.get(`http://localhost:3000/api/userinfos/${userId}`)
-    .then(response => {
-      this.setState( {
-        userinfo: response.data
-      }, () => {
-        console.log('MP -> Loading user: ', this.state);
+    axios.get(`http://localhost:3000/api/userinfos?filter={"where":{"userId":{"like":"${userId}"}}}`)
+      .then(response => {
+        this.setState( {
+          userinfo: response.data[0]
+          }, () => {
+          console.log('MP -> Loading user: ', this.state);
+        })
+        axios.get(`${url}?filter={"where":{"inviter_id":{"like":"${this.state.id}"}}} `)
+        .then(inviter_response => {
+          this.setState( {invitation_sent: inviter_response.data}, () => {
+          })
+        })
+        axios.get(`${url}?filter={"where":{"invitee_id":{"like":"${this.state.id}"}}} `)
+        .then(invitee_response => {
+          this.setState( {invitation_received: invitee_response.data}, () => {
+          })
+        })
       })
-    })
-  }
-  //get invitation from DB
-  getInvitations(){
-    axios.get(`${url}?filter={"where":{"inviter_id":{"like":"${userId}"}}} `)
-    .then(response => {
-      this.setState( {invitation_sent: response.data}, () => {
-      })
-    })
-    axios.get(`${url}?filter={"where":{"invitee_id":{"like":"${userId}"}}} `)
-    .then(response => {
-      this.setState( {invitation_received: response.data}, () => {
-      })
-    })
   }
 
   //onClick function for accepting invitation received
@@ -133,7 +132,7 @@ export default class Invitation extends Component {
           "group_course": group.group_course,
           "group_url": group.group_url,
           "group_gitlink": group.group_gitlink,
-          "group_owner": userId
+          "group_owner": this.state.id
         }
       }).then(response => {
         console.log( response )

@@ -13,10 +13,6 @@
     "ref_url": {
       "type": "string",
       "required": true
-    },
-    "user_id": {
-      "type": "string",
-      "required": true
     }
   },
   "validations": [],

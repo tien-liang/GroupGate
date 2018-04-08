@@ -2,15 +2,14 @@ import React, { Component } from 'react'
 import ReferenceListItem from './ReferenceListItem'
 import { Button } from "semantic-ui-react";
 import axios from 'axios';
-
-const BASE_URL = 'http://localhost:3000';
-const url= `${BASE_URL}/api/referenceinfos`;
+import auth from '../Auth'
+const userId = auth.getUserInfo();
 
 export default class ReferenceList extends Component {
 	constructor(props) {
 		super(props)
 		this.state = {
-			userId: this.props.userId,
+			userId: "",
 			references: [],
 			adding: false,
 			addButtonDisabled: false
@@ -24,17 +23,26 @@ export default class ReferenceList extends Component {
 
 	}
 
-	componentDidMount(){
-		this.getRefs();
+	componentWillMount(){
+		this.getUserInfo();
 	}
 
-	getRefs(){																																	// API call to load Refs
-		axios.get(`${url}?filter={"where":{"user_id":{"like":"${this.props.userId}"}}} `)
-		.then(response => {
-				this.setState( {references: response.data}, () => {
-					console.log('RL -> Trying to get Refs:', this.state.references);							/* DEBUG */
+	getUserInfo(){
+		axios.get(`http://localhost:3000/api/userinfos?filter={"where":{"userId":{"like":"${userId}"}}}`)
+			.then(response => {
+				this.setState( {
+					userId: response.data[0].id,
+					}, () => {
+					console.log('MP -> Loading user: ', this.state);
 				})
-		})
+				console.log(this.state.userId)
+				axios.get(`http://localhost:3000/api/userinfos/${this.state.userId}/referenceinfos`)
+				.then(response =>{
+					console.log(response.data)
+					this.setState({references: response.data})
+				}
+				)
+			})
 	}
 
 	add(text) {																																		// Add button clicked handler
@@ -42,7 +50,6 @@ export default class ReferenceList extends Component {
 			references: [
 				...prevState.references,
 				{
-					id: this.nextId(),
 					ref_provider: '',																											// not finished
 					ref_url: text,
 				}
@@ -63,11 +70,10 @@ export default class ReferenceList extends Component {
 		if ( addMode ){
 			axios.request({
 			method:'post',
-			url:`http://localhost:3000/api/referenceinfos/`,
+			url:`http://localhost:3000/api/userinfos/${this.state.userId}/referenceinfos`,
 			data: {
 				ref_provider: newProvider,
 				ref_url: newText,
-				user_id: this.state.userId
 			}
 		}).then(response => {
 			console.log( response )
@@ -116,7 +122,7 @@ export default class ReferenceList extends Component {
 		console.log ('CL -> checking reference at eachRef: ', reference.course_number, '  ', reference.id, i)									// DEBUG
 		return (
 			<ReferenceListItem key={reference.id}
-				  index={reference.id} label_1='Reference Provider: ' 																			
+				  index={reference.id} label_1='Reference Provider: '
 					provider= {reference.ref_provider} url= {reference.ref_url} adding={this.state.adding}
 					onCancel={this.onCancel} onChange={this.update} onRemove={this.remove}>
 		  </ReferenceListItem>

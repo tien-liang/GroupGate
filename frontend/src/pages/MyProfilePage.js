@@ -7,11 +7,8 @@ import ReferenceList from '../components/ReferenceList';
 
 import Nav from '../components/Nav';
 import '../css/style.css';
-
-
-
-  const userId = '5ab60109351f8a12ba4937b2';    // DEV: you have to update this user ID with id from your backend
-                                                // 5ab877baf628341800003765   //restdb.io
+import auth from '../Auth'
+const userId = auth.getUserInfo();
 
 export default class MyProfile extends Component {
 
@@ -25,17 +22,17 @@ export default class MyProfile extends Component {
       this.update = this.update.bind(this);
   }
 
-  componentDidMount() {
+  componentWillMount() {
     this.getUserInfo();
   }
 
   getUserInfo(){
-    axios.get(`http://localhost:3000/api/userinfos/${userId}`)
+    axios.get(`http://localhost:3000/api/userinfos?filter={"where":{"userId":{"like":"${userId}"}}}`)
       .then(response => {
         this.setState( {
-          id: response.data.id,
-          displayName: response.data.display_name,
-          aboutMe: response.data.about_me,
+          id: response.data[0].id,
+          displayName: response.data[0].display_name,
+          aboutMe: response.data[0].about_me,
           }, () => {
           console.log('MP -> Loading user: ', this.state);
         })

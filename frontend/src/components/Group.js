@@ -177,16 +177,13 @@ export default class Group extends Component {
 
 								displayButtons(){
 
-									if( this.props.myGroups ){
 										return (
 											<Card.Content extra>
 												<div className='ui two buttons'>
-													<Button basic color='green' onClick={this.edit}>Edit</Button>
-													<Button basic color='red' onClick={this.remove}>Remove</Button>
+													<Button basic color='red' onClick={this.remove}>Leave</Button>
 												</div>
 											</Card.Content>
 										)
-									}
 								}
 
 
