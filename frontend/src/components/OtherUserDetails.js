@@ -3,6 +3,8 @@ import Nav from '../components/Nav';
 import { Button } from "semantic-ui-react";
 import {Link} from 'react-router-dom';
 import axios from 'axios';
+import auth from '../Auth'
+const userId = auth.getUserInfo();
 
 export default class OtherUserDetails extends Component {
   constructor() {
@@ -12,41 +14,19 @@ export default class OtherUserDetails extends Component {
       displayName: '',
       aboutMe: '',
       courses: [],
-      references: [],
-      groupsOwned: [],
-      groupsJoined: [],
-      totalRskills: '',
-      totalRcomm: '',
-      totalRpsolving: '',
-      totalRtimemngmt: '',
-      totalRactivity: '',
-      numOfVotes: ''
+      references: []
     };
     this.ratingRender = this.ratingRender.bind(this);
   }
 
-/*
-"display_name": "DUMPSTER D",
-"about_me": "I LIke trash",
-"courses": [],
-"references": [],
-"groups_owned": [],
-"groups_joined": [],
-"total_r_skills": 160,
-"total_r_comm": 140,
-"total_r_psolving": 180,
-"total_r_timemngmt": 190,
-"total_r_activity": 200,
-"num_of_votes"
 
-*/
-
-  componentDidMount() {
+  componentWillMount() {
     this.getUserDetails();
     this.getUserCourses();
     this.getUserReferences();
     this.getRatings();
   }
+
   getRatings(){
     var tSkill = 0;
     var comm = 0;
@@ -54,7 +34,7 @@ export default class OtherUserDetails extends Component {
     var time = 0;
     var act = 0;
     var count = 0;
-    axios.get(`http://localhost:3000/api/userinfos/${this.state.id}/ratings`)
+    axios.get(`http://localhost:3000/api/userinfos/${this.props.match.params.id}/ratings`)
 		.then(response =>{
 			console.log(response.data)
       response.data.map((rating)=>{
@@ -79,48 +59,50 @@ export default class OtherUserDetails extends Component {
   }
   getUserDetails() {                                                            // currently making multiple calls to temp loopback API
     this.setState({id: this.props.match.params.id});                                    // but in the Django, it should be a sngle call, /api/users/
-    axios.get(`http://localhost:3000/api/userinfos/${this.state.id}`)
+    axios.get(`http://localhost:3000/api/userinfos/${this.props.match.params.id}`)
       .then(response => {
         this.setState( {
           id: response.data.id,
           displayName: response.data.display_name,
-          aboutMe: response.data.about_me,
-          totalRskills: response.data.total_r_skills,
-          totalRcomm: response.data.total_r_comm,
-          totalRpsolving: response.data.total_r_psolving,
-          totalRtimemngmt: response.data.total_r_timemngmt,
-          totalRactivity: response.data.total_r_activity,
-          numOfVotes: response.data.num_of_votes
+          aboutMe: response.data.about_me
           }, () => {
           console.log('OUD -> Loading user: ', this.state);                      // DEBUG
         })
+        console.log(this.state.id)
       })
   }
 
   getUserCourses(){
     let userId = this.props.match.params.id;
-    axios.get(`http://localhost:3000/api/courseinfos?filter={"where":{"user_id":{"like":"${userId}"}}}`)
-      .then(response => {
-        this.setState( {courses: response.data}, () => {
-					console.log('CL -> Trying to get courses:', this.state.courses);
-				})
-      })
+    axios.get(`http://localhost:3000/api/userinfos/${userId}/coursesTaken`)
+    .then(response =>{
+      console.log(response.data)
+      this.setState({courses: response.data})
+    })
   }
 
   getUserReferences(){
     let userId = this.props.match.params.id;
-    axios.get(`http://localhost:3000/api/referenceinfos?filter={"where":{"user_id":{"like":"${userId}"}}}`)
-      .then(response => {
-        this.setState( {references: response.data}, () => {
-					console.log('RL -> Trying to get references:', this.state.references);
-				})
-      })
+    axios.get(`http://localhost:3000/api/userinfos/${userId}/referenceinfos`)
+    .then(response =>{
+      console.log(response.data)
+      this.setState({references: response.data})
+    }
+    )
   }
-
+  defaultURL(provider){
+    if(provider === "StackOverflow"){
+      return "http://stackoverflow.com/users/"
+    }else if(provider === "Git"){
+      return "http://github.com/"
+    }else{
+      return "http://www.linkedin.com/in/"
+    }
+  }
   ratingRender(user){
     //if more than 0, print the average rating
     if (this.state.count>0){
-      return (((this.state.tSkill+this.state.comm+this.state.psolve+this.state.time+this.state.act)/5)/this.state.count)
+      return (((this.state.tSkill+this.state.comm+this.state.psolve+this.state.time+this.state.act)*4)/this.state.count)
       //if 0 rating, print No Rating
     }else{
       return ("No Rating")
@@ -144,7 +126,7 @@ export default class OtherUserDetails extends Component {
           <br/>
           <div className="ui segment">
             <h5>User: {this.state.displayName}
-              ({this.ratingRender()} % / {this.state.numOfVotes} ratings )</h5>
+                &nbsp;({this.ratingRender()} % / {this.state.count} ratings )</h5>
             <br/>
             <h5 className="ui dividing header">About User</h5>
             {this.state.aboutMe}
@@ -154,8 +136,7 @@ export default class OtherUserDetails extends Component {
               return (
                 <div className="ui segment grid">
                   <div className="ui three wide column">{course.course_number}</div>
-                  <div className="ui three wide column">Term: {course.term_semester} {course.term_year}</div>
-                  <div className="ui six wide column"> Status: {"Open for initation"}</div>
+                  <div className="ui nine wide column">Term: {course.term_semester} {course.term_year}</div>
                   <div className="ui three wide column"><Button basic color="blue">+ Invite</Button></div>
                 </div>
               )
@@ -164,10 +145,8 @@ export default class OtherUserDetails extends Component {
             {this.state.references.map((reference,i)=>{
               return (
                 <div className="ui segment grid">
-                  <div className="ui two wide column">{this.providerIcon(reference.ref_provider)}</div>
-                  <div className="ui thirdteen wide column"><Link to={``}>
-                    {reference.ref_url}
-                  </Link></div>
+                  <div className="ui three wide column">{this.providerIcon(reference.ref_provider)}</div>
+                  <div className="ui thirdteen wide column"><a>{this.defaultURL(this.props.provider)}{reference.ref_url}</a></div>
                 </div>
               )
             })}

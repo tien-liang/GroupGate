@@ -43,32 +43,31 @@ export default class RatingComponent extends Component {
     }).catch(err => console.log(err));
   }
   handleTSRate(e, rating){
-    this.setState({tech_skill: rating})
+    this.setState({tech_skill: rating.rating})
   }
   handleCRate(e, rating){
-    this.setState({communication: rating})
+    this.setState({communication: rating.rating})
   }
   handlePSRate(e, rating){
-    this.setState({p_solving: rating})
+    this.setState({p_solving: rating.rating})
   }
   handleTRate(e, rating){
-    this.setState({timemngmt: rating})
+    this.setState({timemngmt: rating.rating})
   }
   handleARate(e, rating){
-    this.setState({activity: rating})
+    this.setState({activity: rating.rating})
   }
   submit(){
+    console.log(this.props.rating.id)
     axios.request({																														//Add group
-      method:'post',
-      url:`http://localhost:3000/api/userinfos/${this.props.user_id}/ratings`,
+      method:'patch',
+      url:`http://localhost:3000/api/ratings/${this.props.rating.id}`,
       data: {
-        "rating_for_id": this.props.user_id,
         "tech_skill": this.state.tech_skill,
         "communication": this.state.communication,
         "p_solving": this.state.p_solving,
         "timemngmt": this.state.timemngmt,
         "activity": this.state.activity,
-        "group_id": this.props.group_id,
         "rated": true
       }
     }).then(response => {
@@ -94,11 +93,6 @@ export default class RatingComponent extends Component {
             Time Management <Rating defaultRating={this.state.timemngmt} maxRating={5} disabled onRate={this.handleTRate}/><br/>
             Activity <Rating defaultRating={this.state.activity} maxRating={5} disabled onRate={this.handleARate}/><br/>
           </Card.Content>
-          <Card.Content extra>
-            <div className='ui two buttons'>
-              <Button basic color='green' onClick={this.submit}>Submit</Button>
-            </div>
-          </Card.Content>
         </Card>
       )
     }else{
@@ -116,11 +110,11 @@ export default class RatingComponent extends Component {
             </Card.Description>
           </Card.Content>
           <Card.Content>
-            Technical Skill <Rating defaultRating={this.state.tech_skill} maxRating={5} onRate={this.handleTSRate}/><br/>
-            Communication <Rating defaultRating={this.state.communication} maxRating={5} onRate={this.handleCRate}/><br/>
-            Problem Solving <Rating defaultRating={this.state.p_solving} maxRating={5} onRate={this.handlePSRate}/><br/>
-            Time Management <Rating defaultRating={this.state.timemngmt} maxRating={5} onRate={this.handleTRate}/><br/>
-            Activity <Rating defaultRating={this.state.activity} maxRating={5} onRate={this.handleARate}/><br/>
+            Technical Skill <Rating rating={this.state.tech_skill} maxRating={5} onRate={this.handleTSRate}/><br/>
+            Communication <Rating rating={this.state.communication} maxRating={5} onRate={this.handleCRate}/><br/>
+            Problem Solving <Rating rating={this.state.p_solving} maxRating={5} onRate={this.handlePSRate}/><br/>
+            Time Management <Rating rating={this.state.timemngmt} maxRating={5} onRate={this.handleTRate}/><br/>
+            Activity <Rating rating={this.state.activity} maxRating={5} onRate={this.handleARate}/><br/>
           </Card.Content>
           <Card.Content extra>
             <div className='ui two buttons'>

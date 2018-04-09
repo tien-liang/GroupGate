@@ -25,19 +25,19 @@
       "model": "courseinfos",
       "foreignKey": "user_id"
     },
-    "groupinfos": {
-      "type": "hasAndBelongsToMany",
-      "model": "groupinfos",
-      "foreignKey": "group_id"
-    },
     "ratings": {
-      "type": "hasMany",
+      "type": "hasAndBelongsToMany",
       "model": "rating",
-      "foreignKey": "user_id"
+      "foreignKey": ""
     },
     "referenceinfos": {
       "type": "hasMany",
       "model": "referenceinfos",
+      "foreignKey": ""
+    },
+    "groupinfos": {
+      "type": "hasAndBelongsToMany",
+      "model": "groupinfos",
       "foreignKey": ""
     }
   },

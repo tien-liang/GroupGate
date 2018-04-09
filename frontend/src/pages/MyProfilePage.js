@@ -27,15 +27,17 @@ export default class MyProfile extends Component {
   }
 
   getUserInfo(){
+    console.log(userId)
     axios.get(`http://localhost:3000/api/userinfos?filter={"where":{"userId":{"like":"${userId}"}}}`)
       .then(response => {
+        if (response.data[0]){
         this.setState( {
           id: response.data[0].id,
           displayName: response.data[0].display_name,
           aboutMe: response.data[0].about_me,
           }, () => {
           console.log('MP -> Loading user: ', this.state);
-        })
+        })}
       })
   }
 

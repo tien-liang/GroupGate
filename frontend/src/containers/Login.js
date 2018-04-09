@@ -41,6 +41,7 @@ export default class LoginForm extends Component {
         auth.setToken(response.data.id)
         auth.setUserInfo(response.data.userId)
         this.setState({loading: false, login: true})
+        console.log(response.data.userId)
       }).catch((error)=> {
           if (error.response && error.response.status === 401){
             this.setState({loading: false,errorMsg_hidden: false})
@@ -107,40 +108,10 @@ export default class LoginForm extends Component {
             />
             {this.state.errors.password && <InlineError text={this.state.errors.password} />}
           </Form.Field>
-
           <Button primary className="login-form-control right">Login</Button>
         </Form>
-
         </div>
-      {/*}<Container fluid="true">
-        <Form onSubmit={this.onSubmit}>
-          <Row>
-            <Col></Col>
-          <Col md={{ size: 3}}>
-            <Row>
-            <Col></Col>
-            <Col>
-            <h3>Login</h3>
-          </Col>
-          <Col></Col>
-        </Row>
-        <br/>
-          <TextInput name="username" label="Username" error={errors.username} getRef={input => this.primaryInput = input} onChange={this.handleInputChange}/>
-          <TextInput name="password" label="Password" error={errors.password} type="password" onChange={this.handleInputChange}/>
-          <Row>
-          <Col></Col>
-          <Col>
-          <Button type="submit" color="primary" size="lg">Log In</Button>
-        </Col>
-        <Col></Col>
-        </Row>
-          </Col>
-          <Col></Col>
-        </Row>
-        </Form>
-      </Container>*/}
     </div>
-      //</Jumbotron>
     )
   }
 }

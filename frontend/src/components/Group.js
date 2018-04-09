@@ -61,6 +61,7 @@ export default class Group extends Component {
 	getGroupMembers(){
 		axios.get(`http://localhost:3000/api/groupinfos/${this.props.index}/userinfos`)
 		.then(response => {
+			console.log(response)
 			this.setState({group_members: response.data})
 		})
 	}

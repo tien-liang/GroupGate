@@ -10,6 +10,8 @@ export default class CourseList extends Component {
 		super(props)
 		this.state = {
 			userId: "",
+			aboutMe: "",
+			displayName: "",
 			courses: [],
 			adding: false,
 			addButtonDisabled: false,
@@ -32,11 +34,14 @@ export default class CourseList extends Component {
 	getUserInfo(){
 		axios.get(`http://localhost:3000/api/userinfos?filter={"where":{"userId":{"like":"${userId}"}}}`)
 			.then(response => {
+				if (response.data[0]){
 				this.setState( {
 					userId: response.data[0].id,
+					aboutMe: response.data[0].about_me,
+					displayName: response.data[0].display_name
 					}, () => {
 					console.log('MP -> Loading user: ', this.state);
-				})
+				})}
 				console.log(this.state.userId)
 				axios.get(`http://localhost:3000/api/userinfos/${this.state.userId}/coursesTaken`)
 				.then(response =>{
@@ -77,17 +82,60 @@ export default class CourseList extends Component {
 		// const dataPackage = newText;
 
 		if ( addMode ){
-			axios.request({																														//Add course
-				method:'post',
-				url:`http://localhost:3000/api/userinfos/${this.state.userId}/coursesTaken`,
-				data: {
-					course_number: newText,
-					term_year: String(date.getFullYear()),
-					term_semester: this.getCurrentTermSemester(),
-				}
-			}).then(response => {
-				console.log(response )
-			}).catch(err => console.log(err));
+			axios.get(`http://localhost:3000/api/courseinfos/count?where={"course_number":{"like":"${newText}"}}`)
+	      .then(response => {
+					//course exists
+	        if (response.data.count > 0){
+						axios.get(`http://localhost:3000/api/courseinfos?filter={"where":{"course_number":{"like":"${newText}"}}}`)
+							.then(course_response =>{
+								axios.request({																														//Add course
+									method:'post',
+									url:`http://localhost:3000/api/courseinfos/${course_response.data[0].id}/userinfos`,
+									data: {
+										"display_name": this.state.displayName,
+				  					"about_me": this.state.aboutMe,
+				  					"userId": userId
+									}
+								}).then(response => {
+									console.log(response )
+								}).catch(err => console.log(err));
+							})
+							axios.request({																														//Add course
+								method:'post',
+								url:`http://localhost:3000/api/userinfos/${this.state.userId}/coursesTaken`,
+								data: {
+									course_number: newText,
+									term_year: String(date.getFullYear()),
+									term_semester: this.getCurrentTermSemester(),
+								}
+							}).then(response=>{
+								console.log(response)
+							})
+					}else{
+						axios.request({																														//Add course
+							method:'post',
+							url:`http://localhost:3000/api/userinfos/${this.state.userId}/coursesTaken`,
+							data: {
+								course_number: newText,
+								term_year: String(date.getFullYear()),
+								term_semester: this.getCurrentTermSemester(),
+							}
+						}).then(response => {
+							console.log(response )
+							axios.request({																														//Add course
+								method:'post',
+								url:`http://localhost:3000/api/courseinfos/${response.data.id}/userinfos`,
+								data: {
+									"display_name": this.state.displayName,
+			  					"about_me": this.state.aboutMe,
+			  					"userId": userId
+								}
+							}).then(response => {
+								console.log(response )
+							}).catch(err => console.log(err));
+						}).catch(err => console.log(err));
+					}
+	      })
 
 		}else {
 			axios.request({																														// update course

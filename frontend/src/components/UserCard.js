@@ -8,6 +8,7 @@ export default class UserCard extends Component {
   constructor(props) {
     super(props);
     this.state = {
+      id:"",
       user: this.props.user,
       open_modal: false,
       invited_modal: false,
@@ -23,6 +24,17 @@ export default class UserCard extends Component {
     this.closeModal = this.closeModal.bind(this);
     this.openInvitedModal = this.openInvitedModal.bind(this);
     this.closeInvitedModal = this.closeInvitedModal.bind(this);
+  }
+  componentWillMount(){
+    axios.get(`http://localhost:3000/api/userinfos?filter={"where":{"userId":{"like":"${this.state.user.userId}"}}}`)
+      .then(response => {
+        if (response.data[0]){
+        this.setState( {
+          id: response.data[0].id,
+          }, () => {
+          console.log('MP -> Loading user: ', this.state);
+        })}
+      })
   }
   componentWillReceiveProps(newProps) {
     this.setState({open_modal: newProps.open_modal});
@@ -71,7 +83,6 @@ export default class UserCard extends Component {
   invite(id, invitee_name){
     this.openInvitedModal();
     this.closeModal();
-    console.log(this.props.selected_course)
     axios.request({
       method:'post',
       url:`http://localhost:3000/api/groupinfos/${this.props.groupId}/invitations`,
@@ -79,7 +90,7 @@ export default class UserCard extends Component {
         inviter_id: this.props.inviter_id,
         invitee_id: id,
         inviter_name: this.props.inviter_name,
-        invitee_name: invitee_name,
+        invitee_name:this.props.user.display_name,
         course_number: this.props.selected_course,
         group_id: this.props.groupId,
         status: "Pending"
@@ -105,10 +116,11 @@ export default class UserCard extends Component {
     this.setState({invited_modal: false});
   }
   render(){
+    console.log(this.state.user)
     return(
       <div className="card">
         <div className="content">
-          <div className="header"><Link to={`/otherUsers/${this.state.user.id}`} >{this.state.user.display_name}</Link></div>
+          <div className="header"><Link to={`/otherUsers/${this.state.id}`} >{this.state.user.display_name}</Link></div>
         </div>
         <div className="content">
           Total Score (%): {this.ratingRender(this.state.user)}
@@ -128,7 +140,7 @@ export default class UserCard extends Component {
             <Button basic color='red' inverted onClick={this.closeModal}>
               <Icon name='remove' /> No
             </Button>
-            <Button color='green' inverted onClick={()=>this.invite(this.state.user.id, this.state.user.display_name)}>
+            <Button color='green' inverted onClick={()=>this.invite(this.state.user.userId, this.state.user.display_name)}>
               <Icon name='checkmark' /> Yes
             </Button>
           </Modal.Actions>

@@ -30,11 +30,13 @@ export default class ReferenceList extends Component {
 	getUserInfo(){
 		axios.get(`http://localhost:3000/api/userinfos?filter={"where":{"userId":{"like":"${userId}"}}}`)
 			.then(response => {
+				if (response.data[0]){
 				this.setState( {
 					userId: response.data[0].id,
 					}, () => {
 					console.log('MP -> Loading user: ', this.state);
 				})
+			}
 				console.log(this.state.userId)
 				axios.get(`http://localhost:3000/api/userinfos/${this.state.userId}/referenceinfos`)
 				.then(response =>{

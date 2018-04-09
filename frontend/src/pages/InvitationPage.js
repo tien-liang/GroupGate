@@ -6,9 +6,6 @@ import { Feed, Icon } from "semantic-ui-react";
 import auth from '../Auth'
 const userId = auth.getUserInfo();
 
-const BASE_URL = 'http://localhost:3000';
-const url= `${BASE_URL}/api/invitations`;
-
 export default class Invitation extends Component {
   constructor() {
     super();
@@ -37,15 +34,17 @@ export default class Invitation extends Component {
           }, () => {
           console.log('MP -> Loading user: ', this.state);
         })
-        axios.get(`${url}?filter={"where":{"inviter_id":{"like":"${this.state.id}"}}} `)
+        axios.get(`http://localhost:3000/api/invitations?filter={"where":{"inviter_id":{"like":"${this.state.userinfo.id}"}}} `)
         .then(inviter_response => {
           this.setState( {invitation_sent: inviter_response.data}, () => {
           })
         })
-        axios.get(`${url}?filter={"where":{"invitee_id":{"like":"${this.state.id}"}}} `)
+        console.log(this.state.userinfo.userId)
+        axios.get(`http://localhost:3000/api/invitations?filter={"where":{"invitee_id":{"like":"${this.state.userinfo.userId}"}}} `)
         .then(invitee_response => {
           this.setState( {invitation_received: invitee_response.data}, () => {
           })
+          console.log(this.state.invitation_received)
         })
       })
   }
@@ -70,7 +69,7 @@ export default class Invitation extends Component {
           "timemngmt": 0,
           "activity": 0,
           "rated": false,
-          "user_id": invitation.invitee_id,
+          "user_id": this.state.userinfo.id,
         }
       }).then(response => {
       }).catch(err => console.log(err));
@@ -78,7 +77,7 @@ export default class Invitation extends Component {
         method:'post',
         url:`http://localhost:3000/api/groupinfos/${response.data.group_id}/ratings`,
         data: {
-          "rating_for_id": invitation.invitee_id,
+          "rating_for_id": this.state.userinfo.id,
           "tech_skill": 0,
           "communication": 0,
           "p_solving": 0,
@@ -88,6 +87,14 @@ export default class Invitation extends Component {
           "user_id": invitation.inviter_id,
         }
       }).then(response => {
+        axios.request({																														//Add group
+          method:'put',
+          url:`http://localhost:3000/api/userinfos/${this.state.userinfo.id}/ratings/rel/${response.data.id}`,
+          data: {
+          }
+        }).then(response => {
+          console.log( response )
+        }).catch(err => console.log(err));
       }).catch(err => console.log(err));
     }).catch(err => console.log(err));
 
@@ -97,47 +104,14 @@ export default class Invitation extends Component {
       )
     }))
 
-    axios.request({																														//Add group
-      method:'post',
-      url:`http://localhost:3000/api/groupinfos/${invitation.group_id}/userinfos`,
-      data: {
-        "display_name": this.state.userinfo.display_name,
-        "about_me": this.state.userinfo.about_me,
-        "references": this.state.userinfo.references,
-        "groups_owned": this.state.userinfo.groups_owned,
-        "groups_joined": this.state.userinfo.groups_joined,
-        "total_r_skills": this.state.userinfo.total_r_skills,
-        "total_r_comm": this.state.userinfo.total_r_comm,
-        "total_r_psolving": this.state.userinfo.total_r_psolving,
-        "total_r_timemngmt": this.state.userinfo.total_r_timemngmt,
-        "total_r_activity": this.state.userinfo.total_r_activity,
-        "num_of_votes": this.state.userinfo.num_of_votes,
-        "user_id": this.state.userinfo.id
-      }
-    }).then(response => {
-      console.log( response )
-    }).catch(err => console.log(err));
-
-    axios.get(`http://localhost:3000/api/groupinfos/${invitation.group_id}`)
-    .then(response =>{
-      console.log(response.data)
-      var group = response.data;
       axios.request({																														//Add group
-        method:'post',
-        url:`http://localhost:3000/api/userinfos/${this.state.userinfo.id}/groupinfos`,
+        method:'put',
+        url:`http://localhost:3000/api/groupinfos/${invitation.group_id}/userinfos/rel/${this.state.userinfo.id}`,
         data: {
-          "group_name": group.group_name,
-          "group_descr": group.group_descr,
-          "group_status": group.group_status,
-          "group_course": group.group_course,
-          "group_url": group.group_url,
-          "group_gitlink": group.group_gitlink,
-          "group_owner": this.state.id
         }
       }).then(response => {
         console.log( response )
       }).catch(err => console.log(err));
-    })
   }
 
 
@@ -249,7 +223,7 @@ notification(invitation,i){
       </Feed>
     )
   } else if (invitation.status === "Rejected"){
-    let summary = invitation.invitee_name+" rejected your invitation.";
+    let summary = invitation.invitee_name+" in " + invitation.course_number + " rejected your invitation.";
     return(
       <Feed>
         <Feed.Event>

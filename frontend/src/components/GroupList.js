@@ -78,17 +78,21 @@ update(newGroupName, newCourseNumber, newStatus, newDescription, i, addMode) {
 	console.log('GL -> Add mode: ', addMode)																	// DEBUG, REMOVE
 	var courseId = this.state.courses.find((course)=>{return course.course_number === newCourseNumber}).id;
 	if ( addMode ){
-		axios.request({																														//Add group
-			method:'post',
-			url:`http://localhost:3000/api/userinfos/${this.state.userId}/groupinfos`,
-			data: {
-				group_name: newGroupName,
-				group_descr: newDescription,
-				group_course: newCourseNumber
-			}
-		}).then(response => {
-			console.log( response )
-		}).catch(err => console.log(err));
+		axios.get(`http://localhost:3000/api/courseinfos?filter={"where":{"course_number":{"like":"${newCourseNumber}"}}}`)
+			.then(response=>{
+				axios.request({																														//Add group
+					method:'post',
+					url:`http://localhost:3000/api/userinfos/${this.state.userId}/groupinfos`,
+					data: {
+						group_name: newGroupName,
+						group_descr: newDescription,
+						group_course: newCourseNumber,
+						courseId: response.data[0].id
+					}
+				}).then(response => {
+					console.log( response )
+				}).catch(err => console.log(err));
+			})
 	}else {
 		axios.request({																														// update group
 			method:'patch',

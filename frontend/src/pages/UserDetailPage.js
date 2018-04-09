@@ -2,11 +2,35 @@ import React, { Component } from "react";
 import Nav from '../components/Nav';
 import { Button } from "semantic-ui-react";
 import {Link} from 'react-router-dom';
+import auth from '../Auth'
+const userId = auth.getUserInfo();
 
 export default class UserDetail extends Component {
   constructor() {
     super();
-    this.state = {};
+    this.state = {
+      id: "",
+      displayName: "",
+      aboutMe: ""
+    };
+  }
+  componentWillMount() {
+    this.getUserInfo();
+  }
+
+  getUserInfo(){
+    console.log(userId)
+    axios.get(`http://localhost:3000/api/userinfos?filter={"where":{"userId":{"like":"${userId}"}}}`)
+      .then(response => {
+        if (response.data[0]){
+        this.setState( {
+          id: response.data[0].id,
+          displayName: response.data[0].display_name,
+          aboutMe: response.data[0].about_me,
+          }, () => {
+          console.log('MP -> Loading user: ', this.state);
+        })}
+      })
   }
   render() {
     return (

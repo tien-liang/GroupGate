@@ -15,12 +15,10 @@
       "required": true
     },
     "inviter_name": {
-      "type": "string",
-      "required": true
+      "type": "string"
     },
     "invitee_name": {
-      "type": "string",
-      "required": true
+      "type": "string"
     },
     "group_id": {
       "type": "string"
