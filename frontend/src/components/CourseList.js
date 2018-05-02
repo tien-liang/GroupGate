@@ -167,6 +167,7 @@ export default class CourseList extends Component {
 			console.log('removing item at', id)																					// DEBUG
 			axios.delete(`http://localhost:3000/api/courseinfos/${id}`)
 			.then(response => {
+				console.log(response)
 				this.setState( {
 				}, () => {
 					console.log('MP -> Loading user: ', this.state);
